@@ -21,6 +21,14 @@ class App extends Component {
     this.changeItem = this.changeItem.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.itemid !== this.state.itemid) {
+        const {itemid} = nextProps.match.params;
+        this.state.itemid = itemid;
+        this.state.itemname = window.ItemList[Number(itemid)];
+    }
+  }
+
   changeItem(itemid, itemname) {
     this.setState({ itemid: itemid, itemname: itemname });
     this.props.history.push(`/${itemid}`);
