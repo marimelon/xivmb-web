@@ -1,0 +1,12 @@
+.tabulator-cell{
+    font-size: 0.875rem;
+}
+.tabulator-col-title{
+    font-size: 0.875rem;
+}
+
+
+.tabulator .tabulator-col-resize-handle{
+    visibility: hidden;
+    width: 0rem;
+}

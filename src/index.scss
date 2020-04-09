@@ -1,0 +1,52 @@
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css');
+html{
+  font-size: 90%;
+}
+body {
+  margin: 0;
+  font-family: "メイリオ", "Meiryo";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  display: flex;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #cccccc;
+  text-align: left;
+  background-color: #15202B;
+  max-width: 1440px;
+  margin-right: auto;
+  margin-left: auto;
+}
+#root{
+  width: 100%;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.sortable-chosen.sortable-ghost {
+  opacity: 0;
+}
+
+.sortable-fallback {
+  opacity: 1 !important;
+}
+
+::-webkit-scrollbar {
+  width: 0.188rem;
+}
+
+::-webkit-scrollbar-track {
+  /*background: #fff;*/
+  border: none;
+  border-radius: 0.625rem;
+  box-shadow: inset 0 0 0.125rem #777;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 0.625rem;
+  box-shadow: none;
+}

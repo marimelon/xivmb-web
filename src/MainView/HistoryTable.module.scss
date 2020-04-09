@@ -1,0 +1,36 @@
+.HistoryTable{
+    width: 420px;
+    margin-right: auto;
+    position: relative;
+    display: inline-block;
+}
+
+.HistoryTableHeader{
+    height: 40px;
+}
+
+.HistoryUpdatedDate{
+    color: #a9a9a9;
+    font-size: 16px;
+}
+
+:global(.tabulator-cell){
+    &.Price{
+        color: #ccff33;
+    }
+    &.QTY{
+        color: #FFCC00;
+    }
+    &.HQ{
+        img{
+            width: 17px;
+            height: 17px;
+        }
+    }
+}
+
+@media (max-width:1326px) {
+    .HistoryTable{
+         display: none;
+    }
+}

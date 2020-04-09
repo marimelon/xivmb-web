@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="378"
+   height="389"
+   version="1.1"
+   id="svg3729"
+   sodipodi:docname="hqicon.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <metadata
+     id="metadata3735">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3733" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2120"
+     id="namedview3731"
+     showgrid="false"
+     inkscape:zoom="4.8071979"
+     inkscape:cx="189"
+     inkscape:cy="194.5"
+     inkscape:window-x="-12"
+     inkscape:window-y="-12"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3729" />
+  <path
+     style="fill:#020202; stroke:none;"
+     d="M187 379C182.745 375.471 177.486 373.154 173 369.844C164.081 363.263 155.983 354.202 151.439 344C147.793 335.815 145.111 327.023 145.004 318C144.876 307.275 146.524 296.786 151.12 287C170.41 245.92 223.742 233.599 259 261.808C267.213 268.379 273.603 276.585 278.244 286C282.958 295.564 284.993 305.375 285 316C292.411 303.869 292.534 283.655 291.169 270C286.987 228.176 261.991 190.185 221 176.079C180.966 162.301 135.378 175.307 108.464 208C95.8947 223.268 89.8662 240.199 85 259C79.2987 243.776 80.1308 223.91 81.8341 208C88.7078 143.796 134.254 86.3326 197 68.4275C259.14 50.6953 326.716 75.3542 365 127C365.665 123.029 362.916 118.592 361.219 115C356.388 104.772 350.396 95.2947 343.975 86C315.049 44.1303 265.378 16.2094 215 11.169C177.36 7.40314 139.434 14.1835 106 32.3087C17.2623 80.4153 -15.8789 196.133 33.1397 284C43.6598 302.858 57.4074 320.344 74 334.246C97.3606 353.818 124.262 367.534 154 374.349C164.957 376.86 176.047 376.967 187 379z"
+     id="path3727" />
+</svg>
