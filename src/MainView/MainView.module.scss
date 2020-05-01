@@ -21,6 +21,7 @@
     cursor: pointer;
     border-radius: 0.313rem;
     border: 0.063rem solid #8bb6e5;
+    box-shadow: 0 3px 5px #000;
     &::before{
         content: "Update";
     }

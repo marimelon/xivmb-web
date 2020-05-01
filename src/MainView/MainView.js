@@ -6,7 +6,10 @@ import firebase from '../Common/firebase'
 import LoginHeader from './LoginHeader';
 import ItemHeader from './ItemHeader';
 import WorldTab from './WorldTab';
-import TablesView from './TablesView'
+import TablesView from './TablesView';
+import HistoryChart from './HistoryChart';
+
+import Collapse from '@material-ui/core/Collapse';
 
 import style from './MainView.module.scss';
 
@@ -55,9 +58,10 @@ const UpdateButton = ({ status, callback }) => {
 class MainView extends Component {
     constructor(props) {
         super(props);
-        this.state = { currentWorldTab: "Elemental", updateButtonState: 0, };
+        this.state = { currentWorldTab: "Elemental", updateButtonState: 0,isShownHistoryChart:false };
         this.tabChange = this.tabChange.bind(this);
         this.onClickMarketUpdateButton = this.onClickMarketUpdateButton.bind(this);
+        this.onClickHistoryChartButton = this.onClickHistoryChartButton.bind(this);
         this.TablesViewRef = React.createRef();
 
         this.rate_limit = null;
@@ -65,6 +69,10 @@ class MainView extends Component {
 
     tabChange(tabtype) {
         this.setState({ currentWorldTab: tabtype });
+    }
+
+    onClickHistoryChartButton(value){
+        this.setState({ isShownHistoryChart: value });
     }
 
     onClickMarketUpdateButton(event) {
@@ -81,7 +89,8 @@ class MainView extends Component {
                                 .then(res => this.rate_limit = Number(res))
                         }
 
-                        fetch(`${process.env.REACT_APP_API_URL}/newdata/market/${this.props.itemid}`, {
+                        var itemid = this.props.itemid;
+                        fetch(`${process.env.REACT_APP_API_URL}/newdata/market/${itemid}`, {
                             headers: { "Authorization": 'Bearer ' + idToken }
                         }).then(res => {
                             if (!res.ok) {
@@ -91,7 +100,7 @@ class MainView extends Component {
                         }).then(res => {
                             this.setState({ updateButtonState: 2 })
                             setTimeout(() => { this.setState({ updateButtonState: 0 }) }, (this.rate_limit ? this.rate_limit : 20) * 1000);
-                            const _ = this.TablesViewRef.current?.market_table_ref.current?.setData(res)
+                            const _ = this.TablesViewRef.current?.market_table_ref.current?.setData(itemid,res)
                         }).catch(err => {
                             this.setState({ updateButtonState: 0 })
                             alert(`更新に失敗しました (${err.message})`)
@@ -104,7 +113,7 @@ class MainView extends Component {
     }
 
     componentWillReceiveProps() {
-        if (this.state.updateButtonState == 2) {
+        if (this.state.updateButtonState === 2) {
             this.setState({ updateButtonState: 3 })
         }
     }
@@ -112,7 +121,8 @@ class MainView extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         return (this.props.itemid !== nextProps.itemid ||
             this.state.currentWorldTab !== nextState.currentWorldTab ||
-            this.state.updateButtonState !== nextState.updateButtonState)
+            this.state.updateButtonState !== nextState.updateButtonState ||
+            this.state.isShownHistoryChart !== nextState.isShownHistoryChart)
     }
 
     render() {
@@ -123,7 +133,9 @@ class MainView extends Component {
                 <ItemHeader itemid={itemid} itemname={itemname} />
                 <UpdateButton status={this.state.updateButtonState} callback={this.onClickMarketUpdateButton} />
                 <WorldTab currentTabType={this.state.currentWorldTab} onClick={this.tabChange} />
-                <TablesView ref={this.TablesViewRef} itemid={itemid} world={this.state.currentWorldTab} />
+                <Collapse in={this.state.isShownHistoryChart}><HistoryChart itemid={itemid}/></Collapse>
+                <TablesView ref={this.TablesViewRef} itemid={itemid} world={this.state.currentWorldTab} 
+                    isShownChart={this.state.isShownHistoryChart} isShownChartCB={this.onClickHistoryChartButton} />
             </div>
         );
     }

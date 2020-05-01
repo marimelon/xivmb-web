@@ -19,11 +19,12 @@ class TablesView extends Component {
     }
 
     render() {
-        const {itemid,world} = this.props;
+        const {itemid,world,isShownChart,isShownChartCB} = this.props;
         return (
             <div className={style.TablesView}>
                 <MarketTable ref={this.market_table_ref} itemid={itemid} world={world}/>
-                <HistoryTable ref={this.history_table_ref} itemid={itemid} world={world}/>
+                <HistoryTable ref={this.history_table_ref} itemid={itemid} world={world} 
+                    isShownChart={isShownChart} isShownChartCB={isShownChartCB}/>
             </div>
         );
     }

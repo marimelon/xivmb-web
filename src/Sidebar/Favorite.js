@@ -12,7 +12,7 @@ const DeleteFavoriteButton = ({ deleteFavoriteCB }) => (
 );
 
 const SortableItem = SortableElement(({ value, onClickItem, activeItem, children }) => {
-    const  isActive = activeItem == 'fav' + value.id
+    const  isActive = activeItem === 'fav' + value.id
     return (
         <SidebarItem
             itemid={value.id}

@@ -34,7 +34,7 @@ class Sidebar extends Component {
     }
 
     deleteFavoriteCB(itemid){
-        const newfavoriteList = this.state.favoriteList.filter(n => n.id != itemid)
+        const newfavoriteList = this.state.favoriteList.filter(n => n.id !== itemid)
         localStorage.setItem("favorite", JSON.stringify(newfavoriteList));
         this.setState({ favoriteList: newfavoriteList })
     }

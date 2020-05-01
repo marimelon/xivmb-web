@@ -4,7 +4,9 @@ import moment from 'moment'
 import 'react-tabulator/lib/styles.css';
 import style from './HistoryTable.module.scss'
 
-const HistoryTableHeader = ({ updatedDate }) => {
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+
+const HistoryTableHeader = ({ updatedDate,isShownChart,isShownChartCB }) => {
     let updatedDateText = ''
     if (updatedDate == null) {
         updatedDateText = "( データなし )"
@@ -22,6 +24,9 @@ const HistoryTableHeader = ({ updatedDate }) => {
             <span className={style.HistoryUpdatedDate}>
                 {updatedDateText}
             </span>
+            <div className={style.ShowTrandButton} onClick={()=>{isShownChartCB(!isShownChart)}}>
+                <TrendingUpIcon color={isShownChart?'primary':'secondary'}/>
+            </div>
         </div>
     );
 }
@@ -59,8 +64,7 @@ class HistoryTable extends Component {
         this.state = { updatedDate: null }
     }
     render() {
-        const { itemid, world } = this.props;
-
+        const { itemid, world,isShownChart,isShownChartCB } = this.props;
 
         if (this.ref.current?.table) {
             const table = this.ref.current.table
@@ -76,7 +80,7 @@ class HistoryTable extends Component {
 
         return (
             <div className={style.HistoryTable}>
-                <HistoryTableHeader updatedDate={this.state.updatedDate} />
+                <HistoryTableHeader updatedDate={this.state.updatedDate} isShownChart={isShownChart} isShownChartCB={isShownChartCB}/>
                 <ReactTabulator
                     ref={this.ref}
                     options={{

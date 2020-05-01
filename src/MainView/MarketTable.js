@@ -26,6 +26,7 @@ const MarketTableHeader = ({ updatedDate, HQFilterState, HQFilterCallback }) => 
                 {" Filter "}
             </span>
             <img width="20" height="20"
+                alt={"HQIcon"}
                 src={`${process.env.PUBLIC_URL}/images/${HQFilterState ? 'hqicon-yellow' : 'hqicon'}.png`}
                 onClick={() => { HQFilterCallback(!HQFilterState) }}
             />
@@ -85,12 +86,16 @@ class MarketTable extends Component {
         this.datacache = []
     }
 
-    setData(data) {
+    setData(itemid,data) {
         if (this.ref.current?.table) {
-            this.ref.current.table.replaceData(data)
+            this.ref.current.table.replaceData(data);
+
+            this.datacache.push({ id: itemid, res: data })
+            if (this.datacache.length > CACHE_MAX_COUNT) {
+                this.datacache.shift();
+            }
         }
     }
-
 
     render() {
         const { itemid, world } = this.props;
@@ -98,7 +103,7 @@ class MarketTable extends Component {
             const table = this.ref.current.table
             //キャッシュ検索
             if (table.getAjaxUrl() !== get_url(itemid)) {
-                var index = this.datacache.findIndex(({ id }) => id == itemid);
+                var index = this.datacache.findIndex(({ id }) => id === itemid);
                 if (index !== -1) {
                     table.setData(this.datacache[index].res)
                     this.datacache.splice(index, 1)
@@ -120,7 +125,9 @@ class MarketTable extends Component {
             if (this.state.hqFilter) {
                 table.addFilter("hq", "=", 1);
             } else {
-                table.removeFilter("hq", "=", 1);
+                while(table.getFilters().findIndex(({ field }) => field === "hq") !== -1){
+                    table.removeFilter("hq", "=", 1);
+                }
             }
         }
 
