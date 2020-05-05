@@ -1,10 +1,10 @@
 import React, { Component, useState, useEffect } from 'react';
 
-import Highcharts from 'highcharts';
+import Highstock from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import DarkUnica from 'highcharts/themes/dark-unica';
 
-DarkUnica(Highcharts);
+DarkUnica(Highstock);
 
 class HistoryChart extends Component {
     constructor() {
@@ -36,19 +36,67 @@ class HistoryChart extends Component {
     render() {
         const options = {
             chart:{
-                zoomType: 'x',
+                height: 300,
+                //zoomType: 'x',
                 backgroundColor :"#15202B"
             },
             title:{
                 text:null
             },
+            navigator: {
+                enabled: true,
+            },
+            rangeSelector: {
+                enabled: true,
+                inputEnabled: true,
+                x: 0,
+                verticalAlign: "top",
+                buttonPosition: {
+                  align: "left"
+                },
+                allButtonsEnabled: true,
+                buttons: [
+                  {
+                    type: "month",
+                    count: 3,
+                    text: "Day",
+                    dataGrouping: {
+                      forced: true,
+                      units: [["day", [1]]]
+                    }
+                  },
+                  {
+                    type: "year",
+                    count: 1,
+                    text: "Week",
+                    dataGrouping: {
+                      forced: true,
+                      units: [["week", [1]]]
+                    }
+                  },
+                  {
+                    type: "all",
+                    text: "Month",
+                    dataGrouping: {
+                      forced: true,
+                      units: [["month", [1]]]
+                    }
+                  }
+                ],
+                selected: 1
+              },
             legend:false,
             xAxis: {
+                minRange: 1,
                 type: 'datetime',
                 min: Date.UTC(2020, 0, 1),
                 labels: { 
                     format: '{value:%Y-%m-%d}' 
                 },
+                scrollbar: {
+                    enabled: true
+                },
+                opposite: false
             },
             series: [{
                 data: this.state.series
@@ -56,7 +104,7 @@ class HistoryChart extends Component {
         };
         return (
             <div>
-                <HighchartsReact highcharts={Highcharts} options={options} />
+                <HighchartsReact highcharts={Highstock} options={options} />
             </div>);
     }
 }
