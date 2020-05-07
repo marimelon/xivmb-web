@@ -1,7 +1,7 @@
 export async function IndexedDBFunction() {
     window.ItemList = {}
     const res = await fetch(`${process.env.REACT_APP_API_URL}/itemlistversion`).then(res => res.json())
-
+    
     return await new Promise( (resolve, reject)=> {
         var dbName = 'DB';
         var storeName = "itemlist";
@@ -16,6 +16,7 @@ export async function IndexedDBFunction() {
                 .then(res => {
                     var transaction = db.transaction(storeName, "readwrite");
                     var itemStore = transaction.objectStore(storeName);
+                    console.log(res);
                     for (const v of res) {
                         itemStore.put(v);
                         window.ItemList[v.id] = v.name;
@@ -33,7 +34,6 @@ export async function IndexedDBFunction() {
                 resolve(event);
             };
             console.log('db open success');
-            
         };
         openReq.onerror = (event) => {
             reject(event)

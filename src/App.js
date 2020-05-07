@@ -21,14 +21,6 @@ class App extends Component {
     this.changeItem = this.changeItem.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.itemid !== this.state.itemid) {
-        const {itemid} = nextProps.match.params;
-        this.state.itemid = itemid;
-        this.state.itemname = window.ItemList[Number(itemid)];
-    }
-  }
-
   changeItem(itemid, itemname) {
     this.setState({ itemid: itemid, itemname: itemname });
     this.props.history.push(`/${itemid}`);
@@ -41,31 +33,6 @@ class App extends Component {
     return (
       <div className={style.App}>
         <Sidebar changeItem={this.changeItem} />
-        <MainView itemid={this.state.itemid} itemname={this.state.itemname} />
-      </div>
-    );
-  }
-}
-
-class Viewer extends Component {
-  constructor(props) {
-    super(props);
-    const {itemid} = props.match.params
-    this.state = { itemid: Number(itemid), itemname: window.ItemList[Number(itemid)] };
-    this.changeItem = this.changeItem.bind(this);
-  }
-
-  changeItem(itemid, itemname) {
-    this.setState({ itemid: itemid, itemname: itemname });
-    this.props.history.push(`/${itemid}`);
-  }
-
-  render() {
-    changeFavicon(ItemIconURL(this.state.itemid))
-    document.title = this.state.itemname
-
-    return (
-      <div className={style.App}>
         <MainView itemid={this.state.itemid} itemname={this.state.itemname} />
       </div>
     );

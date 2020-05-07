@@ -15,7 +15,7 @@ class WorldTab extends PureComponent {
                             className={`${style.navitem} ${currentTabType === item ? style.active : ''}`}
                             onClick={() => onClick(item)}
                         >
-                            <a>{item}</a>
+                            <div>{item}</div>
                         </li>)}
                 </ul>
             </nav>

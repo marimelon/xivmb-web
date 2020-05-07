@@ -10,7 +10,7 @@ const ItemSearchInput = ({ value, changeTextCB }) => (
             value={value}
             onChange={(e) => { changeTextCB(e.target.value) }}
         />
-        <a className={style.inputclear} href='#' onClick={() => { changeTextCB('') }}>✖</a>
+        <div className={style.inputclear} onClick={() => { changeTextCB('') }}>✖</div>
     </div>
 );
 

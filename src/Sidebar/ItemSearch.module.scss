@@ -31,7 +31,8 @@
     top: 11px; 
     line-height: 1;
     &:hover{
-        color: rgb(204, 204, 204); 
+        cursor: pointer;
+        color: red; 
         text-decoration: none;
     }
 }

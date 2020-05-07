@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 
 import Highstock from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';

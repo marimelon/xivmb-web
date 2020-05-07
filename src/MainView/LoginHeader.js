@@ -17,7 +17,7 @@ const LoginHeader = ({ history }) => {
     }
     return (
         <div className={style.LoginHeader}>
-            <a
+            <div
                 className={style.logout}
                 href="#"
                 onClick={() => {
@@ -25,7 +25,7 @@ const LoginHeader = ({ history }) => {
                     else { login() }
                 }}>
                 {user ? "Logout" : "Login"}
-            </a>
+            </div>
         </div>);
 }
 

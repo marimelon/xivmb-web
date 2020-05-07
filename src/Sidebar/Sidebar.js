@@ -42,7 +42,7 @@ class Sidebar extends Component {
     render() {
         return (
             <div className={style.Sidebar}>
-                <div className={style.WebTitle}><a>FFXIVMarketBord</a></div>
+                <div className={style.WebTitle}><div>FFXIVMarketBord</div></div>
                 <ItemSearch
                     onClickItem={this.changeActiveItem}
                     activeItem={this.state.activeItem}

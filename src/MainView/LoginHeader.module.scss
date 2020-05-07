@@ -9,4 +9,8 @@
     position: relative;
     right: 0.625rem;
     color: white;
+    &:hover {
+        color: red;
+        cursor: pointer;
+    }
 }

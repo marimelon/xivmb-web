@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ReactTabulator, reactFormatter } from 'react-tabulator'
+import { ReactTabulator } from 'react-tabulator'
 import moment from 'moment'
 import 'react-tabulator/lib/styles.css';
 import style from './MarketTable.module.scss'
