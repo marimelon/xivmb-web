@@ -46,44 +46,36 @@ class HistoryChart extends Component {
             navigator: {
                 enabled: true,
             },
+            scrollbar: {
+                enabled: false
+            },
             rangeSelector: {
                 enabled: true,
-                inputEnabled: true,
+                floating: true,
+                inputEnabled:false,
                 x: 0,
                 verticalAlign: "top",
                 buttonPosition: {
                   align: "left"
                 },
-                allButtonsEnabled: true,
+                allButtonsEnabled: false,
                 buttons: [
                   {
                     type: "month",
-                    count: 3,
+                    count: 2,
                     text: "Day",
-                    dataGrouping: {
-                      forced: true,
-                      units: [["day", [1]]]
-                    }
                   },
                   {
-                    type: "year",
-                    count: 1,
+                    type: "month",
+                    count: 6,
                     text: "Week",
-                    dataGrouping: {
-                      forced: true,
-                      units: [["week", [1]]]
-                    }
                   },
                   {
                     type: "all",
-                    text: "Month",
-                    dataGrouping: {
-                      forced: true,
-                      units: [["month", [1]]]
-                    }
+                    text: "All"
                   }
                 ],
-                selected: 1
+                selected: 3
               },
             legend:false,
             xAxis: {
