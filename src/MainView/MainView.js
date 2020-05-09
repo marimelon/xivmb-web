@@ -133,7 +133,7 @@ class MainView extends Component {
                 <ItemHeader itemid={itemid} itemname={itemname} />
                 <UpdateButton status={this.state.updateButtonState} callback={this.onClickMarketUpdateButton} />
                 <WorldTab currentTabType={this.state.currentWorldTab} onClick={this.tabChange} />
-                <Collapse in={this.state.isShownHistoryChart}><HistoryChart itemid={itemid}/></Collapse>
+                <Collapse in={this.state.isShownHistoryChart}><HistoryChart itemid={itemid} isshown={this.state.isShownHistoryChart}/></Collapse>
                 <TablesView ref={this.TablesViewRef} itemid={itemid} world={this.state.currentWorldTab} 
                     isShownChart={this.state.isShownHistoryChart} isShownChartCB={this.onClickHistoryChartButton} />
             </div>

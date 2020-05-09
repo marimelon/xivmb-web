@@ -10,28 +10,33 @@ class HistoryChart extends Component {
     constructor() {
         super();
         this.state = {
-            series: []
+            series: [],
+            loaded_itemid:0
         };
     }
 
     componentDidMount() {
-        fetch(`${process.env.REACT_APP_API_URL}/data/history/chart?q=${this.props.itemid}`)
-            .then(response => response.json())
-            .then(res => {
-                this.setState({ series: res.map(elm=>[elm.Date*1000,elm.PC]) });
-            });
+        if (this.props.isshown) {
+            fetch(`${process.env.REACT_APP_API_URL}/data/history/chart?q=${this.props.itemid}`)
+                .then(response => response.json())
+                .then(res => {
+                    this.setState({ series: res.map(elm => [elm.Date * 1000, elm.PC]),loaded_itemid:this.props.itemid });
+                });
+        }
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         // 典型的な使い方(props を比較することを忘れないでください)
-        if (this.props.itemid !== prevProps.itemid) {
-            fetch(`${process.env.REACT_APP_API_URL}/data/history/chart?q=${this.props.itemid}`)
-            .then(response => response.json())
-            .then(res => {
-                this.setState({ series: res.map(elm=>[elm.Date*1000,elm.PC]) });
-            });
+        if (this.props.isshown) {
+            if (this.props.itemid !== this.state.loaded_itemid) {
+                fetch(`${process.env.REACT_APP_API_URL}/data/history/chart?q=${this.props.itemid}`)
+                    .then(response => response.json())
+                    .then(res => {
+                        this.setState({ series: res.map(elm => [elm.Date * 1000, elm.PC]) ,loaded_itemid:this.props.itemid});
+                    });
+            }
         }
-      }
+    }
       
     render() {
         const options = {
