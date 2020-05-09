@@ -31,11 +31,12 @@ const ItemSearchResult = ({ value, onClick, activeItem, favoriteList, addFavorit
             return;
         }
         var r = {};
+        var values = value.split(/[\u{20}\u{3000}]/u);
         for (const key in window.ItemList) {
             if (window.ItemSearchResult_Flag !== value) {
-                return;
+                return; //検索ワードが変更された時検索を中止
             }
-            if (window.ItemList[key].indexOf(value) !== -1) {
+            if(values.every(elm=>window.ItemList[key].indexOf(elm) !== -1)){
                 r[key] = window.ItemList[key];
             }
         }
