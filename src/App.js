@@ -19,11 +19,23 @@ class App extends Component {
     const {itemid} = props.match.params
     this.state = { itemid: Number(itemid), itemname: window.ItemList[Number(itemid)] };
     this.changeItem = this.changeItem.bind(this);
+    this.unlisten = props.history.listen((location)=>{
+      if(location.state===undefined){
+        var itemid = Number(location.pathname.slice(1));
+        this.setState({itemid:itemid,itemname:window.ItemList[itemid]});
+      }
+      else{
+        this.setState(location.state);
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.unlisten();
   }
 
   changeItem(itemid, itemname) {
-    this.setState({ itemid: itemid, itemname: itemname });
-    this.props.history.push(`/${itemid}`);
+    this.props.history.push({pathname:`/${itemid}`,state:{itemid:itemid,itemname:itemname}});
   }
 
   render() {
