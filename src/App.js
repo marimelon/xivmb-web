@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import style from './App.module.css';
 
 import { ItemIconURL } from './Common/ItemIcon'
 import changeFavicon from './Common/changeFavicon'
 
-import Auth from './Auth'
-import SignIn from './Signin'
 import Sidebar from "./Sidebar/Sidebar.js"
 import MainView from "./MainView/MainView.js"
 
@@ -51,21 +48,4 @@ class App extends Component {
   }
 }
 
-class AppRoute extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route path='/signin' component={SignIn} />
-          <Auth>
-            <Switch>
-              <Redirect exact from='/' to='/2' />
-              <Route path='/:itemid(\d+)' component={App} />
-            </Switch>
-          </Auth>
-        </Switch>
-      </BrowserRouter>
-    )
-  }
-}
-export default AppRoute;
+export default App;
