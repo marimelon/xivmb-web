@@ -1,8 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import firebase from './Common/firebase';
-import LoadingOverlay from 'react-loading-overlay';
-import { IndexedDBFunction } from './database'
+import { IndexedDBFunction } from './Common/database';
+
+import  LoadingPage  from './Common/LoadingPage';
 
 class Auth extends React.Component {
 
@@ -57,12 +58,13 @@ class Auth extends React.Component {
         //チェックが終わってないなら（ローディング表示）
         if (!this.state.signinCheck || !this.state.initDatabase) {
             return (
-                <LoadingOverlay
-                    active={true}
-                    spinner
-                    text='Loading...'
-                >
-                </ LoadingOverlay>
+                <LoadingPage/>
+                //<LoadingOverlay
+                //    active={true}
+                //    spinner
+                //    text='Loading...'
+                //>
+                //</ LoadingOverlay>
             );
         }
 

@@ -132,7 +132,7 @@ class MarketTable extends Component {
         }
 
         return (
-            <div className={style.MarketTable}>
+            <div className={`${style.MarketTable} ${this.props.style}`}>
                 <MarketTableHeader
                     updatedDate={this.state.updatedDate}
                     HQFilterState={this.state.hqFilter}

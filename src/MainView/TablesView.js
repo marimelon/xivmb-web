@@ -3,6 +3,8 @@ import style from './TablesView.module.scss'
 import MarketTable from './MarketTable'
 import HistoryTable from './HistoryTable'
 
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+
 class TablesView extends Component {
     constructor(props) {
         super(props);
@@ -20,11 +22,15 @@ class TablesView extends Component {
 
     render() {
         const {itemid,world,isShownChart,isShownChartCB} = this.props;
+        var history_header_children = (
+            <div className={style.ShowTrandButton} onClick={() => { isShownChartCB(!isShownChart) }}>
+                <TrendingUpIcon color={isShownChart ? 'primary' : 'secondary'} />
+            </div>);
         return (
             <div className={style.TablesView}>
-                <MarketTable ref={this.market_table_ref} itemid={itemid} world={world}/>
-                <HistoryTable ref={this.history_table_ref} itemid={itemid} world={world} 
-                    isShownChart={isShownChart} isShownChartCB={isShownChartCB}/>
+                <MarketTable ref={this.market_table_ref} itemid={itemid} world={world} style={style.MarketTable}/>
+                <HistoryTable ref={this.history_table_ref} itemid={itemid} world={world} style={style.HistoryTable}
+                    header_children={history_header_children}/>
             </div>
         );
     }

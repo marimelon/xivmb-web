@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
-import { ReactTabulator } from 'react-tabulator'
-import moment from 'moment'
+import { ReactTabulator } from 'react-tabulator';
+import moment from 'moment';
 import 'react-tabulator/lib/styles.css';
-import style from './HistoryTable.module.scss'
+import style from './HistoryTable.module.scss';
 
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-
-const HistoryTableHeader = ({ updatedDate,isShownChart,isShownChartCB }) => {
-    let updatedDateText = ''
+const HistoryTableHeader = ({ updatedDate,children }) => {
+    let updatedDateText = '';
     if (updatedDate == null) {
-        updatedDateText = "( データなし )"
+        updatedDateText = "( データなし )";
     } else {
         if (moment().diff(updatedDate, 'days') > 0) {
-            updatedDateText = `(取得日時 ${updatedDate.format('MM/DD\xa0HH:mm')})`
+            updatedDateText = `(取得日時 ${updatedDate.format('MM/DD\xa0HH:mm')})`;
         } else {
-            updatedDateText = `( ${updatedDate.fromNow()} に取得)`
+            updatedDateText = `( ${updatedDate.fromNow()} に取得)`;
         }
     }
 
@@ -24,9 +22,7 @@ const HistoryTableHeader = ({ updatedDate,isShownChart,isShownChartCB }) => {
             <span className={style.HistoryUpdatedDate}>
                 {updatedDateText}
             </span>
-            <div className={style.ShowTrandButton} onClick={()=>{isShownChartCB(!isShownChart)}}>
-                <TrendingUpIcon color={isShownChart?'primary':'secondary'}/>
-            </div>
+            {children}
         </div>
     );
 }
@@ -61,15 +57,15 @@ class HistoryTable extends Component {
     constructor(props) {
         super(props);
         this.ref = React.createRef();
-        this.state = { updatedDate: null }
+        this.state = { updatedDate: null };
     }
     render() {
-        const { itemid, world,isShownChart,isShownChartCB } = this.props;
+        const { itemid, world,header_children } = this.props;
 
         if (this.ref.current?.table) {
-            const table = this.ref.current.table
+            const table = this.ref.current.table;
             if (table.getAjaxUrl() !== get_url(itemid)) {
-                table.setData(get_url(itemid))
+                table.setData(get_url(itemid));
             }
             const other_filters = table.getFilters().filter(filrer => filrer.field !== 'world');
             table.setFilter(other_filters);
@@ -79,8 +75,10 @@ class HistoryTable extends Component {
         }
 
         return (
-            <div className={style.HistoryTable}>
-                <HistoryTableHeader updatedDate={this.state.updatedDate} isShownChart={isShownChart} isShownChartCB={isShownChartCB}/>
+            <div className={`${style.HistoryTable} ${this.props.style}`}>
+                <HistoryTableHeader updatedDate={this.state.updatedDate}>
+                    {header_children}
+                </HistoryTableHeader>
                 <ReactTabulator
                     ref={this.ref}
                     options={{

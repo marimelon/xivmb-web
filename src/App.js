@@ -35,6 +35,10 @@ class App extends Component {
     this.props.history.push({pathname:`/${itemid}`,state:{itemid:itemid,itemname:itemname}});
   }
 
+  tabChange(tabtype) {
+    this.setState({ currentWorldTab: tabtype });
+  }
+
   render() {
     changeFavicon(ItemIconURL(this.state.itemid))
     document.title = this.state.itemname
