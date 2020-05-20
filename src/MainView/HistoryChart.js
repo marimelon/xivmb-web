@@ -101,8 +101,11 @@ class HistoryChart extends Component {
         };
         return (
             <div>
-                <HighchartsReact highcharts={Highstock} options={options} />
-            </div>);
+                {this.props.isshown &&
+                        <HighchartsReact highcharts={Highstock} options={options} />
+                }
+            </div>
+        )
     }
 }
 
