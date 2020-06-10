@@ -29,12 +29,9 @@ class ViewApp extends Component {
         });
         this.tabChange = this.tabChange.bind(this);
     }
+    
     componentWillUnmount() {
         this.unlisten();
-    }
-
-    changeItem(itemid, itemname) {
-        this.props.history.push({ pathname: `/${itemid}`, state: { itemid: itemid, itemname: itemname } });
     }
 
     tabChange(tabtype) {
@@ -44,14 +41,13 @@ class ViewApp extends Component {
     render() {
         changeFavicon(ItemIconURL(this.state.itemid));
         document.title = this.state.itemname;
-        console.log(style.ViewApp);
         return (
             <div className={style.ViewApp}>
                 <ItemHeader itemid={this.state.itemid} itemname={this.state.itemname} />
                 <WorldTab currentTabType={this.state.currentWorldTab} onClick={this.tabChange} />
                 <div className={style.TablesView}>
-                <MarketTable itemid={this.state.itemid} world={this.state.currentWorldTab} style={style.MarketTable}/>
-                <HistoryTable itemid={this.state.itemid} world={this.state.currentWorldTab} style={style.HistoryTable}/>
+                  <MarketTable itemid={this.state.itemid} world={this.state.currentWorldTab} style={style.MarketTable}/>
+                  <HistoryTable itemid={this.state.itemid} world={this.state.currentWorldTab} style={style.HistoryTable}/>
                 </div>
             </div>
         );
