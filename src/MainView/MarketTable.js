@@ -73,7 +73,7 @@ const columns = [
         formatter: (cell, formatterParams, onRendered) => (`<img src="${process.env.PUBLIC_URL}/images/town/${cell.getValue()}.png" width="24" height="24">`)
     },
     {
-        title: "Retainer", field: "sellRetainerName", minWidth: 60, headerSort: false
+        title: "Retainer", field: "sellRetainerName",  headerSort: false
     },
 ];
 
@@ -146,7 +146,7 @@ class MarketTable extends Component {
                         progressiveRender: true,
                         placeholder: "Placeholder Data",
                         responsiveLayout: "hide",
-                        columnMinWidth: 10,
+                        columnMinWidth: 0,
                         initialSort: [{ column: "sellPrice", dir: "asc" }],
                         dataLoading: (data) => {
                             if (data.length) {
