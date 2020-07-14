@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import style from './Sidebar.module.scss';
 import ItemSearch from "./ItemSearch";
 import Favorite from "./Favorite";
+import firebase from '../Common/firebase';
 
 class Sidebar extends Component {
     constructor(props) {
         super(props);
-        this.state = { activeItem: null,favoriteList: JSON.parse(localStorage.getItem("favorite") || "[]") }
+        this.state = { activeItem: null, favoriteList: [] }
         this.changeActiveItem = this.changeActiveItem.bind(this);
         this.addFavoriteCB = this.addFavoriteCB.bind(this);
         this.changeFavoriteCB = this.changeFavoriteCB.bind(this);
@@ -22,21 +23,53 @@ class Sidebar extends Component {
         this.setState({ activeItem: parent + itemid })
     }
 
-    addFavoriteCB(itemid,name){
-        const newlist = this.state.favoriteList.concat([{id:itemid,name:name}])
-        localStorage.setItem("favorite", JSON.stringify(newlist));
-        this.setState({ favoriteList: newlist })
+    fetchFireStore() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                firebase.firestore()
+                    .collection('user_bookmark')
+                    .doc(user.uid)
+                    .onSnapshot(doc => {
+                        if (doc.exists) {
+                            if (doc.metadata.hasPendingWrites === false) {
+                                this.setState({ favoriteList: doc.get('favorite') });
+                            }
+                        }
+                    });
+            }
+        });
     }
 
-    changeFavoriteCB(newfavoriteList){
-        localStorage.setItem("favorite", JSON.stringify(newfavoriteList));
+    updateFireStore(favoriteList) {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                firebase.firestore()
+                    .collection('user_bookmark')
+                    .doc(user.uid)
+                    .set({ favorite: favoriteList });
+            }
+        });
+    }
+
+    addFavoriteCB(itemid, name) {
+        const newlist = this.state.favoriteList.concat([{ id: itemid, name: name }])
+        this.setState({ favoriteList: newlist });
+        this.updateFireStore(newlist);
+    }
+
+    changeFavoriteCB(newfavoriteList) {
         this.setState({ favoriteList: newfavoriteList })
+        this.updateFireStore(newfavoriteList);
     }
 
-    deleteFavoriteCB(itemid){
+    deleteFavoriteCB(itemid) {
         const newfavoriteList = this.state.favoriteList.filter(n => n.id !== itemid)
-        localStorage.setItem("favorite", JSON.stringify(newfavoriteList));
-        this.setState({ favoriteList: newfavoriteList })
+        this.setState({ favoriteList: newfavoriteList });
+        this.updateFireStore(newfavoriteList);
+    }
+
+    componentDidMount() {
+        this.fetchFireStore();
     }
 
     render() {
