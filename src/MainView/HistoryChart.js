@@ -86,7 +86,7 @@ class HistoryChart extends Component {
             xAxis: {
                 minRange: 1,
                 type: 'datetime',
-                min: Date.UTC(2020, 0, 1),
+                //min: this.state.series.length>0? : Date.UTC(2020, 1, 1),
                 labels: { 
                     format: '{value:%Y-%m-%d}' 
                 },
