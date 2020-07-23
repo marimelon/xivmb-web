@@ -17,7 +17,6 @@ class ViewApp extends Component {
         super(props);
         const { itemid } = props.match.params
         this.state = { itemid: Number(itemid), itemname: window.ItemList[Number(itemid)],currentWorldTab: "Elemental" };
-        this.changeItem = this.changeItem.bind(this);
         this.unlisten = props.history.listen((location) => {
             if (location.state === undefined) {
                 var itemid = Number(location.pathname.slice(1));
