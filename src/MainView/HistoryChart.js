@@ -48,6 +48,9 @@ class HistoryChart extends Component {
             title:{
                 text:null
             },
+            credits:{
+                enabled:false
+            },
             navigator: {
                 enabled: true,
             },
