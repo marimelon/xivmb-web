@@ -58,7 +58,7 @@ const UpdateButton = ({ status, callback }) => {
 class MainView extends Component {
     constructor(props) {
         super(props);
-        this.state = { currentWorldTab: "Elemental", updateButtonState: 0,isShownHistoryChart:false };
+        this.state = { currentWorldTab: "Elemental", updateButtonState: 0, isShownHistoryChart: false };
         this.tabChange = this.tabChange.bind(this);
         this.onClickMarketUpdateButton = this.onClickMarketUpdateButton.bind(this);
         this.onClickHistoryChartButton = this.onClickHistoryChartButton.bind(this);
@@ -71,7 +71,7 @@ class MainView extends Component {
         this.setState({ currentWorldTab: tabtype });
     }
 
-    onClickHistoryChartButton(value){
+    onClickHistoryChartButton(value) {
         this.setState({ isShownHistoryChart: value });
     }
 
@@ -100,7 +100,9 @@ class MainView extends Component {
                         }).then(res => {
                             this.setState({ updateButtonState: 2 })
                             setTimeout(() => { this.setState({ updateButtonState: 0 }) }, (this.rate_limit ? this.rate_limit : 20) * 1000);
-                            const _ = this.TablesViewRef.current?.market_table_ref.current?.setData(itemid,res); // eslint-disable-line
+                            if (itemid === this.props.itemid) {
+                                const _ = this.TablesViewRef.current?.market_table_ref.current?.setData(itemid, res); // eslint-disable-line
+                            }
                         }).catch(err => {
                             this.setState({ updateButtonState: 0 })
                             alert(`更新に失敗しました (${err.message})`)
@@ -133,8 +135,8 @@ class MainView extends Component {
                 <ItemHeader itemid={itemid} itemname={itemname} />
                 <UpdateButton status={this.state.updateButtonState} callback={this.onClickMarketUpdateButton} />
                 <WorldTab currentTabType={this.state.currentWorldTab} onClick={this.tabChange} />
-                <Collapse in={this.state.isShownHistoryChart}><HistoryChart itemid={itemid} isshown={this.state.isShownHistoryChart}/></Collapse>
-                <TablesView ref={this.TablesViewRef} itemid={itemid} world={this.state.currentWorldTab} 
+                <Collapse in={this.state.isShownHistoryChart}><HistoryChart itemid={itemid} isshown={this.state.isShownHistoryChart} /></Collapse>
+                <TablesView ref={this.TablesViewRef} itemid={itemid} world={this.state.currentWorldTab}
                     isShownChart={this.state.isShownHistoryChart} isShownChartCB={this.onClickHistoryChartButton} />
             </div>
         );
