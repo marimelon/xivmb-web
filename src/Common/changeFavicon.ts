@@ -1,13 +1,13 @@
-const changeFavicon = link => {
-    let $favicon = document.querySelector('link[rel="icon"]')
+const changeFavicon = (link: any) => {
+    let $favicon = document.querySelector('link[rel="icon"]');
     if ($favicon !== null) {
-        $favicon.href = link
-    } else {
-        $favicon = document.createElement("link")
-        $favicon.rel = "icon"
-        $favicon.href = link
-        document.head.appendChild($favicon)
+        ($favicon as any).href = link;
     }
-}
-
-export default changeFavicon
+    else {
+        $favicon = document.createElement("link");
+        ($favicon as any).rel = "icon";
+        ($favicon as any).href = link;
+        document.head.appendChild($favicon);
+    }
+};
+export default changeFavicon;

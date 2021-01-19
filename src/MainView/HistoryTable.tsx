@@ -2,44 +2,44 @@ import React, { Component } from 'react';
 import { ReactTabulator } from 'react-tabulator';
 import moment from 'moment';
 import 'react-tabulator/lib/styles.css';
+// @ts-expect-error ts-migrate(2307) FIXME: Cannot find module './HistoryTable.module.scss' or... Remove this comment to see the full error message
 import style from './HistoryTable.module.scss';
-
-const HistoryTableHeader = ({ updatedDate,children }) => {
+const HistoryTableHeader = ({ updatedDate, children }: any) => {
     let updatedDateText = '';
     if (updatedDate == null) {
         updatedDateText = "( データなし )";
-    } else {
+    }
+    else {
         if (moment().diff(updatedDate, 'days') > 0) {
             updatedDateText = `(取得日時 ${updatedDate.format('MM/DD\xa0HH:mm')})`;
-        } else {
+        }
+        else {
             updatedDateText = `( ${updatedDate.fromNow()} に取得)`;
         }
     }
-
-    return (
-        <div className={style.MarketTableHeader}>
+    // @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+    return (<div className={style.MarketTableHeader}>
+            {/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
             <span style={{ fontSize: "26px" }}>{"History "}</span>
+            {/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
             <span className={style.HistoryUpdatedDate}>
                 {updatedDateText}
             </span>
             {children}
-        </div>
-    );
-}
-
-const separate = (num) => (String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,'));
-const get_url = (itemid) => (`${process.env.REACT_APP_API_URL}/data/history?q=${itemid}&limit=500`);
+        </div>);
+};
+const separate = (num: any) => String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+const get_url = (itemid: any) => `${process.env.REACT_APP_API_URL}/data/history?q=${itemid}&limit=500`;
 const columns = [
     { title: "World", field: "world", width: 92, responsive: 0, headerSort: false },
     {
-        title: "HQ", field: "hq",cssClass: style.HQ, resizable: false, width: 48, responsive: 0, align: "center", headerSort: false,
-        formatter: function (cell, formatterParams, onRendered) {
+        title: "HQ", field: "hq", cssClass: style.HQ, resizable: false, width: 48, responsive: 0, align: "center", headerSort: false,
+        formatter: function (cell: any, formatterParams: any, onRendered: any) {
             return cell.getValue() === 1 ? `<img id="table-hqicon" src="${process.env.PUBLIC_URL}/images/hqicon.png">` : "";
         },
-
     },
     {
-        title: "Price", field: "sellPrice", cssClass: style.Price, resizable: false,  width: 110, responsive: 0, align: "right", headerSort: false,
+        title: "Price", field: "sellPrice", cssClass: style.Price, resizable: false, width: 110, responsive: 0, align: "right", headerSort: false,
     },
     {
         title: "QTY", field: "stack", cssClass: style.QTY, resizable: false, width: 56, align: "right", responsive: 0, headerSort: false,
@@ -47,71 +47,65 @@ const columns = [
     { title: "Buyer", field: "buyCharacterName", resizable: true, minWidth: 80, responsive: 1, headerSort: false },
     {
         title: "Date", field: "buyDate", sorter: "number", resizable: false, widthGrow: 1, responsive: 0, minWidth: 100, headerSort: false,
-        formatter: function (cell, formatterParams, onRendered) {
+        formatter: function (cell: any, formatterParams: any, onRendered: any) {
             return moment(cell.getValue()).format('MM/DD\xa0HH:mm');
         },
     }
 ];
-
-class HistoryTable extends Component {
-    constructor(props) {
+type HistoryTableState = any;
+class HistoryTable extends Component<{}, HistoryTableState> {
+    ref: any;
+    constructor(props: {}) {
         super(props);
         this.ref = React.createRef();
         this.state = { updatedDate: null };
     }
     render() {
-        const { itemid, world,header_children } = this.props;
-
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'itemid' does not exist on type 'Readonly... Remove this comment to see the full error message
+        const { itemid, world, header_children } = this.props;
         if (this.ref.current?.table) {
             const table = this.ref.current.table;
             if (table.getAjaxUrl() !== get_url(itemid)) {
                 table.setData(get_url(itemid));
             }
-            const other_filters = table.getFilters().filter(filrer => filrer.field !== 'world');
+            const other_filters = table.getFilters().filter((filrer: any) => filrer.field !== 'world');
             table.setFilter(other_filters);
             if (world !== 'Elemental') {
                 table.addFilter("world", "=", world);
             }
         }
-
-        return (
-            <div className={`${style.HistoryTable} ${this.props.style}`}>
+        // @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+        return (<div className={`${style.HistoryTable} ${(this.props as any).style}`}>
+                {/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
                 <HistoryTableHeader updatedDate={this.state.updatedDate}>
                     {header_children}
                 </HistoryTableHeader>
-                <ReactTabulator
-                    ref={this.ref}
-                    options={{
-                        height: "100%",
-                        ajaxURL: get_url(itemid),
-                        progressiveRender: true,
-                        responsiveLayout: "hide",
-                        placeholder: "no data",
-                        initialSort: [{ column: "buyDate", dir: "desc" },],
-                        dataLoading: (data) => {
-                            for (var i = 0; i < data.length; i++) {
-                                data[i].sellPrice = separate(data[i].sellPrice);
-                            }
-                        },
-                        ajaxResponse: (url, params, response) => {
-                            if (response.length) {
-                                let date = moment.unix(response[0].Updated);
-                                this.setState({ updatedDate: date });
-                            }
-                            return response;
-                        },
-                        rowFormatter: (row, data) => {
-                            row.getElement().style['height'] = '2.7rem';
-                            row.getElement().querySelectorAll('.tabulator-cell').forEach(e => e.style['height'] = '2.7rem');
-                        },
-                    }}
-                    columns={columns}
-                    data={[]}
-                    layout={"fitColumns"}
-                />
-            </div>
-        );
+                {/* @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message */}
+                <ReactTabulator ref={this.ref} options={{
+            height: "100%",
+            ajaxURL: get_url(itemid),
+            progressiveRender: true,
+            responsiveLayout: "hide",
+            placeholder: "no data",
+            initialSort: [{ column: "buyDate", dir: "desc" },],
+            dataLoading: (data: any) => {
+                for (var i = 0; i < data.length; i++) {
+                    data[i].sellPrice = separate(data[i].sellPrice);
+                }
+            },
+            ajaxResponse: (url: any, params: any, response: any) => {
+                if (response.length) {
+                    let date = moment.unix(response[0].Updated);
+                    this.setState({ updatedDate: date });
+                }
+                return response;
+            },
+            rowFormatter: (row: any, data: any) => {
+                row.getElement().style['height'] = '2.7rem';
+                row.getElement().querySelectorAll('.tabulator-cell').forEach((e: any) => e.style['height'] = '2.7rem');
+            },
+        }} columns={columns} data={[]} layout={"fitColumns"}/>
+            </div>);
     }
 }
-
 export default HistoryTable;

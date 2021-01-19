@@ -1,7 +1,10 @@
 import React from 'react';
 import { IndexedDBFunction } from './Common/database';
+// @ts-expect-error ts-migrate(6142) FIXME: Module './Common/LoadingPage' was resolved to '/ro... Remove this comment to see the full error message
 import  LoadingPage  from './Common/LoadingPage';
-class DataLoad extends React.Component {
+
+type State = any;
+class DataLoad extends React.Component<{}, State> {
     state = {
         initDatabase: false
     }
@@ -30,6 +33,7 @@ class DataLoad extends React.Component {
         //チェックが終わってないなら（ローディング表示）
         if (!this.state.initDatabase) {
             return (
+                // @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <LoadingPage/>
             );
         }

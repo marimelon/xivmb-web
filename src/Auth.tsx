@@ -1,11 +1,15 @@
 import React from 'react';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { Redirect } from 'react-router-dom';
 import firebase from './Common/firebase';
 import { IndexedDBFunction } from './Common/database';
 
+// @ts-expect-error ts-migrate(6142) FIXME: Module './Common/LoadingPage' was resolved to '/ro... Remove this comment to see the full error message
 import  LoadingPage  from './Common/LoadingPage';
 
-class Auth extends React.Component {
+type State = any;
+
+class Auth extends React.Component<{}, State> {
 
     state = {
         signinCheck: false, //ログインチェックが完了してるか
@@ -58,6 +62,7 @@ class Auth extends React.Component {
         //チェックが終わってないなら（ローディング表示）
         if (!this.state.signinCheck || !this.state.initDatabase) {
             return (
+                // @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <LoadingPage/>
                 //<LoadingOverlay
                 //    active={true}
@@ -74,6 +79,7 @@ class Auth extends React.Component {
             return this.props.children;
         } else {
             //してないとき（ログイン画面にリダイレクト）
+            // @ts-expect-error ts-migrate(17004) FIXME: Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             return <Redirect to="/signin" />
         }
     }

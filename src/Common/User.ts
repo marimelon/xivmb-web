@@ -1,14 +1,12 @@
-import firebase from '../Common/firebase'
-
+import firebase from '../Common/firebase';
 class User {
     constructor() {
-        this.isLogin = false
+        (this as any).isLogin = false;
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.isLogin = true
+                (this as any).isLogin = true;
             }
-        })
+        });
     }
 }
-
 export default new User();
