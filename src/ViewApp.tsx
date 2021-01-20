@@ -4,8 +4,6 @@ import ItemHeader from './MainView/ItemHeader';
 import WorldTab from './MainView/WorldTab';
 import MarketTable from './MainView/MarketTable';
 import HistoryTable from './MainView/HistoryTable';
-import './css/tabulator.css';
-import './css/my_tabulator.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
 type State = { itemid: number, itemname: string };

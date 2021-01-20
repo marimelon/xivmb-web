@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import style from './App.module.css';
-import './css/my_tabulator.css';
-import './css/tabulator.css';
 import MainView from "./MainView/MainView";
 import Sidebar from "./Sidebar/Sidebar";
 
