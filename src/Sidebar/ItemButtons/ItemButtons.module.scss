@@ -1,0 +1,42 @@
+.FavoriteButton{
+    color: white;
+    width: 0.938rem;
+    height: 0.938rem;
+    text-align: center;
+    font-size: 1.125rem;
+    text-decoration: none;
+    overflow: hidden;
+    position: absolute;
+    right: 0.313rem;
+    top: 0.313rem;
+    line-height: 1;
+    border-radius: 9.375rem;
+    cursor: pointer;
+    &:hover{
+        color: yellow;
+    }
+    &.active{
+        color: yellow;
+    }
+}
+
+.DeleteFavoriteButton{
+    color: white;
+    width: 0.938rem;
+    height: 0.938rem;
+    text-align: center;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    overflow: hidden;
+    position: absolute;
+    right: 0.313rem;
+    top: 0.313rem;
+    line-height: 1;
+    border-radius: 9.375rem;
+    
+    &:hover{
+        color: white;
+        background-color: red;
+        text-decoration: none;
+    }
+}
