@@ -182,6 +182,17 @@ class MarketTable extends Component<Props, MarketTableState> {
                     row.getElement().style['height'] = '2.7rem';
                     row.getElement().querySelectorAll('.tabulator-cell').forEach((e: any) => e.style['height'] = '2.7rem');
                 },
+                rowClick: function (e: any, row: any) {
+                    const selectedWorld = row.getCells()[0].getValue();
+                    const flag = row.getElement().style.backgroundColor !== "rgb(25, 39, 52)";
+                    for (const r of row.getTable().getRows()) {
+                        if (flag && r.getCells()[0] && r.getCells()[0].getValue() === selectedWorld) {
+                            r.getElement().style.backgroundColor = "rgb(25, 39, 52)";
+                        } else {
+                            r.getElement().style.backgroundColor = "";
+                        }
+                    }
+                },
             }} columns={columns} data={[]} layout={"fitColumns"} />
         </div>);
     }
