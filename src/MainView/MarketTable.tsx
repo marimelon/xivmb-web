@@ -3,6 +3,7 @@ import { ReactTabulator } from 'react-tabulator';
 import moment, { Moment } from 'moment';
 import 'react-tabulator/lib/styles.css';
 import style from './MarketTable.module.scss';
+import { MarketResponse } from '../@types/marketResponse';
 
 interface MarketTableHeaderProps {
     updatedDate?: Moment,
@@ -106,7 +107,7 @@ class MarketTable extends Component<Props, MarketTableState> {
         this.state = { updatedDate: undefined, hqFilter: false };
         this.datacache = [];
     }
-    setData(itemid: number, data: any) {
+    setData(itemid: number, data: MarketResponse) {
         if (this.ref.current?.table) {
             this.ref.current.table.replaceData(data);
             this.datacache.push({ id: itemid, res: data });
@@ -161,7 +162,7 @@ class MarketTable extends Component<Props, MarketTableState> {
                 responsiveLayout: "hide",
                 columnMinWidth: 0,
                 initialSort: [{ column: "sellPrice", dir: "asc" }],
-                dataLoading: (data: any) => {
+                dataLoading: (data: MarketResponse) => {
                     if (data.length) {
                         let date = moment.unix(data[0].Updated);
                         this.setState({ updatedDate: date });
@@ -170,7 +171,7 @@ class MarketTable extends Component<Props, MarketTableState> {
                         this.setState({ updatedDate: undefined });
                     }
                 },
-                ajaxResponse: (url: any, params: any, response: any) => {
+                ajaxResponse: (url: string, params: any, response: MarketResponse) => {
                     this.datacache.push({ id: get_id(url), res: response });
                     if (this.datacache.length > CACHE_MAX_COUNT) {
                         this.datacache.shift();

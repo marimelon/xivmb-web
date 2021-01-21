@@ -10,6 +10,7 @@ import Collapse from '@material-ui/core/Collapse';
 import style from './MainView.module.scss';
 
 import { UpdateButton } from './UpdateButton';
+import { MarketResponse } from '../@types/marketResponse';
 
 interface Props {
     itemid: number,
@@ -47,7 +48,7 @@ const MainView: React.FC<Props> = ({ itemid, itemname }) => {
                         const _itemid = itemid;
                         fetch(`${process.env.REACT_APP_API_URL}/newdata/market/${itemid}`, {
                             headers: { "Authorization": 'Bearer ' + idToken }
-                        }).then(res => {
+                        }).then<MarketResponse>(res => {
                             if (!res.ok) {
                                 throw Error(res.statusText);
                             }
@@ -56,6 +57,7 @@ const MainView: React.FC<Props> = ({ itemid, itemname }) => {
                             setUpdateButtonState(2);
                             setTimeout(() => { setUpdateButtonState(0); }, (rateLimit ?? 20) * 1000);
                             if (_itemid === itemid) {
+                                const _ = TablesViewRef.current?.market_table_ref.current?.setData(itemid, res); // eslint-disable-line
                             }
                         }).catch(err => {
                             setUpdateButtonState(0);
