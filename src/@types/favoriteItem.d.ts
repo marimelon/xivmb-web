@@ -1,4 +1,4 @@
 interface FavoriteItem {
-  id: number,
+  id: number
   name: string
 }
