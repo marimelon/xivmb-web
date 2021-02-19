@@ -11,19 +11,13 @@
     display: inline;
 }
 
-@media (max-width:1326px) {
+@media (max-width:1200px) {
     .HistoryTable{
          display: none !important;
     }
 }
 
-@media (max-width:1394px) {
-    .MarketTable{
-        width: 555px !important;
-    }
-}
-
-@media (max-width:1326px) {
+@media (max-width:1200px) {
     .MarketTable{
         margin-right: auto !important;
         width: 800px !important;

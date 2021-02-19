@@ -1,5 +1,5 @@
 .HistoryTable{
-    width: 420px;
+    width: 400px;
     margin-right: auto;
     position: relative;
     display: inline-block;
@@ -19,16 +19,38 @@
 }
 
 :global(.tabulator-cell){
+    &.World {
+        padding: 0.75rem 8px;
+    }
     &.Price{
         color: #ccff33;
     }
     &.QTY{
         color: #FFCC00;
     }
-    &.HQ{
-        img{
+    &.HQ {
+        padding: 0.75rem 0;
+        img {
             width: 17px;
             height: 17px;
+        }
+    }
+}
+
+:global(.tabulator-col) {
+    &.World {
+        :global(.tabulator-col-content){
+            padding: 0.75rem 8px;
+        }
+    }
+    &.HQ {
+        :global(.tabulator-col-content){
+            padding: 0.75rem 0 !important;
+        }
+    }
+    &.Materia {
+        :global(.tabulator-col-content){
+            padding: 0.75rem 4px !important;
         }
     }
 }

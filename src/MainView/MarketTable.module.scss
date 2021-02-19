@@ -1,38 +1,64 @@
-.MarketTable{
+.MarketTable {
     max-width: 100%;
     width: calc(100% - 420px);
     padding-right: 0.625rem;
     padding-left: 0.313rem;
     margin-left: auto;
+
+    :global(.tabulator-tableHolder) {
+        // overflow-x: auto;
+    }
 }
 
-.MarketTableHeader{
+.MarketTableHeader {
     height: 40px;
 }
 
-.MarketUpdatedDate{
+.MarketUpdatedDate {
     color: #a9a9a9;
     font-size: 16px;
 }
-:global(.tabulator-cell){
-    &.PriceCell{
+:global(.tabulator-cell) {
+    &.World {
+        padding: 0.75rem 8px;
+    }
+    &.PriceCell {
         color: #ccff33;
     }
-    &.QTY{
-        color: #FFCC00;
+    &.QTY {
+        color: #ffcc00;
     }
-    &.Total{
+    &.Total {
         color: #afffa1;
     }
-    &.RegisterTown{
+    &.RegisterTown {
         text-overflow: clip !important;
-        padding: 7px 4px 10px 0px !important;
+        padding: 10px 4px 10px 0px !important;
         height: 2.7rem;
     }
-    &.HQ{
-        img{
+    &.HQ {
+        padding: 0.75rem 0;
+        img {
             width: 17px;
             height: 17px;
+        }
+    }
+}
+
+:global(.tabulator-col) {
+    &.World {
+        :global(.tabulator-col-content){
+            padding: 0.75rem 8px;
+        }
+    }
+    &.HQ {
+        :global(.tabulator-col-content){
+            padding: 0.75rem 0 !important;
+        }
+    }
+    &.Materia {
+        :global(.tabulator-col-content){
+            padding: 0.75rem 4px !important;
         }
     }
 }

@@ -37,7 +37,8 @@ const columns = [
   {
     title: 'World',
     field: 'world',
-    width: 92,
+    width: 80,
+    cssClass: style.World,
     responsive: 0,
     headerSort: false,
   },
@@ -46,7 +47,7 @@ const columns = [
     field: 'hq',
     cssClass: style.HQ,
     resizable: false,
-    width: 48,
+    width: 24,
     responsive: 0,
     align: 'center',
     headerSort: false,

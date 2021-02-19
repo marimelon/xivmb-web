@@ -29,11 +29,11 @@ const MarketTableHeader = ({
     <div className={style.MarketTableHeader}>
       <span style={{ fontSize: '26px' }}>{'Market '}</span>
       <span className={style.MarketUpdatedDate}>{updatedDateText}</span>
-      <span style={{ fontSize: '16px' }}>{' Filter '}</span>
       <img
         width="20"
         height="20"
-        alt={'HQIcon'}
+        alt={'HQ'}
+        style={{ marginLeft: 4 }}
         src={`${process.env.PUBLIC_URL}/images/${
           HQFilterState ? 'hqicon-yellow' : 'hqicon'
         }.png`}
@@ -54,7 +54,8 @@ const columns = [
   {
     title: 'World',
     field: 'world',
-    width: 92,
+    width: 80,
+    cssClass: style.World,
     resizable: true,
     responsive: 0,
     sorter: 'string',
@@ -63,7 +64,7 @@ const columns = [
   {
     title: 'HQ',
     field: 'hq',
-    width: 48,
+    width: 24,
     responsive: 0,
     cssClass: style.HQ,
     resizable: false,
@@ -77,7 +78,8 @@ const columns = [
   {
     title: 'Materia',
     field: 'materia',
-    width: 82,
+    width: 60,
+    cssClass: style.Materia,
     align: 'center',
     resizable: false,
     headerSort: false,
@@ -143,7 +145,7 @@ const columns = [
   {
     title: '',
     field: 'registerTown',
-    width: 28,
+    width: 24,
     cssClass: style.RegisterTown,
     responsive: 0,
     resizable: false,
@@ -151,12 +153,13 @@ const columns = [
     formatter: (cell: any, formatterParams: any, onRendered: any) =>
       `<img src="${
         process.env.PUBLIC_URL
-      }/images/town/${cell.getValue()}.png" width="24" height="24">`,
+      }/images/town/${cell.getValue()}.png" width="20" height="20">`,
   },
   {
     title: 'Retainer',
     field: 'sellRetainerName',
     headerSort: false,
+    responsive: 0,
   },
 ]
 const CACHE_MAX_COUNT = 10
