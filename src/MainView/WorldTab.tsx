@@ -4,6 +4,7 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
 import useDimensions from 'react-cool-dimensions'
+import { Tab } from '../Components/Tab/Tab'
 
 const worldlist = [
   'Elemental',
@@ -26,20 +27,11 @@ interface Props {
 
 const WorldTabNomal = React.memo(({ currentTabType, onClick }: Props) => {
   return (
-    <nav>
-      <ul className={style.WorldTab}>
-        {worldlist.map(item => (
-          <li
-            key={item}
-            className={`${style.navitem} ${
-              currentTabType === item ? style.active : ''
-            }`}
-            onClick={() => onClick(item)}>
-            <div>{item}</div>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <Tab
+      items={worldlist.map(value => ({ value: value, display: value }))}
+      value={currentTabType}
+      onChange={onClick}
+    />
   )
 })
 
