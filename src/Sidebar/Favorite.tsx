@@ -1,8 +1,8 @@
 import React from 'react'
-import { SortEndHandler } from 'react-sortable-hoc'
-import arrayMove from 'array-move'
 import style from './Favorite.module.scss'
-import { FavoriteItemList } from './FavoriteItemList'
+import { DeleteFavoriteButton } from './ItemButtons/DeleteFavoriteButton'
+import { SortableItemList } from './ItemList/ItemList'
+import { SidebarItem } from './SidebarItem'
 
 interface Props {
   favoriteList: FavoriteItem[]
@@ -19,22 +19,31 @@ const Favorite: React.FC<Props> = ({
   activeItem,
   deleteFavoriteCB,
 }) => {
-  const onSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
-    onChange(arrayMove(favoriteList, oldIndex, newIndex))
-  }
-
+  const _onClickItem = (itemid: number, itemname: string) =>
+    onClickItem('favorite', itemid, itemname)
   return (
-    <div className={style.Favorite}>
-      <div>お気に入り</div>
-      <FavoriteItemList
-        items={favoriteList}
-        onClickItem={onClickItem}
-        activeItem={activeItem}
-        deleteFavoriteCB={deleteFavoriteCB}
-        onSortEnd={onSortEnd}
-        distance={5}
-      />
-    </div>
+    <SortableItemList
+      items={favoriteList}
+      itemRenderer={item => (
+        <SidebarItem
+          itemid={item.id}
+          name={item.name}
+          onClick={_onClickItem}
+          isActive={activeItem === 'favorite' + item.id}
+          className={style.SidebarItem}>
+          <DeleteFavoriteButton
+            deleteFavoriteCB={() => {
+              deleteFavoriteCB(item.id)
+            }}
+            className={style.DeleteFavoriteButton}
+            style={
+              activeItem === 'favorite' + item.id ? { color: 'black' } : {}
+            }
+          />
+        </SidebarItem>
+      )}
+      onChange={onChange}
+    />
   )
 }
 

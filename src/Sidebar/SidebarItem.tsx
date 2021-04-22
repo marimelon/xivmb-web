@@ -3,32 +3,39 @@ import cssStyle from './SidebarItem.module.scss'
 
 import ItemIcon from '../Common/ItemIcon'
 
-interface Props {
+type DivProps = JSX.IntrinsicElements['div']
+export type SidebarItemProps = Omit<DivProps, 'onClick'> & {
   itemid: number
   name: string
   isActive?: boolean
-  customStyles?: string
+  className?: string
   iconStyle?: string
   nameStyle?: string
   onClick: (itemid: number, itemname: string) => void
-  style?: React.CSSProperties
 }
 
-const SidebarItem: React.FC<Props> = ({ children, style, ...props }) => {
+export const SidebarItem: React.FC<SidebarItemProps> = ({
+  children,
+  itemid,
+  name,
+  isActive,
+  className,
+  iconStyle,
+  nameStyle,
+  onClick,
+  ...props
+}) => {
   return (
     <div
-      className={`${cssStyle.SidebarItem} ${props.customStyles} ${
-        props.isActive ? cssStyle.active : ''
+      className={`${cssStyle.SidebarItem} ${className} ${
+        isActive ? cssStyle.active : ''
       }`}
       onClick={() => {
-        props.onClick(props.itemid, props.name)
+        onClick(itemid, name)
       }}
-      style={style}>
-      <ItemIcon
-        className={`${cssStyle.icon} ${props.iconStyle}`}
-        itemid={props.itemid}
-      />
-      <div className={`${cssStyle.name} ${props.nameStyle}`}>{props.name}</div>
+      {...props}>
+      <ItemIcon className={`${cssStyle.icon} ${iconStyle}`} itemid={itemid} />
+      <div className={`${cssStyle.name} ${nameStyle}`}>{name}</div>
       {children}
     </div>
   )
@@ -36,10 +43,8 @@ const SidebarItem: React.FC<Props> = ({ children, style, ...props }) => {
 
 SidebarItem.defaultProps = {
   isActive: false,
-  customStyles: '',
+  className: '',
   iconStyle: '',
   nameStyle: '',
   onClick: () => {},
 }
-
-export default SidebarItem

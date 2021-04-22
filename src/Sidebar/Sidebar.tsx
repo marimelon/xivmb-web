@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import firebase from '../Common/firebase'
 import Favorite from './Favorite'
+import { HistoryList } from './HistoryList'
+import { ItemListTab } from './ItemListTab'
 import ItemSearch from './ItemSearch/ItemSearch'
 import style from './Sidebar.module.scss'
 
@@ -11,7 +13,9 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ changeItem }) => {
   const [favoriteList, setFavoriteList] = useState<FavoriteItem[]>([])
   const [activeItem, setActiveItem] = useState<string>()
-
+  const [itemListType, setItemListType] = useState<'favorite' | 'history'>(
+    'favorite'
+  )
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -75,13 +79,24 @@ const Sidebar: React.FC<Props> = ({ changeItem }) => {
         favoriteList={favoriteList}
         addFavoriteCB={addFavorite}
       />
-      <Favorite
-        favoriteList={favoriteList}
-        activeItem={activeItem}
-        onChange={changeFavorite}
-        deleteFavoriteCB={deleteFavorite}
-        onClickItem={changeActiveItem}
-      />
+      <ItemListTab value={itemListType} onChange={setItemListType} />
+      {itemListType === 'favorite' && (
+        <Favorite
+          favoriteList={favoriteList}
+          activeItem={activeItem}
+          onChange={changeFavorite}
+          deleteFavoriteCB={deleteFavorite}
+          onClickItem={changeActiveItem}
+        />
+      )}
+      {itemListType === 'history' && (
+        <HistoryList
+          onClickItem={changeActiveItem}
+          activeItem={activeItem}
+          favoriteList={favoriteList}
+          addFavorite={addFavorite}
+        />
+      )}
     </div>
   )
 }

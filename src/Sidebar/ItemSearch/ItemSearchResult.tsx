@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FavoriteButton } from '../ItemButtons/AddFavoriteButton'
-import SidebarItem from '../SidebarItem'
+import { SidebarItem } from '../SidebarItem'
 import cssStyle from './ItemSearch.module.scss'
 import { FixedSizeList } from 'react-window'
 
@@ -53,7 +53,7 @@ export const ItemSearchResult: React.FC<Props> = ({
     return (
       <SidebarItem
         key={itemid}
-        customStyles={cssStyle.SidebarItem}
+        className={cssStyle.SidebarItem}
         itemid={itemid}
         name={window.ItemList.get(itemid) ?? '???'}
         onClick={(id, name) => {
