@@ -3,11 +3,10 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 import LoadingPage from './Common/LoadingPage'
 import Auth from './Auth'
-import DataLoad from './DataLoad'
 
 const SignIn = lazy(() => import('./Signin'))
 const App = lazy(() => import('./App'))
-const ViewApp = lazy(() => import('./ViewApp'))
+//const ViewApp = lazy(() => import('./ViewApp'))
 
 const Page404 = () => <div>Page Not Found.</div>
 
