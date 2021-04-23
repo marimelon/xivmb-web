@@ -20,12 +20,13 @@ class AppRoute extends Component {
             <Redirect exact from="/" to="/2" />
             <Redirect exact from="/view" to="/view/2" />
             <Route path="/signin" component={SignIn} />
+            {/*
             <Route path="/view/:itemid(\d+)">
               <DataLoad>
                 <Route path="/view/:itemid(\d+)" component={ViewApp} />
               </DataLoad>
             </Route>
-
+            */}
             <Route path="/:itemid(\d+)">
               <Auth>
                 <Route path="/:itemid(\d+)" component={App} />
