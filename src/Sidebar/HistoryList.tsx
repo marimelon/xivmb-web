@@ -32,9 +32,11 @@ export const HistoryList: React.FC<HistoryListProps> = ({
   const [items, setItems] = useState<FavoriteItem[]>([])
 
   useEffect(() => {
+    var unsubscribe: (() => void) | undefined = undefined
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        firebase
+        unsubscribe = firebase
           .firestore()
           .collection('user_histories')
           .doc(user.uid)
@@ -51,6 +53,9 @@ export const HistoryList: React.FC<HistoryListProps> = ({
           })
       }
     })
+    return () => {
+      unsubscribe && unsubscribe()
+    }
   }, [])
 
   const _onClickItem = (itemid: number, itemname: string) =>
