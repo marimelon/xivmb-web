@@ -1,8 +1,17 @@
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import React, { useEffect, useState } from 'react'
 import CopyToClipBoard from 'react-copy-to-clipboard'
+import { get_iteminfo } from '../Api/iteminfo'
 import ItemIcon from '../Common/ItemIcon'
 import style from './ItemHeader.module.scss'
+
+const lodestoneURL = (lodestoneId: string) => {
+  return `https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/${lodestoneId}/`
+}
+
+const lodestoneFromName = (name: string) => {
+  return `https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/?q=${name}`
+}
 
 interface Props {
   itemid: number
@@ -11,9 +20,13 @@ interface Props {
 
 const ItemHeader = React.memo(({ itemid, itemname }: Props) => {
   const [iscopied, setIscopied] = useState(false)
+  const [lodestoneId, setLodetoneId] = useState<string>()
 
   useEffect(() => {
     setIscopied(false)
+    get_iteminfo(itemid).then(data => {
+      setLodetoneId(data.lodestone)
+    })
   }, [itemid])
 
   return (
@@ -45,6 +58,19 @@ const ItemHeader = React.memo(({ itemid, itemname }: Props) => {
           className={style.erioneslink}
           alt={'eriones'}
           src={`${process.env.PUBLIC_URL}/images/eriones.png`}
+        />
+      </a>
+
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={
+          lodestoneId ? lodestoneURL(lodestoneId) : lodestoneFromName(itemname)
+        }>
+        <img
+          className={style.erioneslink}
+          alt={'lodestone'}
+          src={`${process.env.PUBLIC_URL}/images/meteor.png`}
         />
       </a>
     </div>
