@@ -1,297 +1,277 @@
-import React, { Component } from 'react'
-import { ReactTabulator } from 'react-tabulator'
-import moment, { Moment } from 'moment'
-import 'react-tabulator/lib/styles.css'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import { AutoSizer, Column, SortDirectionType, Table } from 'react-virtualized'
+import { defaultRowRenderer } from 'react-virtualized/dist/es/Table'
+import { MarketDataResponse, MarketEntriy } from '../@types/marketResponse'
+import { ElementalWorld } from '../@types/world'
+import LoadingPage from '../Common/LoadingPage'
+import '../css/react-virtualized.css'
 import style from './MarketTable.module.scss'
-import { MarketResponse } from '../@types/marketResponse'
+import { MarketTableHeader } from './MarketTableHeader'
 
-interface MarketTableHeaderProps {
-  updatedDate?: Moment
-  HQFilterState: boolean
-  HQFilterCallback: (ishq: boolean) => void
+const SortableKeys = ['total', 'sellPrice'] as const
+type SortKeys = typeof SortableKeys[number]
+
+function isSortKeys(x: string): x is SortKeys {
+  return SortableKeys.indexOf(x as any) !== -1
 }
 
-const MarketTableHeader = ({
-  updatedDate,
-  HQFilterState,
-  HQFilterCallback,
-}: MarketTableHeaderProps) => {
-  let updatedDateText = ''
-  if (updatedDate === undefined) {
-    updatedDateText = '( データなし )'
-  } else if (moment().diff(updatedDate, 'days') > 0) {
-    updatedDateText = `(取得日時 ${updatedDate.format('MM/DD\xa0HH:mm')})`
-  } else {
-    updatedDateText = `( ${updatedDate.fromNow()} に取得)`
-  }
+const separate = (num: number) =>
+  String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+
+const conversionData = (
+  data: MarketDataResponse | undefined,
+  sortBy: SortKeys,
+  sortDirection: SortDirectionType,
+  world: ElementalWorld | 'Elemental',
+  isHQ: boolean
+) => {
+  const datas = Object.entries(data?.data ?? [])
+    .map(([key, value]) => {
+      return value.entries
+    })
+    .flat()
+  const list = [...datas]
+    .sort((a, b) => a[sortBy] - b[sortBy])
+    .filter(value => world === 'Elemental' || value.world === world)
+    .filter(value => (isHQ ? value.hq === 1 : true))
+  return sortDirection === 'DESC' ? list.reverse() : list
+}
+
+type SortState = {
+  sortBy: SortKeys
+  sortDirection: SortDirectionType
+}
+
+type MarketTableProps = {
+  className?: string
+  world: ElementalWorld | 'Elemental'
+  itemid: number
+  data?: MarketDataResponse
+  error?: string
+}
+
+export const MarketTable: React.FC<MarketTableProps> = ({
+  className,
+  world,
+  data,
+  error,
+}) => {
+  const [_data, setData] = useState<MarketDataResponse>()
+  const [tableData, setTableData] = useState<MarketEntriy[]>([])
+  const [sortState, setSortState] = useState<SortState>({
+    sortBy: 'sellPrice',
+    sortDirection: 'ASC',
+  })
+  const [isHq, setIsHq] = useState(false)
+  const [focused, setFocused] = useState<ElementalWorld>()
+
+  useEffect(() => {
+    setData(data)
+  }, [data])
+
+  useEffect(() => {
+    setTableData(
+      conversionData(
+        _data,
+        sortState.sortBy,
+        sortState.sortDirection,
+        world,
+        isHq
+      )
+    )
+  }, [_data, sortState, world, isHq])
 
   return (
-    <div className={style.MarketTableHeader}>
-      <span style={{ fontSize: '26px' }}>{'Market '}</span>
-      <span className={style.MarketUpdatedDate}>{updatedDateText}</span>
-      <img
-        width="20"
-        height="20"
-        alt={'HQ'}
-        style={{ marginLeft: 4 }}
-        src={`${process.env.PUBLIC_URL}/images/${
-          HQFilterState ? 'hqicon-yellow' : 'hqicon'
-        }.png`}
-        onClick={() => {
-          HQFilterCallback(!HQFilterState)
-        }}
+    <div style={{ width: '100%' }} className={className}>
+      <MarketTableHeader
+        HQFilterState={isHq}
+        HQFilterCallback={setIsHq}
+        updatedDate={
+          tableData.length > 0 ? moment.unix(tableData[0].Updated) : undefined
+        }
       />
+      <AutoSizer>
+        {({ width, height }) => {
+          return (
+            <Table
+              width={width}
+              height={height}
+              headerHeight={40}
+              headerStyle={{ fontSize: 12 }}
+              headerRowRenderer={({ className, columns, style }) => {
+                return (
+                  <div className={className} role="row" style={{ ...style }}>
+                    {columns}
+                  </div>
+                )
+              }}
+              rowHeight={37}
+              rowCount={tableData.length}
+              rowGetter={({ index }) => tableData[index]}
+              rowStyle={{ fontSize: 12 }}
+              rowRenderer={args => {
+                if (args.rowData['world'] === focused) {
+                  args.style = {
+                    ...args.style,
+                    backgroundColor: 'rgb(25, 39, 52)',
+                  }
+                }
+                return defaultRowRenderer(args)
+              }}
+              onRowClick={info => {
+                if (focused === undefined) {
+                  setFocused(info.rowData['world'])
+                } else {
+                  setFocused(undefined)
+                }
+              }}
+              rowClassName={style.Row}
+              disableHeader={false}
+              sortBy={sortState.sortBy}
+              sortDirection={sortState.sortDirection}
+              sort={({ sortBy, sortDirection }) => {
+                if (isSortKeys(sortBy)) {
+                  setSortState({ sortDirection, sortBy })
+                }
+              }}
+              noRowsRenderer={() => {
+                if (error) {
+                  return <div>{error}</div>
+                }
+                if (_data === undefined) {
+                  return <LoadingPage />
+                }
+                return <div style={{ textAlign: 'center' }}>No Data</div>
+              }}>
+              <Column
+                label="World"
+                dataKey="world"
+                width={100}
+                className={style.World}
+                disableSort={true}
+              />
+              <Column
+                label="HQ"
+                dataKey="hq"
+                width={24}
+                disableSort={true}
+                cellRenderer={({ cellData }) => {
+                  if (cellData === 1) {
+                    return (
+                      <img
+                        id={'table-hqicon'}
+                        alt={'hq'}
+                        src={`${process.env.PUBLIC_URL}/images/hqicon.png`}
+                        width={16}
+                        height={16}
+                      />
+                    )
+                  }
+                  return <div />
+                }}
+              />
+              <Column
+                label="Mat"
+                dataKey="materia"
+                disableSort={true}
+                width={33}
+                cellRenderer={({ cellData, rowData }) => {
+                  if (cellData === 0) {
+                    return <div />
+                  }
+
+                  var tooltip = ''
+                  if (cellData > 0) {
+                    tooltip += rowData.materia1 + '\n'
+                  }
+                  if (cellData > 1) {
+                    tooltip += rowData.materia2 + '\n'
+                  }
+                  if (cellData > 2) {
+                    tooltip += rowData.materia3 + '\n'
+                  }
+                  if (cellData > 3) {
+                    tooltip += rowData.materia4 + '\n'
+                  }
+                  if (cellData > 4) {
+                    tooltip += rowData.materia5 + '\n'
+                  }
+
+                  return (
+                    <div title={tooltip} style={{ textAlign: 'center' }}>
+                      {cellData}
+                    </div>
+                  )
+                }}
+              />
+              <Column
+                label="Price"
+                dataKey="sellPrice"
+                className={style.PriceCell}
+                headerStyle={{ textAlign: 'right' }}
+                width={115}
+                cellRenderer={({ cellData }) => {
+                  return (
+                    <div style={{ color: '#ccff33', textAlign: 'right' }}>
+                      {separate(cellData)}
+                    </div>
+                  )
+                }}
+              />
+              <Column
+                label="QTY"
+                dataKey="stack"
+                width={56}
+                headerStyle={{ textAlign: 'center' }}
+                cellRenderer={({ cellData }) => {
+                  return (
+                    <div style={{ color: '#ffcc00', textAlign: 'right' }}>
+                      {separate(cellData)}
+                    </div>
+                  )
+                }}
+              />
+              <Column
+                label="Total"
+                dataKey="total"
+                width={115}
+                headerStyle={{ textAlign: 'right' }}
+                cellRenderer={({ cellData }) => {
+                  return (
+                    <div style={{ color: '#afffa1', textAlign: 'right' }}>
+                      {separate(cellData)}
+                    </div>
+                  )
+                }}
+              />
+              <Column
+                label=""
+                dataKey="registerTown"
+                disableSort={true}
+                width={24}
+                cellRenderer={data => {
+                  return (
+                    <img
+                      alt={data.cellData}
+                      src={`${process.env.PUBLIC_URL}/images/town/${data.cellData}.png`}
+                      width={20}
+                      height={20}
+                    />
+                  )
+                }}
+              />
+              <Column
+                label="Retainer"
+                dataKey="sellRetainerName"
+                width={100}
+                disableSort={true}
+                flexGrow={1}
+              />
+            </Table>
+          )
+        }}
+      </AutoSizer>
     </div>
   )
 }
-const separate = (num: any) =>
-  String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
-const get_url = (itemid: number) =>
-  `${process.env.REACT_APP_API_URL}/data/market?q=${itemid}`
-const get_id = (url: string) =>
-  Number(url.substr(`${process.env.REACT_APP_API_URL}/data/market?q=`.length))
-const columns = [
-  {
-    title: 'World',
-    field: 'world',
-    width: 80,
-    cssClass: style.World,
-    resizable: true,
-    responsive: 0,
-    sorter: 'string',
-    headerSort: false,
-  },
-  {
-    title: 'HQ',
-    field: 'hq',
-    width: 24,
-    responsive: 0,
-    cssClass: style.HQ,
-    resizable: false,
-    align: 'center',
-    headerSort: false,
-    formatter: (cell: any, _: any, __: any) =>
-      cell.getValue() === 1
-        ? `<img id="table-hqicon" src="${process.env.PUBLIC_URL}/images/hqicon.png">`
-        : '',
-  },
-  {
-    title: 'Materia',
-    field: 'materia',
-    width: 60,
-    cssClass: style.Materia,
-    align: 'center',
-    resizable: false,
-    headerSort: false,
-    tooltip: function (cell: any) {
-      var str = ''
-      const value = cell.getValue()
-      if (value === 0) {
-        return
-      }
-      if (value > 0) {
-        str += cell.getData().materia1 + '\n'
-      }
-      if (value > 1) {
-        str += cell.getData().materia2 + '\n'
-      }
-      if (value > 2) {
-        str += cell.getData().materia3 + '\n'
-      }
-      if (value > 3) {
-        str += cell.getData().materia4 + '\n'
-      }
-      if (value > 4) {
-        str += cell.getData().materia5 + '\n'
-      }
-      return str
-    },
-    formatter: (cell: any, formatterParams: any, onRendered: any) =>
-      cell.getValue() === 0 ? '' : cell.getValue(),
-  },
-  {
-    title: 'Price',
-    field: 'sellPrice',
-    cssClass: style.PriceCell,
-    responsive: 0,
-    width: 115,
-    resizable: false,
-    sorter: 'number',
-    align: 'right',
-    formatter: (cell: any, _: any, __: any) => separate(cell.getValue()),
-  },
-  {
-    title: 'QTY',
-    field: 'stack',
-    sorter: 'number',
-    width: 56,
-    cssClass: style.QTY,
-    resizable: false,
-    responsive: 0,
-    align: 'right',
-    headerSort: false,
-  },
-  {
-    title: 'Total',
-    field: 'total',
-    sorter: 'number',
-    width: 115,
-    cssClass: style.Total,
-    resizable: false,
-    responsive: 0,
-    align: 'right',
-    formatter: (cell: any, _: any, __: any) => separate(cell.getValue()),
-  },
-  {
-    title: '',
-    field: 'registerTown',
-    width: 24,
-    cssClass: style.RegisterTown,
-    responsive: 0,
-    resizable: false,
-    headerSort: false,
-    formatter: (cell: any, formatterParams: any, onRendered: any) =>
-      `<img src="${
-        process.env.PUBLIC_URL
-      }/images/town/${cell.getValue()}.png" width="20" height="20">`,
-  },
-  {
-    title: 'Retainer',
-    field: 'sellRetainerName',
-    headerSort: false,
-    responsive: 0,
-  },
-]
-const CACHE_MAX_COUNT = 10
-type MarketTableState = any
-interface Props {
-  itemid: number
-  world: string
-  styleClass?: string
-}
-class MarketTable extends Component<Props, MarketTableState> {
-  datacache: any
-  ref: any
-  constructor(props: Props) {
-    super(props)
-    this.ref = React.createRef()
-    this.state = { updatedDate: undefined, hqFilter: false }
-    this.datacache = []
-  }
-  setData(itemid: number, data: MarketResponse) {
-    if (this.ref.current?.table) {
-      this.ref.current.table.replaceData(data)
-      this.datacache.push({ id: itemid, res: data })
-      if (this.datacache.length > CACHE_MAX_COUNT) {
-        this.datacache.shift()
-      }
-    }
-  }
-  render() {
-    const { itemid, world } = this.props
-    if (this.ref.current?.table) {
-      const table = this.ref.current.table
-      //キャッシュ検索
-      if (table.getAjaxUrl() !== get_url(itemid)) {
-        const index = this.datacache.findIndex(({ id }: any) => id === itemid)
-        if (index !== -1) {
-          table.setData(this.datacache[index].res)
-          this.datacache.splice(index, 1)
-          table.replaceData(get_url(itemid))
-        } else {
-          table.setData(get_url(itemid))
-        }
-      }
-      //ワールドフィルター
-      const filters = table.getFilters()
-      const i = filters.findIndex(({ field }: any) => field === 'world')
-      if (i !== -1) {
-        table.removeFilter(filters[i].field, filters[i].type, filters[i].value)
-      }
-      if (world !== 'Elemental') {
-        table.addFilter('world', '=', world)
-      }
-      //NQ/HQフィルター
-      if (this.state.hqFilter) {
-        table.addFilter('hq', '=', 1)
-      } else {
-        while (
-          table.getFilters().findIndex(({ field }: any) => field === 'hq') !==
-          -1
-        ) {
-          table.removeFilter('hq', '=', 1)
-        }
-      }
-    }
-
-    return (
-      <div className={`${style.MarketTable} ${this.props.styleClass}`}>
-        <MarketTableHeader
-          updatedDate={this.state.updatedDate}
-          HQFilterState={this.state.hqFilter}
-          HQFilterCallback={(value: any) => {
-            this.setState({ hqFilter: value })
-          }}
-        />
-        <ReactTabulator
-          ref={this.ref}
-          options={{
-            height: '100%',
-            ajaxURL: get_url(itemid),
-            progressiveRender: true,
-            placeholder: 'Placeholder Data',
-            responsiveLayout: 'hide',
-            columnMinWidth: 0,
-            initialSort: [{ column: 'sellPrice', dir: 'asc' }],
-            dataLoading: (data: MarketResponse) => {
-              if (data.length) {
-                let date = moment.unix(data[0].Updated)
-                this.setState({ updatedDate: date })
-              } else {
-                this.setState({ updatedDate: undefined })
-              }
-            },
-            ajaxResponse: (
-              url: string,
-              params: any,
-              response: MarketResponse
-            ) => {
-              this.datacache.push({ id: get_id(url), res: response })
-              if (this.datacache.length > CACHE_MAX_COUNT) {
-                this.datacache.shift()
-              }
-              return response
-            },
-            rowFormatter: (row: any, data: any) => {
-              row.getElement().style['height'] = '2.7rem'
-              row
-                .getElement()
-                .querySelectorAll('.tabulator-cell')
-                .forEach((e: any) => (e.style['height'] = '2.7rem'))
-            },
-            rowClick: function (e: any, row: any) {
-              const selectedWorld = row.getCells()[0].getValue()
-              const flag =
-                row.getElement().style.backgroundColor !== 'rgb(25, 39, 52)'
-              for (const r of row.getTable().getRows()) {
-                if (
-                  flag &&
-                  r.getCells()[0] &&
-                  r.getCells()[0].getValue() === selectedWorld
-                ) {
-                  r.getElement().style.backgroundColor = 'rgb(25, 39, 52)'
-                } else {
-                  r.getElement().style.backgroundColor = ''
-                }
-              }
-            },
-          }}
-          columns={columns}
-          data={[]}
-          layout={'fitColumns'}
-        />
-      </div>
-    )
-  }
-}
-export default MarketTable

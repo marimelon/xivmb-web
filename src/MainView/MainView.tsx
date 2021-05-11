@@ -1,33 +1,74 @@
-import React, { useState, useRef } from 'react'
-import { useHistory } from 'react-router'
-import firebase from '../Common/firebase'
-import LoginHeader from './LoginHeader'
-import ItemHeader from './ItemHeader'
-import WorldTab from './WorldTab'
-import TablesView from './TablesView'
-import HistoryChart from './HistoryChart'
 import Collapse from '@material-ui/core/Collapse'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
+import { HistoryResponse } from '../@types/historyResponse'
+import { MarketDataResponse } from '../@types/marketResponse'
+import { ElementalWorld } from '../@types/world'
+import { get_history } from '../Api/get_history'
+import { get_current_market, get_market } from '../Api/get_market'
+import firebase from '../Common/firebase'
+import HistoryChart from './HistoryChart'
+import ItemHeader from './ItemHeader'
+import LoginHeader from './LoginHeader'
 import style from './MainView.module.scss'
+import TablesView from './TablesView'
+import { UpdateButton, UpdateButtonState } from './UpdateButton'
+import WorldTab from './WorldTab'
 
-import { UpdateButton } from './UpdateButton'
-import { MarketResponse } from '../@types/marketResponse'
+type DataState<T> = {
+  data?: T
+  error?: string
+}
 
-interface Props {
+type MainViewProps = {
   itemid: number
   itemname: string
 }
 
-const MainView: React.FC<Props> = ({ itemid, itemname }) => {
-  const [world, setWorld] = useState('Elemental')
-  const [updateButtonState, setUpdateButtonState] = useState(0)
+const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
+  const [world, setWorld] = useState<ElementalWorld | 'Elemental'>('Elemental')
+  const [updateButtonState, setUpdateButtonState] = useState<UpdateButtonState>(
+    0
+  )
   const [isShownHistoryChart, setIsShownHistoryChart] = useState(false)
   const [rateLimit, setRateLimit] = useState<number>()
   const history = useHistory()
-  const TablesViewRef = useRef<TablesView | null>(null)
 
-  const onTabChange = (tabtype: string) => {
+  const [marketData, setMarketData] = useState<DataState<MarketDataResponse>>({
+    data: undefined,
+    error: undefined,
+  })
+  const [historyData, setHistoryData] = useState<DataState<HistoryResponse>>({
+    data: undefined,
+    error: undefined,
+  })
+
+  useEffect(() => {
+    setMarketData({ data: undefined, error: undefined })
+    get_market(itemid)
+      .then((data: MarketDataResponse) => {
+        setMarketData({ data: data, error: undefined })
+      })
+      .catch(reason => {
+        setMarketData({ data: undefined, error: 'Load Error' })
+        console.log(reason)
+      })
+
+    setHistoryData({ data: undefined, error: undefined })
+    get_history(itemid)
+      .then((data: HistoryResponse) => {
+        setHistoryData({ data: data, error: undefined })
+      })
+      .catch(reason => {
+        setMarketData({ data: undefined, error: 'Load Error' })
+        console.log(reason)
+      })
+  }, [itemid])
+
+  const onTabChange = (tabtype: any) => {
     setWorld(tabtype)
   }
+
   const onClickHistoryChartButton = (value: boolean) => {
     setIsShownHistoryChart(value)
   }
@@ -48,10 +89,8 @@ const MainView: React.FC<Props> = ({ itemid, itemname }) => {
               .then(res => setRateLimit(Number(res)))
           }
           const _itemid = itemid
-          fetch(`${process.env.REACT_APP_API_URL}/newdata/market/${itemid}`, {
-            headers: { Authorization: 'Bearer ' + idToken },
-          })
-            .then<MarketResponse>(res => {
+          get_current_market(itemid, idToken)
+            .then<MarketDataResponse>(res => {
               if (!res.ok) {
                 throw Error(res.statusText)
               }
@@ -63,10 +102,7 @@ const MainView: React.FC<Props> = ({ itemid, itemname }) => {
                 setUpdateButtonState(0)
               }, (rateLimit ?? 20) * 1000)
               if (_itemid === itemid) {
-                TablesViewRef.current?.market_table_ref.current?.setData(
-                  itemid,
-                  res
-                )
+                setMarketData({ data: res, error: undefined })
               }
             })
             .catch(err => {
@@ -93,11 +129,14 @@ const MainView: React.FC<Props> = ({ itemid, itemname }) => {
         <HistoryChart itemid={itemid} isshown={isShownHistoryChart} />
       </Collapse>
       <TablesView
-        ref={TablesViewRef}
         itemid={itemid}
         world={world}
         isShownChart={isShownHistoryChart}
         isShownChartCB={onClickHistoryChartButton}
+        marketData={marketData.data}
+        marketDataError={marketData.error}
+        historyData={historyData.data}
+        historyDataError={historyData.error}
       />
     </div>
   )

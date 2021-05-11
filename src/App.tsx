@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import style from './App.module.css'
+import firebase from './Common/firebase'
 import MainView from './MainView/MainView'
 import Sidebar from './Sidebar/Sidebar'
-import firebase from './Common/firebase'
 type State = { itemid: number; itemname: string }
 
 const App: React.FC = () => {
@@ -51,6 +51,10 @@ const App: React.FC = () => {
       pathname: `/${itemid}`,
       state: { itemid: itemid, itemname: itemname },
     })
+  }
+
+  if (!window.ItemList.get(itemid)) {
+    return <div>Page Not Found.</div>
   }
 
   document.title = state.itemname

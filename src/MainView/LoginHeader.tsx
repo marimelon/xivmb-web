@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { withRouter, useHistory } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { useHistory, withRouter } from 'react-router'
 import firebase from '../Common/firebase'
 import style from './LoginHeader.module.scss'
 

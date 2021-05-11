@@ -8,7 +8,7 @@ import {
   FormGroup,
   Input,
   Label,
-  Spinner,
+  Spinner
 } from 'reactstrap'
 import * as Yup from 'yup'
 import firebase from './Common/firebase'

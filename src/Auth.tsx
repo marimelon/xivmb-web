@@ -1,13 +1,37 @@
+import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { IndexedDBFunction } from './Common/database'
+import { SetupItemList } from './Common/database'
 import firebase from './Common/firebase'
 import LoadingPage from './Common/LoadingPage'
+
+const FaildLoadErrorDialog: React.FC = () => {
+  return (
+    <Dialog
+      open={true}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description">
+      <DialogTitle id="alert-dialog-title">
+        データの取得に失敗しました
+      </DialogTitle>{' '}
+      <DialogActions>
+        <Button
+          color="primary"
+          onClick={() => {
+            window.location.reload()
+          }}>
+          Reload
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
 
 interface State {
   signinCheck: boolean //ログインチェックが完了してるか
   signedIn: boolean //ログインしてるか
   initDatabase: boolean
+  faildedLoad?: string
 }
 
 const Auth: React.FC<{}> = props => {
@@ -36,23 +60,29 @@ const Auth: React.FC<{}> = props => {
     })
 
     //データベース初期化
-    IndexedDBFunction()
-      .then(event => {
-        setState(state => ({ ...state, initDatabase: true }))
+    SetupItemList()
+      .then(result => {
+        if (result === 'SUCSECC') {
+          setState(state => ({ ...state, initDatabase: true }))
+        } else {
+          setState(state => ({ ...state, faildedLoad: 'faild' }))
+        }
       })
       .catch(event => {
-        alert('Database error: ' + event.target.errorCode)
+        console.log(event)
+        setState(state => ({ ...state, faildedLoad: 'faild' }))
       })
   }, [])
 
-  //チェックが終わってないなら（ローディング表示）
+  if (state.faildedLoad) {
+    return <FaildLoadErrorDialog />
+  }
+
   if (!state.signinCheck || !state.initDatabase) {
     return <LoadingPage />
   }
 
-  //チェックが終わりかつ
   if (state.signedIn) {
-    //サインインしてるとき（そのまま表示）
     return <React.Fragment>{props.children}</React.Fragment>
   }
 

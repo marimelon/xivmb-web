@@ -16,4 +16,12 @@ const config = {
 
 firebase.initializeApp(config)
 
+export const get_user = async () => {
+  return new Promise<firebase.User | null>((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(user => {
+      resolve(user)
+    })
+  })
+}
+
 export default firebase

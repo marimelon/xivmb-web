@@ -1,10 +1,10 @@
-import React from 'react'
-import style from './WorldTab.module.scss'
-import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
 import useDimensions from 'react-cool-dimensions'
 import { Tab } from '../Components/Tab/Tab'
+import style from './WorldTab.module.scss'
 
 const worldlist = [
   'Elemental',

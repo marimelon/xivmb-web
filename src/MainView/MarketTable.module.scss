@@ -4,9 +4,13 @@
     padding-right: 0.625rem;
     padding-left: 0.313rem;
     margin-left: auto;
+}
 
-    :global(.tabulator-tableHolder) {
-        // overflow-x: auto;
+:global(.ReactVirtualized__Table__Grid){
+    .Row {
+        &:hover {
+            background-color: rgba(107,125,140,.1);
+        }
     }
 }
 
@@ -17,48 +21,4 @@
 .MarketUpdatedDate {
     color: #a9a9a9;
     font-size: 16px;
-}
-:global(.tabulator-cell) {
-    &.World {
-        padding: 0.75rem 8px;
-    }
-    &.PriceCell {
-        color: #ccff33;
-    }
-    &.QTY {
-        color: #ffcc00;
-    }
-    &.Total {
-        color: #afffa1;
-    }
-    &.RegisterTown {
-        text-overflow: clip !important;
-        padding: 10px 4px 10px 0px !important;
-        height: 2.7rem;
-    }
-    &.HQ {
-        padding: 0.75rem 0;
-        img {
-            width: 17px;
-            height: 17px;
-        }
-    }
-}
-
-:global(.tabulator-col) {
-    &.World {
-        :global(.tabulator-col-content){
-            padding: 0.75rem 8px;
-        }
-    }
-    &.HQ {
-        :global(.tabulator-col-content){
-            padding: 0.75rem 0 !important;
-        }
-    }
-    &.Materia {
-        :global(.tabulator-col-content){
-            padding: 0.75rem 4px !important;
-        }
-    }
 }

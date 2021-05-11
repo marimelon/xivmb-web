@@ -1,0 +1,11 @@
+export type ElementalWorld =
+  | 'Atomos'
+  | 'Aegis'
+  | 'Carbuncle'
+  | 'Garuda'
+  | 'Gungnir'
+  | 'Kujata'
+  | 'Ramuh'
+  | 'Tonberry'
+  | 'Typhon'
+  | 'Unicorn'

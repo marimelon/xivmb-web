@@ -5,6 +5,14 @@
     display: inline-block;
 }
 
+:global(.ReactVirtualized__Table__Grid){
+    .Row {
+        &:hover {
+            background-color: rgba(107,125,140,.1);
+        }
+    }
+}
+
 .HistoryTableHeader{
     height: 40px;
 }

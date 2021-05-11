@@ -1,174 +1,152 @@
-import moment, { Moment } from 'moment'
-import React, { Component } from 'react'
-import { ReactTabulator } from 'react-tabulator'
-import 'react-tabulator/lib/styles.css'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import { AutoSizer, Column, Table } from 'react-virtualized'
 import { HistoryResponse } from '../@types/historyResponse'
+import { ElementalWorld } from '../@types/world'
+import LoadingPage from '../Common/LoadingPage'
+import { separate } from '../Common/separate'
+import '../css/react-virtualized.css'
 import style from './HistoryTable.module.scss'
 
-interface HistoryTableHeaderProps {
-  updatedDate?: Moment
+const conversionData = (
+  data: HistoryResponse | undefined,
+  world: ElementalWorld | 'Elemental'
+) => {
+  if (data === undefined) {
+    return []
+  }
+  return [...data]
+    .sort((a, b) => a.sellPrice - b.sellPrice)
+    .filter(value => world === 'Elemental' || value.world === world)
 }
 
-const HistoryTableHeader: React.FC<HistoryTableHeaderProps> = ({
-  updatedDate,
-  children,
+type HistoryTableProps = {
+  className?: string
+  world: ElementalWorld | 'Elemental'
+  data?: HistoryResponse
+  headerRender?: () => JSX.Element
+  error?: string
+}
+
+export const HistoryTable: React.FC<HistoryTableProps> = ({
+  className,
+  world,
+  data,
+  headerRender,
+  error,
 }) => {
-  let updatedDateText = ''
-  if (updatedDate === undefined) {
-    updatedDateText = '( データなし )'
-  } else if (moment().diff(updatedDate, 'days') > 0) {
-    updatedDateText = `(取得日時 ${updatedDate.format('MM/DD\xa0HH:mm')})`
-  } else {
-    updatedDateText = `( ${updatedDate.fromNow()} に取得)`
-  }
+  const [_data, setData] = useState<HistoryResponse>()
+  const [tableData, setTableData] = useState<HistoryResponse>([])
+
+  useEffect(() => {
+    setData(data)
+  }, [data])
+
+  useEffect(() => {
+    setTableData(conversionData(_data, world))
+  }, [_data, world])
+
   return (
-    <div className={style.MarketTableHeader}>
-      <span style={{ fontSize: '26px' }}>{'History '}</span>
-      <span className={style.HistoryUpdatedDate}>{updatedDateText}</span>
-      {children}
+    <div style={{ width: '70%', paddingLeft: 10 }} className={className}>
+      {headerRender && headerRender()}
+      <AutoSizer>
+        {({ width, height }) => {
+          return (
+            <Table
+              width={width}
+              height={height}
+              headerHeight={40}
+              headerStyle={{ fontSize: 12 }}
+              headerRowRenderer={({ className, columns, style }) => {
+                return (
+                  <div className={className} role="row" style={{ ...style }}>
+                    {columns}
+                  </div>
+                )
+              }}
+              rowHeight={37}
+              rowCount={tableData.length}
+              rowGetter={({ index }) => tableData[index]}
+              rowStyle={{ fontSize: 12 }}
+              rowClassName={style.Row}
+              disableHeader={false}
+              noRowsRenderer={() => {
+                if (error) {
+                  return <div>{error}</div>
+                }
+                if (_data === undefined) {
+                  return <LoadingPage />
+                }
+                return <div style={{ textAlign: 'center' }}>No Data</div>
+              }}>
+              <Column
+                label="World"
+                dataKey="world"
+                width={100}
+                disableSort={true}
+              />
+              <Column
+                label="HQ"
+                dataKey="hq"
+                width={24}
+                disableSort={true}
+                cellRenderer={({ cellData }) => {
+                  if (cellData === 1) {
+                    return (
+                      <img
+                        id={'table-hqicon'}
+                        alt={'hq'}
+                        src={`${process.env.PUBLIC_URL}/images/hqicon.png`}
+                        width={16}
+                        height={16}
+                      />
+                    )
+                  }
+                  return <div />
+                }}
+              />
+              <Column
+                label="Price"
+                dataKey="sellPrice"
+                headerStyle={{ textAlign: 'right' }}
+                width={115}
+                cellRenderer={({ cellData }) => {
+                  return (
+                    <div style={{ color: '#ccff33', textAlign: 'right' }}>
+                      {separate(cellData)}
+                    </div>
+                  )
+                }}
+              />
+              <Column
+                label="QTY"
+                dataKey="stack"
+                width={56}
+                headerStyle={{ textAlign: 'center' }}
+                cellRenderer={({ cellData }) => {
+                  return (
+                    <div style={{ color: '#ffcc00', textAlign: 'right' }}>
+                      {separate(cellData)}
+                    </div>
+                  )
+                }}
+              />
+              <Column
+                label="Date"
+                dataKey="buyDate"
+                width={100}
+                cellRenderer={({ cellData }) => {
+                  return (
+                    <div style={{ textAlign: 'right' }}>
+                      {moment(cellData).format('MM/DD\xa0HH:mm')}
+                    </div>
+                  )
+                }}
+              />
+            </Table>
+          )
+        }}
+      </AutoSizer>
     </div>
   )
 }
-const separate = (num: number) =>
-  String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
-const get_url = (itemid: number) =>
-  `${process.env.REACT_APP_API_URL}/data/history?q=${itemid}&limit=500`
-const columns = [
-  {
-    title: 'World',
-    field: 'world',
-    width: 80,
-    cssClass: style.World,
-    responsive: 0,
-    headerSort: false,
-  },
-  {
-    title: 'HQ',
-    field: 'hq',
-    cssClass: style.HQ,
-    resizable: false,
-    width: 24,
-    responsive: 0,
-    align: 'center',
-    headerSort: false,
-    formatter: function (cell: any, _formatterParams: any, _onRendered: any) {
-      return cell.getValue() === 1
-        ? `<img id="table-hqicon" src="${process.env.PUBLIC_URL}/images/hqicon.png">`
-        : ''
-    },
-  },
-  {
-    title: 'Price',
-    field: 'sellPrice',
-    cssClass: style.Price,
-    resizable: false,
-    width: 110,
-    responsive: 0,
-    align: 'right',
-    headerSort: false,
-    formatter: (cell: any, _: any, __: any) => separate(cell.getValue()),
-  },
-  {
-    title: 'QTY',
-    field: 'stack',
-    cssClass: style.QTY,
-    resizable: false,
-    width: 56,
-    align: 'right',
-    responsive: 0,
-    headerSort: false,
-  },
-  {
-    title: 'Buyer',
-    field: 'buyCharacterName',
-    resizable: true,
-    minWidth: 80,
-    responsive: 1,
-    headerSort: false,
-  },
-  {
-    title: 'Date',
-    field: 'buyDate',
-    sorter: 'number',
-    resizable: false,
-    widthGrow: 1,
-    responsive: 0,
-    minWidth: 100,
-    headerSort: false,
-    formatter: function (cell: any, _formatterParams: any, _onRendered: any) {
-      return moment(cell.getValue()).format('MM/DD\xa0HH:mm')
-    },
-  },
-]
-
-type HistoryTableState = { updatedDate?: Moment }
-interface Props {
-  itemid: number
-  world: string
-  header_children?: JSX.Element
-  styleClass?: string
-}
-class HistoryTable extends Component<Props, HistoryTableState> {
-  ref: any
-  constructor(props: Props) {
-    super(props)
-    this.ref = React.createRef()
-    this.state = { updatedDate: undefined }
-  }
-  render() {
-    const { itemid, world, header_children } = this.props
-    if (this.ref.current?.table) {
-      const table = this.ref.current.table
-      if (table.getAjaxUrl() !== get_url(itemid)) {
-        table.setData(get_url(itemid))
-      }
-      const other_filters = table
-        .getFilters()
-        .filter((filrer: any) => filrer.field !== 'world')
-      table.setFilter(other_filters)
-      if (world !== 'Elemental') {
-        table.addFilter('world', '=', world)
-      }
-    }
-    return (
-      <div className={`${style.HistoryTable} ${this.props.styleClass}`}>
-        <HistoryTableHeader updatedDate={this.state.updatedDate}>
-          {header_children}
-        </HistoryTableHeader>
-        <ReactTabulator
-          ref={this.ref}
-          options={{
-            height: '100%',
-            ajaxURL: get_url(itemid),
-            progressiveRender: true,
-            responsiveLayout: 'hide',
-            placeholder: 'no data',
-            initialSort: [{ column: 'buyDate', dir: 'desc' }],
-            ajaxResponse: (
-              _url: any,
-              _params: any,
-              response: HistoryResponse
-            ) => {
-              if (response.length) {
-                let date = moment.unix(response[0].Updated)
-                this.setState({ updatedDate: date })
-              }
-              return response
-            },
-            rowFormatter: (row: any, _data: any) => {
-              row.getElement().style['height'] = '2.7rem'
-              row
-                .getElement()
-                .querySelectorAll('.tabulator-cell')
-                .forEach((e: any) => (e.style['height'] = '2.7rem'))
-            },
-          }}
-          columns={columns}
-          data={[]}
-          layout={'fitColumns'}
-        />
-      </div>
-    )
-  }
-}
-export default HistoryTable

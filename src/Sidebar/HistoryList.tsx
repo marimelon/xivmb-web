@@ -1,9 +1,9 @@
-import firebase from '../Common/firebase'
 import React, { useEffect, useState } from 'react'
-import { SidebarItem } from './SidebarItem'
-import { DeleteFavoriteButton } from './ItemButtons/DeleteFavoriteButton'
+import firebase from '../Common/firebase'
 import style from './Favorite.module.scss'
 import { FavoriteButton } from './ItemButtons/AddFavoriteButton'
+import { DeleteFavoriteButton } from './ItemButtons/DeleteFavoriteButton'
+import { SidebarItem } from './SidebarItem'
 
 const removeHistory = (itemid: number) => {
   firebase.auth().onAuthStateChanged(user => {

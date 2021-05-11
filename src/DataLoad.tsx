@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { IndexedDBFunction } from './Common/database'
+import { SetupItemList } from './Common/database'
 import LoadingPage from './Common/LoadingPage'
 
 const DataLoad: React.FC = ({ children }) => {
   const [initDB, setInitDB] = useState(false)
 
   useEffect(() => {
-    IndexedDBFunction()
+    SetupItemList()
       .then(event => {
         setInitDB(true)
       })
       .catch(event => {
-        alert('Database error: ' + event.target.errorCode)
+        console.log(event)
+        alert('Database error: ')
       })
   }, [])
 
