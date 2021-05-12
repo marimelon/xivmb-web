@@ -44,25 +44,39 @@ const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
   })
 
   useEffect(() => {
+    let unmounted = false
     setMarketData({ data: undefined, error: undefined })
     get_market(itemid)
       .then((data: MarketDataResponse) => {
-        setMarketData({ data: data, error: undefined })
+        if (!unmounted) {
+          setMarketData({ data: data, error: undefined })
+        }
       })
       .catch(reason => {
-        setMarketData({ data: undefined, error: 'Load Error' })
+        if (!unmounted) {
+          setMarketData({ data: undefined, error: 'Load Error' })
+        }
         console.log(reason)
       })
 
     setHistoryData({ data: undefined, error: undefined })
     get_history(itemid)
       .then((data: HistoryResponse) => {
-        setHistoryData({ data: data, error: undefined })
+        console.log('history loaded', itemid)
+        if (!unmounted) {
+          setHistoryData({ data: data, error: undefined })
+        }
       })
       .catch(reason => {
-        setMarketData({ data: undefined, error: 'Load Error' })
+        if (!unmounted) {
+          setMarketData({ data: undefined, error: 'Load Error' })
+        }
         console.log(reason)
       })
+    const cleanup = () => {
+      unmounted = true
+    }
+    return cleanup
   }, [itemid])
 
   const onTabChange = (tabtype: any) => {
