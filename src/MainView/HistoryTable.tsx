@@ -16,7 +16,7 @@ const conversionData = (
     return []
   }
   return [...data]
-    .sort((a, b) => a.sellPrice - b.sellPrice)
+    .sort((a, b) => b.buyDate - a.buyDate)
     .filter(value => world === 'Elemental' || value.world === world)
 }
 
