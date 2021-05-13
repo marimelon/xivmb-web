@@ -140,7 +140,11 @@ const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
       />
       <WorldTab currentTabType={world} onClick={onTabChange} />
       <Collapse in={isShownHistoryChart}>
-        <HistoryChart itemid={itemid} isshown={isShownHistoryChart} />
+        <HistoryChart
+          itemid={itemid}
+          world={world !== 'Elemental' ? world : undefined}
+          isshown={isShownHistoryChart}
+        />
       </Collapse>
       <TablesView
         itemid={itemid}

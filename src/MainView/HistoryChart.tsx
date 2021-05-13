@@ -2,7 +2,8 @@ import HighchartsReact from 'highcharts-react-official'
 import Highstock from 'highcharts/highstock'
 import DarkUnica from 'highcharts/themes/dark-unica'
 import React, { useEffect, useState } from 'react'
-import { ChartResponse } from '../@types/chartResponse'
+import { ElementalWorld } from '../@types/world'
+import { get_history_chart } from '../Api/get_history_chart'
 
 DarkUnica(Highstock)
 
@@ -67,34 +68,40 @@ const options = {
   },
 }
 
-interface State {
+type State = {
   series: number[][]
-  loadedItemid?: number
 }
 
-interface Props {
+type HistoryChartProps = {
   itemid: number
+  world?: ElementalWorld
   isshown: boolean
 }
 
-const HistoryChart: React.FC<Props> = ({ itemid, isshown }) => {
+const HistoryChart: React.FC<HistoryChartProps> = ({
+  itemid,
+  world,
+  isshown,
+}) => {
   const [state, setState] = useState<State>({
     series: [],
-    loadedItemid: undefined,
   })
   useEffect(() => {
-    if (isshown && state.loadedItemid !== itemid) {
-      fetch(`${process.env.REACT_APP_API_URL}/data/history/chart?q=${itemid}`)
-        .then<ChartResponse>(response => response.json())
-        .then(res => {
+    let unmounted = false
+    if (isshown) {
+      get_history_chart(itemid, world).then(res => {
+        if (!unmounted) {
           setState({
             series: res.map(({ Date, PC }) => [Date * 1000, PC]),
-            loadedItemid: itemid,
           })
-        })
+        }
+      })
+    }
+    return () => {
+      unmounted = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemid, isshown])
+  }, [itemid, world, isshown])
 
   return (
     <div>
