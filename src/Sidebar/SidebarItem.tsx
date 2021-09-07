@@ -2,7 +2,6 @@ import React from 'react'
 import ItemIcon from '../Common/ItemIcon'
 import cssStyle from './SidebarItem.module.scss'
 
-
 type DivProps = JSX.IntrinsicElements['div']
 export type SidebarItemProps = Omit<DivProps, 'onClick'> & {
   itemid: number

@@ -1,3 +1,4 @@
+import { DataCenter } from '../@types/datacenter'
 import { MarketDataResponse } from '../@types/marketResponse'
 import firebase, { get_user } from '../Common/firebase'
 
@@ -57,9 +58,13 @@ export const get_market = async (itemid: number) => {
   return data as MarketDataResponse
 }
 
-export const get_current_market = async (itemid: number, idToken: string) => {
+export const get_current_market = async (
+  itemid: number,
+  dc: DataCenter,
+  idToken: string
+) => {
   return await fetch(
-    `${process.env.REACT_APP_API_URL}/newdata/market/${itemid}`,
+    `${process.env.REACT_APP_API_URL}/newdata/market/${itemid}?dc=${dc}`,
     {
       headers: { Authorization: 'Bearer ' + idToken },
     }

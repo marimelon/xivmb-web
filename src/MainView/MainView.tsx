@@ -60,7 +60,7 @@ const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
       })
 
     setHistoryData({ data: undefined, error: undefined })
-    get_history(itemid)
+    get_history(itemid, 'Elemental')
       .then((data: HistoryResponse) => {
         console.log('history loaded', itemid)
         if (!unmounted) {
@@ -103,7 +103,7 @@ const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
               .then(res => setRateLimit(Number(res)))
           }
           const _itemid = itemid
-          get_current_market(itemid, idToken)
+          get_current_market(itemid, 'Elemental', idToken)
             .then<MarketDataResponse>(res => {
               if (!res.ok) {
                 throw Error(res.statusText)

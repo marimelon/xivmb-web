@@ -5,7 +5,7 @@ export const get_history_chart = async (
   itemid: number,
   world?: ElementalWorld
 ) => {
-  let url = `${process.env.REACT_APP_API_URL}/data/history/chart?q=${itemid}`
+  let url = `${process.env.REACT_APP_API_URL}/data/history/chart/${itemid}?`
   if (world) {
     url += `&world=${world}`
   }
