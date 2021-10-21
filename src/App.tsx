@@ -22,14 +22,23 @@ const App: React.FC = () => {
           .firestore()
           .collection('user_histories')
           .doc(user.uid)
-        const batch = firebase.firestore().batch()
-        batch.update(ref, {
-          history: firebase.firestore.FieldValue.arrayRemove(itemid),
+        ref.get().then(doc => {
+          const batch = firebase.firestore().batch()
+          
+          if (!doc.exists) {
+            batch.set(ref, {
+              history: [],
+            })
+          }
+
+          batch.update(ref, {
+            history: firebase.firestore.FieldValue.arrayRemove(itemid),
+          })
+          batch.update(ref, {
+            history: firebase.firestore.FieldValue.arrayUnion(itemid),
+          })
+          batch.commit()
         })
-        batch.update(ref, {
-          history: firebase.firestore.FieldValue.arrayUnion(itemid),
-        })
-        batch.commit()
       }
     })
   }, [itemid])
