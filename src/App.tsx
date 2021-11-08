@@ -24,7 +24,7 @@ const App: React.FC = () => {
           .doc(user.uid)
         ref.get().then(doc => {
           const batch = firebase.firestore().batch()
-          
+
           if (!doc.exists) {
             batch.set(ref, {
               history: [],

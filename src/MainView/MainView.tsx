@@ -94,7 +94,7 @@ const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
     setUpdateButtonState(1)
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        user.getIdToken(true).then(idToken => {
+        user.getIdToken(false).then(idToken => {
           if (rateLimit === undefined) {
             fetch(`${process.env.REACT_APP_API_URL}/rate_limit`, {
               headers: { Authorization: 'Bearer ' + idToken },

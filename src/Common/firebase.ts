@@ -24,4 +24,13 @@ export const get_user = async () => {
   })
 }
 
+export const get_token = async (forceRefresh: boolean = false) => {
+  var user = await get_user()
+  if (user == null) {
+    throw Error('Not authenticated')
+  }
+
+  return await user.getIdToken(forceRefresh)
+}
+
 export default firebase

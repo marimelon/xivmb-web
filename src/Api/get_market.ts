@@ -32,18 +32,14 @@ export const get_market2 = async (itemid: number) => {
   throw Error('UNHANDLED_ERROR')
 }
 
-export const get_market = async (itemid: number) => {
+export const get_market = async (
+  itemid: number,
+  datacenter: DataCenter = 'Elemental'
+) => {
   const user = await get_user()
   if (user === null) {
-    throw Error('')
+    throw Error('Not Found User')
   }
-  //const document = await firebase
-  //  .firestore()
-  //  .collection('market_data')
-  //  .doc(user.uid)
-  //  .collection('items')
-  //  .doc(String(itemid))
-  //  .get()
   const document = await firebase
     .firestore()
     .collection('market_data')
@@ -55,6 +51,11 @@ export const get_market = async (itemid: number) => {
   if (data === undefined) {
     return NoDataMarketResponse(itemid)
   }
+
+  if (datacenter in data) {
+    return data[datacenter] as MarketDataResponse
+  }
+
   return data as MarketDataResponse
 }
 
