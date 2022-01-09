@@ -75,8 +75,8 @@
     ]
   },
   "devDependencies": {
-    "node-sass": "^7.0.1",
     "prettier": "2.2.1",
+    "sass": "^1.47.0",
     "ts-migrate": "^0.1.13"
   }
 }
