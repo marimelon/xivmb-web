@@ -10,7 +10,7 @@ interface Props {
   addFavoriteCB: (itemid: number, name: string) => void
 }
 
-const ItemSearch: React.FC<Props> = props => {
+const ItemSearch = (props: Props) => {
   const [value, setValue] = useState<string>('')
 
   const onChangeText = (newValue: string) => {

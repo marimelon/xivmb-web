@@ -1,10 +1,7 @@
 import { ChartResponse } from '../@types/chartResponse'
-import { ElementalWorld } from '../@types/world'
+import { XIVWorld } from '../@types/world'
 
-export const get_history_chart = async (
-  itemid: number,
-  world?: ElementalWorld
-) => {
+export const get_history_chart = async (itemid: number, world?: XIVWorld) => {
   let url = `${process.env.REACT_APP_API_URL}/data/history/chart/${itemid}?`
   if (world) {
     url += `&world=${world}`

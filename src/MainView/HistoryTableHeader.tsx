@@ -1,17 +1,17 @@
 import moment, { Moment } from 'moment'
-import React from 'react'
+import { ReactNode } from 'react'
 import 'react-tabulator/lib/styles.css'
 import style from './HistoryTable.module.scss'
 
 type HistoryTableHeaderProps = {
   updatedDate?: Moment
-  children: React.ReactNode
+  children: ReactNode
 }
 
-export const HistoryTableHeader: React.FC<HistoryTableHeaderProps> = ({
+export const HistoryTableHeader = ({
   updatedDate,
   children,
-}) => {
+}: HistoryTableHeaderProps) => {
   let updatedDateText = ''
   if (updatedDate === undefined) {
     updatedDateText = '( データなし )'

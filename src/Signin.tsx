@@ -1,5 +1,5 @@
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   Button,
@@ -13,7 +13,7 @@ import {
 import * as Yup from 'yup'
 import firebase from './Common/firebase'
 
-const Signin: React.FC = () => {
+const Signin = () => {
   const history = useHistory()
   const [loading, setLoading] = useState(false)
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './ItemButtons.module.scss'
 import StarBorderIcon from '@material-ui/icons/StarBorder'
 type DivProps = JSX.IntrinsicElements['div']
@@ -8,11 +7,11 @@ export type FavoriteButtonProps = {
   addFavoriteCB: () => void
 } & DivProps
 
-export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
+export const FavoriteButton = ({
   isActive,
   addFavoriteCB,
   ...props
-}) => (
+}: FavoriteButtonProps) => (
   <div
     className={`${style.FavoriteButton} ${isActive ? style.active : ''}`}
     onClick={e => {

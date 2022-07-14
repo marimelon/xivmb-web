@@ -1,16 +1,15 @@
 import moment, { Moment } from 'moment'
-import React from 'react'
 type MarketTableHeaderProps = {
   updatedDate?: Moment
   HQFilterState: boolean
   HQFilterCallback: (ishq: boolean) => void
 }
 
-export const MarketTableHeader: React.FC<MarketTableHeaderProps> = ({
+export const MarketTableHeader = ({
   updatedDate,
   HQFilterState,
   HQFilterCallback,
-}) => {
+}: MarketTableHeaderProps) => {
   let updatedDateText = ''
   if (updatedDate === undefined) {
     updatedDateText = '( データなし )'

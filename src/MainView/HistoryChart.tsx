@@ -1,8 +1,8 @@
 import HighchartsReact from 'highcharts-react-official'
 import Highstock from 'highcharts/highstock'
 import DarkUnica from 'highcharts/themes/dark-unica'
-import React, { useEffect, useState } from 'react'
-import { ElementalWorld } from '../@types/world'
+import { useEffect, useState } from 'react'
+import { XIVWorld } from '../@types/world'
 import { get_history_chart } from '../Api/get_history_chart'
 
 DarkUnica(Highstock)
@@ -74,15 +74,11 @@ type State = {
 
 type HistoryChartProps = {
   itemid: number
-  world?: ElementalWorld
+  world?: XIVWorld
   isshown: boolean
 }
 
-const HistoryChart: React.FC<HistoryChartProps> = ({
-  itemid,
-  world,
-  isshown,
-}) => {
+const HistoryChart = ({ itemid, world, isshown }: HistoryChartProps) => {
   const [state, setState] = useState<State>({
     series: [],
   })

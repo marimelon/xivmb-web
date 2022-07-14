@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import firebase from '../Common/firebase'
 import Favorite from './Favorite'
 import { HistoryList } from './HistoryList'
@@ -10,7 +10,7 @@ interface Props {
   changeItem?: (itemid: number, itemname: string) => void
 }
 
-const Sidebar: React.FC<Props> = ({ changeItem }) => {
+const Sidebar = ({ changeItem }: Props) => {
   const [favoriteList, setFavoriteList] = useState<FavoriteItem[]>([])
   const [activeItem, setActiveItem] = useState<string>()
   const [itemListType, setItemListType] = useState<'favorite' | 'history'>(

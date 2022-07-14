@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import firebase from '../Common/firebase'
 import style from './Favorite.module.scss'
 import { FavoriteButton } from './ItemButtons/AddFavoriteButton'
@@ -23,12 +23,12 @@ export type HistoryListProps = {
   addFavorite: (itemid: number, name: string) => void
 }
 
-export const HistoryList: React.FC<HistoryListProps> = ({
+export const HistoryList = ({
   onClickItem,
   activeItem,
   favoriteList,
   addFavorite,
-}) => {
+}: HistoryListProps) => {
   const [items, setItems] = useState<FavoriteItem[]>([])
 
   useEffect(() => {

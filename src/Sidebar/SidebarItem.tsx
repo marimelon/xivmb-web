@@ -13,7 +13,7 @@ export type SidebarItemProps = Omit<DivProps, 'onClick'> & {
   onClick: (itemid: number, itemname: string) => void
 }
 
-export const SidebarItem: React.FC<SidebarItemProps> = ({
+export const SidebarItem = ({
   children,
   itemid,
   name,
@@ -23,7 +23,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   nameStyle,
   onClick,
   ...props
-}) => {
+}: SidebarItemProps) => {
   return (
     <div
       className={`${cssStyle.SidebarItem} ${className} ${

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AutoSizer, Column, SortDirectionType, Table } from 'react-virtualized'
 import { defaultRowRenderer } from 'react-virtualized/dist/es/Table'
 import { MarketDataResponse, MarketEntriy } from '../@types/marketResponse'
@@ -51,12 +51,12 @@ type MarketTableProps = {
   error?: string
 }
 
-export const MarketTable: React.FC<MarketTableProps> = ({
+export const MarketTable = ({
   className,
   world,
   data,
   error,
-}) => {
+}: MarketTableProps) => {
   const [_data, setData] = useState<MarketDataResponse>()
   const [tableData, setTableData] = useState<MarketEntriy[]>([])
   const [sortState, setSortState] = useState<SortState>({

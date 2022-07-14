@@ -1,14 +1,11 @@
-import React from 'react'
-
 export const ItemIconURL = (itemid: number) =>
   `${process.env.REACT_APP_ITEM_ICON_HOST}${itemid}.png`
 
 type ImgProps = JSX.IntrinsicElements['img']
 
-const ItemIcon: React.FC<{ itemid: number } & ImgProps> = ({
-  itemid,
-  ...imgProps
-}) => (
+type Props = { itemid: number } & ImgProps
+
+const ItemIcon = ({ itemid, ...imgProps }: Props) => (
   <img
     alt={`${itemid}`}
     src={ItemIconURL(itemid)}

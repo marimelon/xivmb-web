@@ -1,6 +1,5 @@
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
 import moment from 'moment'
-import React from 'react'
 import { HistoryResponse } from '../@types/historyResponse'
 import { MarketDataResponse } from '../@types/marketResponse'
 import { HistoryTable } from './HistoryTable'
@@ -19,14 +18,14 @@ type TablesViewProps = {
   historyDataError?: string
 }
 
-export const TablesView: React.FC<TablesViewProps> = ({
+export const TablesView = ({
   itemid,
   world,
   isShownChart,
   isShownChartCB,
   marketData,
   historyData,
-}) => {
+}: TablesViewProps) => {
   const history_header_children = (
     <div
       className={style.ShowTrandButton}

@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './Favorite.module.scss'
 import { DeleteFavoriteButton } from './ItemButtons/DeleteFavoriteButton'
 import { SortableItemList } from './ItemList/ItemList'
@@ -12,13 +11,13 @@ interface Props {
   deleteFavoriteCB: (itemid: number) => void
 }
 
-const Favorite: React.FC<Props> = ({
+const Favorite = ({
   favoriteList,
   onChange,
   onClickItem,
   activeItem,
   deleteFavoriteCB,
-}) => {
+}: Props) => {
   const _onClickItem = (itemid: number, itemname: string) =>
     onClickItem('favorite', itemid, itemname)
   return (

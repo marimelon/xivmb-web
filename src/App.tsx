@@ -6,7 +6,7 @@ import MainView from './MainView/MainView'
 import Sidebar from './Sidebar/Sidebar'
 type State = { itemid: number; itemname: string }
 
-const App: React.FC = () => {
+const App = () => {
   const history = useHistory<State>()
   const match = useRouteMatch<{ itemid: string }>()
   const itemid = Number(match.params.itemid)

@@ -5,7 +5,7 @@ import { SetupItemList } from './Common/database'
 import firebase from './Common/firebase'
 import LoadingPage from './Common/LoadingPage'
 
-const FaildLoadErrorDialog: React.FC = () => {
+const FaildLoadErrorDialog = () => {
   return (
     <Dialog
       open={true}

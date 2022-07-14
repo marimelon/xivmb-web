@@ -1,9 +1,10 @@
 import Collapse from '@material-ui/core/Collapse'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { DataCenter } from '../@types/datacenter'
 import { HistoryResponse } from '../@types/historyResponse'
 import { MarketDataResponse } from '../@types/marketResponse'
-import { ElementalWorld } from '../@types/world'
+import { XIVWorld } from '../@types/world'
 import { get_history } from '../Api/get_history'
 import { get_current_market, get_market } from '../Api/get_market'
 import firebase from '../Common/firebase'
@@ -25,8 +26,8 @@ type MainViewProps = {
   itemname: string
 }
 
-const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
-  const [world, setWorld] = useState<ElementalWorld | 'Elemental'>('Elemental')
+const MainView = ({ itemid, itemname }: MainViewProps) => {
+  const [world, setWorld] = useState<XIVWorld | DataCenter>('Elemental')
   const [updateButtonState, setUpdateButtonState] =
     useState<UpdateButtonState>(0)
   const [isShownHistoryChart, setIsShownHistoryChart] = useState(false)
@@ -141,7 +142,7 @@ const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
       <Collapse in={isShownHistoryChart}>
         <HistoryChart
           itemid={itemid}
-          world={world !== 'Elemental' ? world : undefined}
+          world={world !== 'Elemental' ? (world as XIVWorld) : undefined}
           isshown={isShownHistoryChart}
         />
       </Collapse>

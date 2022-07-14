@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AutoSizer, Column, Table } from 'react-virtualized'
 import { HistoryResponse } from '../@types/historyResponse'
 import { ElementalWorld } from '../@types/world'
@@ -28,13 +28,13 @@ type HistoryTableProps = {
   error?: string
 }
 
-export const HistoryTable: React.FC<HistoryTableProps> = ({
+export const HistoryTable = ({
   className,
   world,
   data,
   headerRender,
   error,
-}) => {
+}: HistoryTableProps) => {
   const [_data, setData] = useState<HistoryResponse>()
   const [tableData, setTableData] = useState<HistoryResponse>([])
 

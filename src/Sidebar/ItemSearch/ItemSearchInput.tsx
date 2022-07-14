@@ -6,7 +6,7 @@ interface Props {
   changeTextCB: (text: string) => void
 }
 
-export const ItemSearchInput: React.FC<Props> = ({ value, changeTextCB }) => (
+export const ItemSearchInput = ({ value, changeTextCB }: Props) => (
   <div className={style.inputwrap}>
     <input
       className={style.input}

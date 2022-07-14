@@ -12,13 +12,13 @@ interface Props {
   addFavoriteCB: (itemid: number, name: string) => void
 }
 
-export const ItemSearchResult: React.FC<Props> = ({
+export const ItemSearchResult = ({
   value,
   onClick,
   activeItem,
   favoriteList,
   addFavoriteCB,
-}) => {
+}: Props) => {
   const identifier = 'itemsearch'
   const [results, setResults] = useState<number[]>([])
   useEffect(() => {

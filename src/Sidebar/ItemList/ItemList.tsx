@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import {
   arrayMove,
   SortableContainer,
@@ -51,10 +51,7 @@ type ItemListProps = ItemListContainerProps & {
   onChange: (newList: FavoriteItem[]) => void
 }
 
-export const SortableItemList: React.FC<ItemListProps> = ({
-  onChange,
-  ...props
-}) => {
+export const SortableItemList = ({ onChange, ...props }: ItemListProps) => {
   const onSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
     onChange(arrayMove(props.items, oldIndex, newIndex))
   }

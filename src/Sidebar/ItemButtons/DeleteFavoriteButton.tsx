@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './ItemButtons.module.scss'
 
 type DivProps = JSX.IntrinsicElements['div']
@@ -7,11 +6,11 @@ type DeleteFavoriteButtonProps = {
   className?: string
 } & Omit<DivProps, 'onClick'>
 
-export const DeleteFavoriteButton: React.FC<DeleteFavoriteButtonProps> = ({
+export const DeleteFavoriteButton = ({
   deleteFavoriteCB,
   className,
   ...props
-}) => (
+}: DeleteFavoriteButtonProps) => (
   <div
     className={`${style.DeleteFavoriteButton} ${className}`}
     onClick={e => {

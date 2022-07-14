@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense, useEffect, useState } from 'react'
+import { Component, lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Auth from './Auth'
 import firebase from './Common/firebase'
@@ -8,7 +8,7 @@ const SignIn = lazy(() => import('./Signin'))
 const App = lazy(() => import('./App'))
 
 const Page404 = () => <div>Page Not Found.</div>
-const Redirect2LastItemPage: React.FC = () => {
+const Redirect2LastItemPage = () => {
   const [goto, setGoto] = useState<number>()
 
   console.log('Page1')

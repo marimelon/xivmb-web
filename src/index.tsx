@@ -1,4 +1,3 @@
-import React from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.scss'
 import AppRoute from './AppRoute'
@@ -9,8 +8,6 @@ import './css/react-virtualized.css'
 import 'moment/locale/ja'
 import moment from 'moment'
 moment.locale('ja')
-
-// ReactDOM.render(<AppRoute />, document.getElementById('root'))
 
 const container = document.getElementById('root')
 const root = createRoot(container!)
