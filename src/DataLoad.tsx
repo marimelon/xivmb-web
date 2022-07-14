@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { SetupItemList } from './Common/database'
 import LoadingPage from './Common/LoadingPage'
 
-const DataLoad: React.FC = ({ children }) => {
+type Props = {
+  children: React.ReactNode
+}
+
+const DataLoad = ({ children }: Props) => {
   const [initDB, setInitDB] = useState(false)
 
   useEffect(() => {

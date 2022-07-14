@@ -17,7 +17,7 @@ const SortableItem = <T,>({
   itemRenderer,
   ...props
 }: SortableItemProps<T> & SortableElementProps) => {
-  const A = SortableElement(({ item, itemRenderer }: SortableItemProps<T>) => {
+  const A = SortableElement<SortableItemProps<T>>(({ item, itemRenderer }: SortableItemProps<T>) => {
     return itemRenderer(item)
   })
   return <A item={item} itemRenderer={itemRenderer} {...props} />

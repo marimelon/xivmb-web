@@ -5,6 +5,7 @@ import style from './HistoryTable.module.scss'
 
 type HistoryTableHeaderProps = {
   updatedDate?: Moment
+  children: React.ReactNode
 }
 
 export const HistoryTableHeader: React.FC<HistoryTableHeaderProps> = ({

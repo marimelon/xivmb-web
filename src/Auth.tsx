@@ -34,7 +34,11 @@ interface State {
   faildedLoad?: string
 }
 
-const Auth: React.FC<{}> = props => {
+type Props = {
+  children: React.ReactNode
+}
+
+const Auth = (props: Props) => {
   const [state, setState] = useState<State>({
     signinCheck: false, //ログインチェックが完了してるか
     signedIn: false, //ログインしてるか
