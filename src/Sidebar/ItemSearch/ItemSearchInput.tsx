@@ -20,7 +20,8 @@ export const ItemSearchInput: React.FC<Props> = ({ value, changeTextCB }) => (
       className={style.inputclear}
       onClick={() => {
         changeTextCB('')
-      }}>
+      }}
+    >
       ✖
     </div>
   </div>

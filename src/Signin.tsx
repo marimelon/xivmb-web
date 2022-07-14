@@ -42,7 +42,8 @@ const Signin: React.FC = () => {
     <div className="container" style={{ color: 'black' }}>
       <div
         className="mx-auto"
-        style={{ width: 400, background: '#eee', padding: 20, marginTop: 60 }}>
+        style={{ width: 400, background: '#eee', padding: 20, marginTop: 60 }}
+      >
         <p style={{ textAlign: 'center' }}>サインイン</p>
         <Formik
           initialValues={{ email: '', password: '' }}
@@ -50,7 +51,8 @@ const Signin: React.FC = () => {
           validationSchema={Yup.object().shape({
             email: Yup.string().email().required(),
             password: Yup.string().required(),
-          })}>
+          })}
+        >
           {({
             handleSubmit,
             handleChange,

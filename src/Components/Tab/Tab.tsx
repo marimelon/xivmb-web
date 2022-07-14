@@ -27,7 +27,8 @@ export const Tab = <T extends string | number>({
               className={`${style.navitem} ${
                 val.value === value ? style.active : ''
               }`}
-              onClick={() => onChange(val.value)}>
+              onClick={() => onChange(val.value)}
+            >
               <div>{val.display}</div>
             </li>
           )

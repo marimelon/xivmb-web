@@ -30,7 +30,8 @@ const Favorite: React.FC<Props> = ({
           name={item.name}
           onClick={_onClickItem}
           isActive={activeItem === 'favorite' + item.id}
-          className={style.SidebarItem}>
+          className={style.SidebarItem}
+        >
           <DeleteFavoriteButton
             deleteFavoriteCB={() => {
               deleteFavoriteCB(item.id)

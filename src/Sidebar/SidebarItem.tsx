@@ -32,7 +32,8 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
       onClick={() => {
         onClick(itemid, name)
       }}
-      {...props}>
+      {...props}
+    >
       <ItemIcon className={`${cssStyle.icon} ${iconStyle}`} itemid={itemid} />
       <div className={`${cssStyle.name} ${nameStyle}`}>{name}</div>
       {children}

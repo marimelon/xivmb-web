@@ -68,7 +68,8 @@ const WorldTabDoropDown = React.memo(({ currentTabType, onClick }: Props) => {
         onChange={handleChange}
         className={style.CompactWorldTab}
         classes={{ icon: classes.icon }}
-        MenuProps={{ classes: { paper: classes.select } }}>
+        MenuProps={{ classes: { paper: classes.select } }}
+      >
         {worldlist.map(item => (
           <MenuItem key={item} value={item}>
             {item}

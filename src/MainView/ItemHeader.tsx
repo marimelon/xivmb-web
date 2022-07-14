@@ -44,7 +44,8 @@ const ItemHeader = React.memo(({ itemid, itemname }: Props) => {
         onCopy={() => {
           setIscopied(true)
         }}
-        text={itemname}>
+        text={itemname}
+      >
         <FileCopyIcon
           className={`${style.copyicon} ${iscopied ? style.active : ''}`}
         />
@@ -53,7 +54,8 @@ const ItemHeader = React.memo(({ itemid, itemname }: Props) => {
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`https://eriones.com/search?i=${itemname}`}>
+        href={`https://eriones.com/search?i=${itemname}`}
+      >
         <img
           className={style.erioneslink}
           alt={'eriones'}
@@ -66,7 +68,8 @@ const ItemHeader = React.memo(({ itemid, itemname }: Props) => {
         rel="noopener noreferrer"
         href={
           lodestoneId ? lodestoneURL(lodestoneId) : lodestoneFromName(itemname)
-        }>
+        }
+      >
         <img
           className={style.erioneslink}
           alt={'lodestone'}

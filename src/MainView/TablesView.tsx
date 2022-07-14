@@ -32,7 +32,8 @@ export const TablesView: React.FC<TablesViewProps> = ({
       className={style.ShowTrandButton}
       onClick={() => {
         isShownChartCB(!isShownChart)
-      }}>
+      }}
+    >
       <TrendingUpIcon color={isShownChart ? 'primary' : 'secondary'} />
     </div>
   )
@@ -57,7 +58,8 @@ export const TablesView: React.FC<TablesViewProps> = ({
                     Math.max(...(historyData ?? []).map(p => p.Updated))
                   )
                 : undefined
-            }>
+            }
+          >
             {history_header_children}
           </HistoryTableHeader>
         )}

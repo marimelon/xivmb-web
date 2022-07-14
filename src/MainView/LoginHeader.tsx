@@ -33,7 +33,8 @@ const LoginHeader = () => {
         className={style.logout}
         onClick={() => {
           user ? logout() : login()
-        }}>
+        }}
+      >
         {user ? 'Logout' : 'Login'}
       </div>
     </div>

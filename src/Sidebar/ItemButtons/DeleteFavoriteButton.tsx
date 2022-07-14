@@ -18,7 +18,8 @@ export const DeleteFavoriteButton: React.FC<DeleteFavoriteButtonProps> = ({
       e.stopPropagation()
       deleteFavoriteCB()
     }}
-    {...props}>
+    {...props}
+  >
     ✖
   </div>
 )

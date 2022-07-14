@@ -71,7 +71,8 @@ export const HistoryList: React.FC<HistoryListProps> = ({
             name={value.name}
             onClick={_onClickItem}
             isActive={activeItem === 'history' + value.id}
-            className={style.SidebarItem}>
+            className={style.SidebarItem}
+          >
             <FavoriteButton
               isActive={
                 favoriteList.findIndex(({ id }) => id === value.id) !== -1

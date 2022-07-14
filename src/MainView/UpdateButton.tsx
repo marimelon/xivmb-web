@@ -42,7 +42,8 @@ export const UpdateButton = ({ status, callback }: UpdateButtonProps) => {
       <button
         className={`${style.MarketUpdateButton} ${MarketUpdateButtonStateStyle}`}
         disabled={status !== 0}
-        onClick={callback}>
+        onClick={callback}
+      >
         <span
           className={`${style.ProgressBar} ${MarketUpdateButtonProgressBarStyle}`}
         />

@@ -10,7 +10,8 @@ const FaildLoadErrorDialog: React.FC = () => {
     <Dialog
       open={true}
       aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description">
+      aria-describedby="alert-dialog-description"
+    >
       <DialogTitle id="alert-dialog-title">
         データの取得に失敗しました
       </DialogTitle>{' '}
@@ -19,7 +20,8 @@ const FaildLoadErrorDialog: React.FC = () => {
           color="primary"
           onClick={() => {
             window.location.reload()
-          }}>
+          }}
+        >
           Reload
         </Button>
       </DialogActions>

@@ -60,7 +60,8 @@ export const ItemSearchResult: React.FC<Props> = ({
           onClick(identifier, id, name)
         }}
         isActive={activeItem === identifier + itemid}
-        style={style}>
+        style={style}
+      >
         <FavoriteButton
           isActive={favoriteList.findIndex(({ id }) => id === itemid) !== -1}
           addFavoriteCB={() => {
@@ -76,7 +77,8 @@ export const ItemSearchResult: React.FC<Props> = ({
         height={Math.min(45 * results.length, 400)}
         itemCount={results.length}
         itemSize={40}
-        width={'100%'}>
+        width={'100%'}
+      >
         {Row}
       </FixedSizeList>
     </div>

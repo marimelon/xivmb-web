@@ -27,9 +27,8 @@ type MainViewProps = {
 
 const MainView: React.FC<MainViewProps> = ({ itemid, itemname }) => {
   const [world, setWorld] = useState<ElementalWorld | 'Elemental'>('Elemental')
-  const [updateButtonState, setUpdateButtonState] = useState<UpdateButtonState>(
-    0
-  )
+  const [updateButtonState, setUpdateButtonState] =
+    useState<UpdateButtonState>(0)
   const [isShownHistoryChart, setIsShownHistoryChart] = useState(false)
   const [rateLimit, setRateLimit] = useState<number>()
   const history = useHistory()

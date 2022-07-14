@@ -78,7 +78,8 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({
                   return <LoadingPage />
                 }
                 return <div style={{ textAlign: 'center' }}>No Data</div>
-              }}>
+              }}
+            >
               <Column
                 label="World"
                 dataKey="world"

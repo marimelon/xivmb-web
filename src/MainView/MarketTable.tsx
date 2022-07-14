@@ -143,7 +143,8 @@ export const MarketTable: React.FC<MarketTableProps> = ({
                   return <LoadingPage />
                 }
                 return <div style={{ textAlign: 'center' }}>No Data</div>
-              }}>
+              }}
+            >
               <Column
                 label="World"
                 dataKey="world"

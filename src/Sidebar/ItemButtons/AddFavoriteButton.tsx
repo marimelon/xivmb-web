@@ -19,7 +19,8 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       e.stopPropagation()
       addFavoriteCB()
     }}
-    {...props}>
+    {...props}
+  >
     <StarBorderIcon style={{ fontSize: 15 }} />
   </div>
 )
