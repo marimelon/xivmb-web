@@ -1,1 +1,1 @@
-export type DataCenter = 'Elemental' | 'Gaia' | 'Mana'
+export type DataCenter = 'Elemental' | 'Gaia' | 'Mana' | 'Meteor'
