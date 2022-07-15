@@ -1,5 +1,5 @@
-import { DataCenter } from '../@types/datacenter'
 import { MarketDataResponse } from '../@types/marketResponse'
+import { XIVDataCenter } from '../@types/world'
 import firebase, { get_user } from '../Common/firebase'
 
 const NoDataMarketResponse: (
@@ -34,7 +34,7 @@ export const get_market2 = async (itemid: number) => {
 
 export const get_market = async (
   itemid: number,
-  datacenter: DataCenter = 'Elemental'
+  datacenter: XIVDataCenter = 'Elemental'
 ) => {
   const user = await get_user()
   if (user === null) {
@@ -61,7 +61,7 @@ export const get_market = async (
 
 export const get_current_market = async (
   itemid: number,
-  dc: DataCenter,
+  dc: XIVDataCenter,
   idToken: string
 ) => {
   return await fetch(

@@ -1,3 +1,7 @@
+export const XIVDataCenters = ['Elemental', 'Gaia', 'Mana', 'Meteor'] as const
+
+export type XIVDataCenter = typeof XIVDataCenters[number]
+
 export const ElementalWorlds = [
   'Atomos',
   'Aegis',
@@ -10,7 +14,7 @@ export const ElementalWorlds = [
 ] as const
 export type ElementalWorld = typeof ElementalWorlds[number]
 
-const GaiaWorlds = [
+export const GaiaWorlds = [
   'Alexander',
   'Bahamut',
   'Durandal',
@@ -53,9 +57,3 @@ export const XIVWorlds = [
   ...MeteorWorlds,
 ]
 export type XIVWorld = typeof XIVWorlds[number]
-
-export const isXIVWorld = (
-  value: string
-): value is typeof XIVWorlds[number] => {
-  return (XIVWorld as readonly string[]).includes(value)
-}

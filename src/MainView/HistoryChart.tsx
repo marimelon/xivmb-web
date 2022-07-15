@@ -2,7 +2,7 @@ import HighchartsReact from 'highcharts-react-official'
 import Highstock from 'highcharts/highstock'
 import DarkUnica from 'highcharts/themes/dark-unica'
 import { useEffect, useState } from 'react'
-import { XIVWorld } from '../@types/world'
+import { XIVDataCenter, XIVWorld } from '../@types/world'
 import { get_history_chart } from '../Api/get_history_chart'
 
 DarkUnica(Highstock)
@@ -74,7 +74,7 @@ type State = {
 
 type HistoryChartProps = {
   itemid: number
-  world?: XIVWorld
+  world?: XIVWorld | XIVDataCenter
   isshown: boolean
 }
 

@@ -1,10 +1,9 @@
 import Collapse from '@material-ui/core/Collapse'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-import { DataCenter } from '../@types/datacenter'
 import { HistoryResponse } from '../@types/historyResponse'
 import { MarketDataResponse } from '../@types/marketResponse'
-import { XIVWorld } from '../@types/world'
+import { XIVDataCenter, XIVWorld } from '../@types/world'
 import { get_history } from '../Api/get_history'
 import { get_current_market, get_market } from '../Api/get_market'
 import firebase from '../Common/firebase'
@@ -24,10 +23,11 @@ type DataState<T> = {
 type MainViewProps = {
   itemid: number
   itemname: string
+  dataCenter: XIVDataCenter
 }
 
-const MainView = ({ itemid, itemname }: MainViewProps) => {
-  const [world, setWorld] = useState<XIVWorld | DataCenter>('Elemental')
+export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
+  const [world, setWorld] = useState<XIVWorld | XIVDataCenter>('Elemental')
   const [updateButtonState, setUpdateButtonState] =
     useState<UpdateButtonState>(0)
   const [isShownHistoryChart, setIsShownHistoryChart] = useState(false)
@@ -60,7 +60,7 @@ const MainView = ({ itemid, itemname }: MainViewProps) => {
       })
 
     setHistoryData({ data: undefined, error: undefined })
-    get_history(itemid, 'Elemental')
+    get_history(itemid, dataCenter)
       .then((data: HistoryResponse) => {
         console.log('history loaded', itemid)
         if (!unmounted) {
@@ -77,7 +77,7 @@ const MainView = ({ itemid, itemname }: MainViewProps) => {
       unmounted = true
     }
     return cleanup
-  }, [itemid])
+  }, [itemid, dataCenter])
 
   const onTabChange = (tabtype: any) => {
     setWorld(tabtype)
@@ -138,11 +138,15 @@ const MainView = ({ itemid, itemname }: MainViewProps) => {
         status={updateButtonState}
         callback={onClickMarketUpdateButton}
       />
-      <WorldTab currentTabType={world} onClick={onTabChange} />
+      <WorldTab
+        dataCenter={dataCenter}
+        currentTabType={world}
+        onClick={onTabChange}
+      />
       <Collapse in={isShownHistoryChart}>
         <HistoryChart
           itemid={itemid}
-          world={world !== 'Elemental' ? (world as XIVWorld) : undefined}
+          world={world}
           isshown={isShownHistoryChart}
         />
       </Collapse>
@@ -159,5 +163,3 @@ const MainView = ({ itemid, itemname }: MainViewProps) => {
     </div>
   )
 }
-
-export default MainView

@@ -1,8 +1,8 @@
-import { DataCenter } from '../@types/datacenter'
 import { HistoryResponse } from '../@types/historyResponse'
+import { XIVDataCenter } from '../@types/world'
 import { get_token } from '../Common/firebase'
 
-export const get_history = async (itemid: number, dc?: DataCenter) => {
+export const get_history = async (itemid: number, dc?: XIVDataCenter) => {
   var url = `${process.env.REACT_APP_API_URL}/data/history/${itemid}?limit=500`
   if (dc) {
     url += `&dc=${dc}`
