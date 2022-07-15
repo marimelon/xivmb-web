@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { SetupItemList } from './Common/database'
 import firebase from './Common/firebase'
-import LoadingPage from './Common/LoadingPage'
+import { LoadingPage } from './Common/LoadingPage'
 
 const FaildLoadErrorDialog = () => {
   return (

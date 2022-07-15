@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Auth from './Auth'
 import firebase from './Common/firebase'
-import LoadingPage from './Common/LoadingPage'
+import { LoadingPage } from './Common/LoadingPage'
 
 const SignIn = lazy(() => import('./Signin'))
 const App = lazy(() => import('./App'))
@@ -47,7 +47,7 @@ const Redirect2LastItemPage = () => {
   return <Redirect to={`/${goto}`} />
 }
 
-export const AppRoute = ()=>{
+export const AppRoute = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingPage />}>

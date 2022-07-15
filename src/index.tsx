@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import './index.scss'
-import {AppRoute} from './AppRoute'
+import { AppRoute } from './AppRoute'
 import * as serviceWorker from './serviceWorker'
 
 import './css/react-virtualized.css'

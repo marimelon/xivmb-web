@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SetupItemList } from './Common/database'
-import LoadingPage from './Common/LoadingPage'
+import { LoadingPage } from './Common/LoadingPage'
 
 type Props = {
   children: React.ReactNode
