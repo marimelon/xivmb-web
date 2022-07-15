@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Auth from './Auth'
 import firebase from './Common/firebase'
@@ -46,23 +46,21 @@ const Redirect2LastItemPage = () => {
 
   return <Redirect to={`/${goto}`} />
 }
-class AppRoute extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <Suspense fallback={<LoadingPage />}>
-          <Switch>
-            <Redirect exact from="/view" to="/view/2" />
-            <Route path="/signin" component={SignIn} />
-            <Auth>
-              <Route exact path="/" component={Redirect2LastItemPage} />
-              <Route path="/:itemid(\d+)" component={App} />
-            </Auth>
-            <Route component={Page404} />
-          </Switch>
-        </Suspense>
-      </BrowserRouter>
-    )
-  }
+
+export const AppRoute = ()=>{
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<LoadingPage />}>
+        <Switch>
+          <Redirect exact from="/view" to="/view/2" />
+          <Route path="/signin" component={SignIn} />
+          <Auth>
+            <Route exact path="/" component={Redirect2LastItemPage} />
+            <Route path="/:itemid(\d+)" component={App} />
+          </Auth>
+          <Route component={Page404} />
+        </Switch>
+      </Suspense>
+    </BrowserRouter>
+  )
 }
-export default AppRoute
