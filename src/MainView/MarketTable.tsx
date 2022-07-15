@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import { AutoSizer, Column, SortDirectionType, Table } from 'react-virtualized'
 import { defaultRowRenderer } from 'react-virtualized/dist/es/Table'
 import { MarketDataResponse, MarketEntriy } from '../@types/marketResponse'
-import { ElementalWorld } from '../@types/world'
+import { ElementalWorld, XIVDataCenter, XIVWorld } from '../@types/world'
 import { LoadingPage } from '../Common/LoadingPage'
+import { isXIVDataCenter } from '../Common/worlds'
 import '../css/react-virtualized.css'
 import style from './MarketTable.module.scss'
 import { MarketTableHeader } from './MarketTableHeader'
@@ -23,7 +24,7 @@ const conversionData = (
   data: MarketDataResponse | undefined,
   sortBy: SortKeys,
   sortDirection: SortDirectionType,
-  world: ElementalWorld | 'Elemental',
+  world: XIVWorld | XIVDataCenter,
   isHQ: boolean
 ) => {
   const datas = Object.entries(data?.data ?? [])
@@ -33,7 +34,7 @@ const conversionData = (
     .flat()
   const list = [...datas]
     .sort((a, b) => a[sortBy] - b[sortBy])
-    .filter(value => world === 'Elemental' || value.world === world)
+    .filter(value => isXIVDataCenter(world) || value.world === world)
     .filter(value => (isHQ ? value.hq === 1 : true))
   return sortDirection === 'DESC' ? list.reverse() : list
 }
@@ -45,7 +46,7 @@ type SortState = {
 
 type MarketTableProps = {
   className?: string
-  world: ElementalWorld | 'Elemental'
+  world: XIVWorld | XIVDataCenter
   itemid: number
   data?: MarketDataResponse
   error?: string

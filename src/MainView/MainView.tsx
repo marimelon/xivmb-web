@@ -27,7 +27,7 @@ type MainViewProps = {
 }
 
 export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
-  const [world, setWorld] = useState<XIVWorld | XIVDataCenter>('Elemental')
+  const [world, setWorld] = useState<XIVWorld | XIVDataCenter>(dataCenter)
   const [updateButtonState, setUpdateButtonState] =
     useState<UpdateButtonState>(0)
   const [isShownHistoryChart, setIsShownHistoryChart] = useState(false)
@@ -46,7 +46,7 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
   useEffect(() => {
     let unmounted = false
     setMarketData({ data: undefined, error: undefined })
-    get_market(itemid)
+    get_market(itemid, dataCenter)
       .then((data: MarketDataResponse) => {
         if (!unmounted) {
           setMarketData({ data: data, error: undefined })
@@ -103,7 +103,7 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
               .then(res => setRateLimit(Number(res)))
           }
           const _itemid = itemid
-          get_current_market(itemid, 'Elemental', idToken)
+          get_current_market(itemid, dataCenter, idToken)
             .then<MarketDataResponse>(res => {
               if (!res.ok) {
                 throw Error(res.statusText)

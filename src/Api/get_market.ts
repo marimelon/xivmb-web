@@ -32,10 +32,7 @@ export const get_market2 = async (itemid: number) => {
   throw Error('UNHANDLED_ERROR')
 }
 
-export const get_market = async (
-  itemid: number,
-  datacenter: XIVDataCenter = 'Elemental'
-) => {
+export const get_market = async (itemid: number, datacenter: XIVDataCenter) => {
   const user = await get_user()
   if (user === null) {
     throw Error('Not Found User')

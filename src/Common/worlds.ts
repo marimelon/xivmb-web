@@ -27,7 +27,7 @@ export const isXIVWorld = (
   return (XIVWorlds as readonly string[]).includes(value)
 }
 
-export const isDataCenter = (
+export const isXIVDataCenter = (
   value: string
 ): value is typeof XIVDataCenters[number] => {
   return (XIVDataCenters as readonly string[]).includes(value)

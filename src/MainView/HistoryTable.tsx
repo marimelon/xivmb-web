@@ -2,27 +2,28 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { AutoSizer, Column, Table } from 'react-virtualized'
 import { HistoryResponse } from '../@types/historyResponse'
-import { ElementalWorld } from '../@types/world'
+import { XIVDataCenter, XIVWorld } from '../@types/world'
 import { LoadingPage } from '../Common/LoadingPage'
 import { separate } from '../Common/separate'
+import { isXIVDataCenter } from '../Common/worlds'
 import '../css/react-virtualized.css'
 import style from './HistoryTable.module.scss'
 
 const conversionData = (
   data: HistoryResponse | undefined,
-  world: ElementalWorld | 'Elemental'
+  world: XIVWorld | XIVDataCenter
 ) => {
   if (data === undefined) {
     return []
   }
   return [...data]
     .sort((a, b) => b.buyDate - a.buyDate)
-    .filter(value => world === 'Elemental' || value.world === world)
+    .filter(value => isXIVDataCenter(world) || value.world === world)
 }
 
 type HistoryTableProps = {
   className?: string
-  world: ElementalWorld | 'Elemental'
+  world: XIVWorld | XIVDataCenter
   data?: HistoryResponse
   headerRender?: () => JSX.Element
   error?: string

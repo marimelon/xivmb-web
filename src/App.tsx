@@ -3,7 +3,7 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
 import { XIVDataCenter } from './@types/world'
 import style from './App.module.css'
 import firebase from './Common/firebase'
-import { isDataCenter } from './Common/worlds'
+import { isXIVDataCenter } from './Common/worlds'
 import { MainView } from './MainView/MainView'
 import Sidebar from './Sidebar/Sidebar'
 type State = { itemid: number; itemname: string; dc: XIVDataCenter }
@@ -17,7 +17,7 @@ const App = () => {
   const [state, setState] = useState<State>({
     itemid: itemid,
     itemname: window.ItemList.get(Number(itemid)) ?? '??',
-    dc: isDataCenter(dc_query) ? dc_query : 'Elemental',
+    dc: isXIVDataCenter(dc_query) ? dc_query : 'Elemental',
   })
 
   useEffect(() => {
