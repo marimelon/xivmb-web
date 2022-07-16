@@ -1,4 +1,4 @@
-import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import moment from 'moment'
 import { HistoryResponse } from '../@types/historyResponse'
 import { MarketDataResponse } from '../@types/marketResponse'

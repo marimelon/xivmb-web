@@ -1,5 +1,5 @@
 import style from './ItemButtons.module.scss'
-import StarBorderIcon from '@material-ui/icons/StarBorder'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 type DivProps = JSX.IntrinsicElements['div']
 
 export type FavoriteButtonProps = {

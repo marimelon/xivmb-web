@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { SetupItemList } from './Common/database'

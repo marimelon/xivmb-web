@@ -1,6 +1,6 @@
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import { makeStyles } from '@material-ui/core/styles'
+import styled from '@emotion/styled'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import React from 'react'
 import useDimensions from 'react-cool-dimensions'
 import { XIVDataCenter } from '../@types/world'
@@ -26,48 +26,40 @@ const WorldTabNomal = React.memo(
   }
 )
 
-const useStyles = makeStyles({
-  icon: {
-    color: '#CCCCCC',
-  },
-  select: {
-    '& ul': {
-      backgroundColor: '#192734',
-    },
-    '& li': {
-      color: '#CCCCCC',
-      fontSize: 12,
-    },
-    '& li:hover': {
-      color: 'rgb(79, 180, 243)',
-    },
-  },
-})
+const StyledSelect = styled(Select)(({ theme }) => ({
+  '& .MuiSelect-icon': { color: '#CCCCCC' },
+}))
 
 const WorldTabDoropDown = React.memo(
   ({ tabList, currentTabType, onClick }: TabProps) => {
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      onClick(event.target.value as string)
-    }
-
-    const classes = useStyles()
-
     return (
       <div className={style.WorldTab}>
-        <Select
+        <StyledSelect
           disableUnderline
           value={currentTabType}
-          onChange={handleChange}
+          onChange={(event, _) => {
+            onClick(event.target.value as string)
+          }}
           className={style.CompactWorldTab}
-          classes={{ icon: classes.icon }}
-          MenuProps={{ classes: { paper: classes.select } }}
+          variant={'standard'}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                color: '#CCCCCC',
+                backgroundColor: '#192734',
+                '& li:hover': {
+                  color: 'rgb(79, 180, 243)',
+                },
+              },
+            },
+          }}
         >
           {tabList.map(item => (
             <MenuItem key={item} value={item}>
               {item}
             </MenuItem>
           ))}
-        </Select>
+        </StyledSelect>
       </div>
     )
   }

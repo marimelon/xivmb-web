@@ -1,4 +1,4 @@
-import FileCopyIcon from '@material-ui/icons/FileCopy'
+import FileCopyIcon from '@mui/icons-material/FileCopy'
 import React, { useEffect, useState } from 'react'
 import CopyToClipBoard from 'react-copy-to-clipboard'
 import { get_iteminfo } from '../Api/iteminfo'
