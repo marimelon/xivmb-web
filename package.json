@@ -59,6 +59,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "ci-build": "cross-env CI=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write './src/**/*.{ts,tsx}'"
@@ -79,6 +80,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "prettier": "2.7.1",
     "sass": "^1.47.0",
     "ts-migrate": "^0.1.13"
