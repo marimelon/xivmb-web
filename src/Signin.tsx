@@ -17,13 +17,7 @@ const Signin = () => {
   const history = useHistory()
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = ({
-    email,
-    password,
-  }: {
-    email: string
-    password: string
-  }) => {
+  const onSubmit = (email: string, password: string) => {
     setLoading(true)
     firebase
       .auth()
@@ -44,10 +38,10 @@ const Signin = () => {
         className="mx-auto"
         style={{ width: 400, background: '#eee', padding: 20, marginTop: 60 }}
       >
-        <p style={{ textAlign: 'center' }}>サインイン</p>
+        <p style={{ textAlign: 'center' }}>Sign in to FFXIVMarket</p>
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={onSubmit}
+          onSubmit={({ email, password }) => onSubmit(email, password)}
           validationSchema={Yup.object().shape({
             email: Yup.string().email().required(),
             password: Yup.string().required(),
@@ -96,7 +90,7 @@ const Signin = () => {
                     style={{ marginRight: 5 }}
                     hidden={!loading}
                   />
-                  ログイン
+                  Sign in
                 </Button>
               </div>
             </Form>
