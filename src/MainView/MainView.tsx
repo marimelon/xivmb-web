@@ -9,7 +9,6 @@ import { get_current_market, get_market } from '../Api/get_market'
 import firebase from '../Common/firebase'
 import HistoryChart from './HistoryChart'
 import ItemHeader from './ItemHeader'
-import LoginHeader from './LoginHeader'
 import style from './MainView.module.scss'
 import TablesView from './TablesView'
 import { UpdateButton, UpdateButtonState } from './UpdateButton'
@@ -128,7 +127,6 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
 
   return (
     <div className={style.MainView}>
-      <LoginHeader dc={dataCenter} />
       <ItemHeader itemid={itemid} itemname={itemname} />
       <UpdateButton
         status={updateButtonState}

@@ -1,22 +1,22 @@
 import styled from '@emotion/styled'
-import { Button, Grid } from '@mui/material'
+import { Box, Button, Grid } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useHistory, withRouter } from 'react-router'
-import { RouteComponentProps } from 'react-router-dom'
-import { XIVDataCenter, XIVDataCenters } from '../@types/world'
-import { AppLocationState } from '../App'
-import firebase from '../Common/firebase'
+import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom'
+import { XIVDataCenter, XIVDataCenters } from './@types/world'
+import { AppLocationState } from './App'
+import firebase from './Common/firebase'
 
 const HeaderItem = styled(Button)(({ theme }) => ({
   color: 'white',
   textTransform: 'none',
 }))
 
-type LoginHeaderProps = {
-  dc: XIVDataCenter
+type MainHeaderProps = {
+  currentDC: XIVDataCenter
+  onMenuClick: () => void
 } & RouteComponentProps
 
-export const LoginHeader = ({ dc }: LoginHeaderProps) => {
+const _MainHeader = ({ currentDC, onMenuClick }: MainHeaderProps) => {
   const [user, setUser] = useState<firebase.User | null>(null)
   const history = useHistory<AppLocationState>()
   useEffect(() => {
@@ -40,8 +40,12 @@ export const LoginHeader = ({ dc }: LoginHeaderProps) => {
       )
   }
   return (
-    <Grid container justifyContent="flex-end">
-      {XIVDataCenters.filter(v => v !== dc).map(v => (
+    <Grid container>
+      <HeaderItem sx={{ pl: 4, display: { md: 'none' } }} onClick={onMenuClick}>
+        Menu
+      </HeaderItem>
+      <Box sx={{ flexGrow: 1 }} />
+      {XIVDataCenters.filter(v => v !== currentDC).map(v => (
         <HeaderItem
           key={v}
           onClick={() => {
@@ -63,7 +67,7 @@ export const LoginHeader = ({ dc }: LoginHeaderProps) => {
         </HeaderItem>
       ))}
       {user ? (
-        <HeaderItem sx={{ pl: 4 }} onClick={logout}>
+        <HeaderItem sx={{ ml: 4 }} onClick={logout}>
           Logout
         </HeaderItem>
       ) : (
@@ -73,4 +77,4 @@ export const LoginHeader = ({ dc }: LoginHeaderProps) => {
   )
 }
 
-export default withRouter(LoginHeader)
+export const MainHeader = withRouter(_MainHeader)

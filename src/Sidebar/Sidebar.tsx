@@ -1,16 +1,16 @@
+import { Box, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import firebase from '../Common/firebase'
 import Favorite from './Favorite'
 import { HistoryList } from './HistoryList'
 import { ItemListTab } from './ItemListTab'
 import ItemSearch from './ItemSearch/ItemSearch'
-import style from './Sidebar.module.scss'
 
 interface Props {
   changeItem?: (itemid: number, itemname: string) => void
 }
 
-const Sidebar = ({ changeItem }: Props) => {
+export const Sidebar = ({ changeItem }: Props) => {
   const [favoriteList, setFavoriteList] = useState<FavoriteItem[]>([])
   const [activeItem, setActiveItem] = useState<string>()
   const [itemListType, setItemListType] = useState<'favorite' | 'history'>(
@@ -69,10 +69,13 @@ const Sidebar = ({ changeItem }: Props) => {
   }
 
   return (
-    <div className={style.Sidebar}>
-      <div className={style.WebTitle}>
-        <div>FFXIVMarketBord</div>
-      </div>
+    <Box sx={{ mt: '8px' }}>
+      <Typography
+        variant="h5"
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
+        FFXIVMarketBord
+      </Typography>
       <ItemSearch
         onClickItem={changeActiveItem}
         activeItem={activeItem}
@@ -97,8 +100,6 @@ const Sidebar = ({ changeItem }: Props) => {
           addFavorite={addFavorite}
         />
       )}
-    </div>
+    </Box>
   )
 }
-
-export default Sidebar

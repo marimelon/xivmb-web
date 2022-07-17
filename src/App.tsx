@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { Box, Drawer } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
 import { XIVDataCenter } from './@types/world'
-import style from './App.module.css'
 import firebase from './Common/firebase'
 import { isXIVDataCenter } from './Common/worlds'
+import { MainHeader } from './MainHeader'
 import { MainView } from './MainView/MainView'
-import Sidebar from './Sidebar/Sidebar'
+import { Sidebar } from './Sidebar/Sidebar'
+
 export type AppLocationState = {
   itemid: number
   itemname: string
@@ -23,7 +25,7 @@ const App = () => {
     itemname: window.ItemList.get(Number(itemid)) ?? '??',
     dc: isXIVDataCenter(dc_query) ? dc_query : 'Elemental',
   })
-
+  const [drawerOpen, setDrawerOpen] = useState(false)
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -66,6 +68,7 @@ const App = () => {
   })
 
   const changeItem = (itemid: number, itemname: string) => {
+    setDrawerOpen(false)
     history.push({
       pathname: `/${itemid}`,
       state: { itemid: itemid, itemname: itemname, dc: state.dc },
@@ -78,14 +81,70 @@ const App = () => {
 
   document.title = state.itemname
 
+  const drawerWidth = 297
+
   return (
-    <div className={style.App}>
-      <Sidebar changeItem={changeItem} />
-      <MainView
-        itemid={state.itemid}
-        itemname={state.itemname}
-        dataCenter={state.dc}
-      />
+    <div style={{ display: 'flex' }}>
+      <Box
+        component="nav"
+        sx={{
+          width: { md: drawerWidth },
+          flexShrink: { md: 0 },
+          justifyContent: 'center',
+        }}
+      >
+        <Drawer
+          variant="temporary"
+          open={drawerOpen}
+          onClose={() => {
+            setDrawerOpen(false)
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundImage: 'initial',
+            },
+          }}
+        >
+          <Sidebar changeItem={changeItem} />
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              left: 'initial',
+            },
+          }}
+          open
+        >
+          <Sidebar changeItem={changeItem} />
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <MainHeader
+          currentDC={state.dc}
+          onMenuClick={() => setDrawerOpen(true)}
+        />
+        <MainView
+          itemid={state.itemid}
+          itemname={state.itemname}
+          dataCenter={state.dc}
+        />
+      </Box>
     </div>
   )
 }
