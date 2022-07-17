@@ -79,10 +79,6 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
     return cleanup
   }, [itemid, dataCenter])
 
-  const onTabChange = (tabtype: any) => {
-    setWorld(tabtype)
-  }
-
   const onClickHistoryChartButton = (value: boolean) => {
     setIsShownHistoryChart(value)
   }
@@ -132,7 +128,7 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
 
   return (
     <div className={style.MainView}>
-      <LoginHeader />
+      <LoginHeader dc={dataCenter} />
       <ItemHeader itemid={itemid} itemname={itemname} />
       <UpdateButton
         status={updateButtonState}
@@ -141,7 +137,7 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
       <WorldTab
         dataCenter={dataCenter}
         currentTabType={world}
-        onClick={onTabChange}
+        onClick={setWorld}
       />
       <Collapse in={isShownHistoryChart}>
         <HistoryChart

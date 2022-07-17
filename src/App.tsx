@@ -6,15 +6,19 @@ import firebase from './Common/firebase'
 import { isXIVDataCenter } from './Common/worlds'
 import { MainView } from './MainView/MainView'
 import Sidebar from './Sidebar/Sidebar'
-type State = { itemid: number; itemname: string; dc: XIVDataCenter }
+export type AppLocationState = {
+  itemid: number
+  itemname: string
+  dc: XIVDataCenter
+}
 
 const App = () => {
-  const history = useHistory<State>()
+  const history = useHistory<AppLocationState>()
   const match = useRouteMatch<{ itemid: string }>()
   const search = useLocation().search
   const dc_query = new URLSearchParams(search).get('dc') ?? ''
   const itemid = Number(match.params.itemid)
-  const [state, setState] = useState<State>({
+  const [state, setState] = useState<AppLocationState>({
     itemid: itemid,
     itemname: window.ItemList.get(Number(itemid)) ?? '??',
     dc: isXIVDataCenter(dc_query) ? dc_query : 'Elemental',

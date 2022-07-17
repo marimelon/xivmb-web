@@ -3,22 +3,32 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import React from 'react'
 import useDimensions from 'react-cool-dimensions'
-import { XIVDataCenter } from '../@types/world'
-import { getWorlds } from '../Common/worlds'
+import { XIVDataCenter, XIVWorld } from '../@types/world'
+import { getWorlds, isXIVDataCenter } from '../Common/worlds'
 import { Tab } from '../Components/Tab/Tab'
 import style from './WorldTab.module.scss'
 
 type TabProps = {
-  tabList: readonly string[]
-  currentTabType: string
-  onClick: (item: string) => void
+  tabList: (XIVWorld | XIVDataCenter)[]
+  currentTabType: XIVWorld | XIVDataCenter
+  onClick: (item: XIVWorld | XIVDataCenter) => void
 }
 
 const WorldTabNomal = React.memo(
   ({ tabList, currentTabType, onClick }: TabProps) => {
     return (
       <Tab
-        items={tabList.map(value => ({ value: value, display: value }))}
+        items={tabList.map(v => {
+          const node = isXIVDataCenter(v) ? (
+            <>
+              <i className={'crossworld-icon'}></i>
+              {v}
+            </>
+          ) : (
+            v
+          )
+          return { value: v, display: node }
+        })}
         value={currentTabType}
         onChange={onClick}
       />
@@ -38,7 +48,7 @@ const WorldTabDoropDown = React.memo(
           disableUnderline
           value={currentTabType}
           onChange={(event, _) => {
-            onClick(event.target.value as string)
+            onClick(event.target.value as XIVWorld | XIVDataCenter)
           }}
           className={style.CompactWorldTab}
           variant={'standard'}
@@ -56,6 +66,7 @@ const WorldTabDoropDown = React.memo(
         >
           {tabList.map(item => (
             <MenuItem key={item} value={item}>
+              {isXIVDataCenter(item) && <i className={'crossworld-icon'}></i>}{' '}
               {item}
             </MenuItem>
           ))}
@@ -67,8 +78,8 @@ const WorldTabDoropDown = React.memo(
 
 type WorldTabProps = {
   dataCenter: XIVDataCenter
-  currentTabType: string
-  onClick: (item: string) => void
+  currentTabType: XIVWorld | XIVDataCenter
+  onClick: (item: XIVWorld | XIVDataCenter) => void
 }
 
 const WorldTab = ({ dataCenter, currentTabType, onClick }: WorldTabProps) => {
@@ -79,6 +90,11 @@ const WorldTab = ({ dataCenter, currentTabType, onClick }: WorldTabProps) => {
   })
 
   const worldList = [dataCenter, ...getWorlds(dataCenter)]
+
+  if (currentTabType !== dataCenter && !worldList.includes(currentTabType)) {
+    onClick(dataCenter)
+    return <div ref={ref}></div>
+  }
 
   return (
     <div ref={ref}>

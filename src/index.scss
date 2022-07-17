@@ -26,6 +26,20 @@ code {
     monospace;
 }
 
+@font-face {
+  font-family: 'xivfonts';
+  src: url('../public/FFXIVAppIcons.woff') format('woff')
+}
+
+.crossworld-icon:before{
+  font-family: 'xivfonts' !important;
+  font-style: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\e075";
+}
+
 .sortable-chosen.sortable-ghost {
   opacity: 0;
 }
