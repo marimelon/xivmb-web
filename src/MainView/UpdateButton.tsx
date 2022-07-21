@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import firebase from '../Common/firebase'
+import { get_user } from '../Common/firebase'
 import style from './MainView.module.scss'
 
 export type UpdateButtonState = 0 | 1 | 2 | 3
@@ -12,7 +12,7 @@ export type UpdateButtonProps = {
 export const UpdateButton = ({ status, callback }: UpdateButtonProps) => {
   const [isLogin, setIsLogin] = useState(false)
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
         setIsLogin(true)
       }

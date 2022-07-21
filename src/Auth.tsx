@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { SetupItemList } from './Common/database'
-import firebase from './Common/firebase'
+import { get_user } from './Common/firebase'
 import { LoadingPage } from './Common/LoadingPage'
 
 const FaildLoadErrorDialog = () => {
@@ -49,7 +49,7 @@ const Auth = (props: Props) => {
 
   useEffect(() => {
     //ログインしてるかどうかチェック
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
         setState(state => ({
           ...state,

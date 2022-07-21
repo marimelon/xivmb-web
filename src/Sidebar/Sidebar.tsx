@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material'
+import { doc, onSnapshot, setDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import firebase from '../Common/firebase'
+import { firestore, get_user } from '../Common/firebase'
 import Favorite from './Favorite'
 import { HistoryList } from './HistoryList'
 import { ItemListTab } from './ItemListTab'
@@ -17,31 +18,25 @@ export const Sidebar = ({ changeItem }: Props) => {
     'favorite'
   )
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
-        firebase
-          .firestore()
-          .collection('user_bookmark')
-          .doc(user.uid)
-          .onSnapshot(doc => {
-            if (doc.exists) {
-              if (doc.metadata.hasPendingWrites === false) {
-                setFavoriteList(doc.get('favorite'))
-              }
+        const docRef = doc(firestore, 'user_bookmark', user.uid)
+        onSnapshot(docRef, doc => {
+          if (doc.exists()) {
+            if (doc.metadata.hasPendingWrites === false) {
+              setFavoriteList(doc.get('favorite'))
             }
-          })
+          }
+        })
       }
     })
   }, [])
 
   const updateFireStore = (favoriteList: FavoriteItem[]) => {
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
-        firebase
-          .firestore()
-          .collection('user_bookmark')
-          .doc(user.uid)
-          .set({ favorite: favoriteList })
+        const docRef = doc(firestore, 'user_bookmark', user.uid)
+        setDoc(docRef, { favorite: favoriteList })
       }
     })
   }

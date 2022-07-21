@@ -1,3 +1,4 @@
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { Formik } from 'formik'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -11,7 +12,7 @@ import {
   Spinner,
 } from 'reactstrap'
 import * as Yup from 'yup'
-import firebase from './Common/firebase'
+import { auth } from './Common/firebase'
 
 const Signin = () => {
   const history = useHistory()
@@ -19,10 +20,8 @@ const Signin = () => {
 
   const onSubmit = (email: string, password: string) => {
     setLoading(true)
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(res => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(ret => {
         setLoading(false)
         history.push('/')
       })

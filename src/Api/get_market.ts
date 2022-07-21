@@ -1,6 +1,7 @@
 import { MarketDataResponse } from '../@types/marketResponse'
 import { XIVDataCenter } from '../@types/world'
-import firebase, { get_user } from '../Common/firebase'
+import { get_user, firestore } from '../Common/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 
 const NoDataMarketResponse: (
   itemid: number
@@ -37,13 +38,15 @@ export const get_market = async (itemid: number, datacenter: XIVDataCenter) => {
   if (user === null) {
     throw Error('Not Found User')
   }
-  const document = await firebase
-    .firestore()
-    .collection('market_data')
-    .doc(String(itemid))
-    .collection('users')
-    .doc(user.uid)
-    .get()
+  const docRef = doc(
+    firestore,
+    'market_data',
+    String(itemid),
+    'users',
+    user.uid
+  )
+  const document = await getDoc(docRef)
+
   const data = document.data()
   if (data === undefined) {
     return NoDataMarketResponse(itemid)

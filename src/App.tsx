@@ -1,8 +1,15 @@
 import { Box, Drawer } from '@mui/material'
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  writeBatch,
+} from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
 import { XIVDataCenter } from './@types/world'
-import firebase from './Common/firebase'
+import { firestore, get_user } from './Common/firebase'
 import { isXIVDataCenter } from './Common/worlds'
 import { MainHeader } from './MainHeader'
 import { MainView } from './MainView/MainView'
@@ -27,26 +34,23 @@ const App = () => {
   })
   const [drawerOpen, setDrawerOpen] = useState(false)
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
-        var ref = firebase
-          .firestore()
-          .collection('user_histories')
-          .doc(user.uid)
-        ref.get().then(doc => {
-          const batch = firebase.firestore().batch()
+        const docRef = doc(firestore, 'user_histories', user.uid)
+        getDoc(docRef).then(doc => {
+          const batch = writeBatch(firestore)
 
-          if (!doc.exists) {
-            batch.set(ref, {
+          if (!doc.exists()) {
+            batch.set(docRef, {
               history: [],
             })
           }
 
-          batch.update(ref, {
-            history: firebase.firestore.FieldValue.arrayRemove(itemid),
+          batch.update(docRef, {
+            history: arrayRemove(itemid),
           })
-          batch.update(ref, {
-            history: firebase.firestore.FieldValue.arrayUnion(itemid),
+          batch.update(docRef, {
+            history: arrayUnion(itemid),
           })
           batch.commit()
         })

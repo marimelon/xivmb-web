@@ -1,7 +1,6 @@
-import firebase from 'firebase/compat/app'
-
-import 'firebase/compat/auth'
-import 'firebase/compat/firestore'
+import { initializeApp } from 'firebase/app'
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 const config = {
   apiKey: 'AIzaSyBK3yG6oqn9OB_sAF25VBn3k1-M0xjduE8',
@@ -14,13 +13,22 @@ const config = {
   measurementId: 'G-C0F7WK1FL1',
 }
 
-firebase.initializeApp(config)
+const firebaseApp = initializeApp(config)
+
+export const auth = getAuth(firebaseApp)
+export const firestore = getFirestore(firebaseApp)
 
 export const get_user = async () => {
-  return new Promise<firebase.User | null>((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(user => {
-      resolve(user)
-    })
+  return new Promise<User | null>((resolve, reject) => {
+    onAuthStateChanged(
+      auth,
+      user => {
+        resolve(user)
+      },
+      error => {
+        reject(error)
+      }
+    )
   })
 }
 
@@ -32,5 +40,3 @@ export const get_token = async (forceRefresh: boolean = false) => {
 
   return await user.getIdToken(forceRefresh)
 }
-
-export default firebase

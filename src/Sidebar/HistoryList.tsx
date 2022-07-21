@@ -1,16 +1,17 @@
+import { arrayRemove, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import firebase from '../Common/firebase'
+import { firestore, get_user } from '../Common/firebase'
 import style from './Favorite.module.scss'
 import { FavoriteButton } from './ItemButtons/AddFavoriteButton'
 import { DeleteFavoriteButton } from './ItemButtons/DeleteFavoriteButton'
 import { SidebarItem } from './SidebarItem'
 
 const removeHistory = (itemid: number) => {
-  firebase.auth().onAuthStateChanged(user => {
+  get_user().then(user => {
     if (user) {
-      var ref = firebase.firestore().collection('user_histories').doc(user.uid)
-      ref.update({
-        history: firebase.firestore.FieldValue.arrayRemove(itemid),
+      const docRef = doc(firestore, 'user_histories', user.uid)
+      updateDoc(docRef, {
+        history: arrayRemove(firestore, itemid),
       })
     }
   })
@@ -34,25 +35,23 @@ export const HistoryList = ({
   useEffect(() => {
     var unsubscribe: (() => void) | undefined = undefined
 
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
-        unsubscribe = firebase
-          .firestore()
-          .collection('user_histories')
-          .doc(user.uid)
-          .onSnapshot(doc => {
-            if (doc.exists) {
-              const itemIds = doc.get('history') as number[]
-              setItems(
-                itemIds.reverse().map(value => ({
-                  id: value,
-                  name: window.ItemList.get(value) ?? '???',
-                }))
-              )
-            }
-          })
+        const docRef = doc(firestore, 'user_histories', user.uid)
+        unsubscribe = onSnapshot(docRef, doc => {
+          if (doc.exists()) {
+            const itemIds = doc.get('history') as number[]
+            setItems(
+              itemIds.reverse().map(value => ({
+                id: value,
+                name: window.ItemList.get(value) ?? '???',
+              }))
+            )
+          }
+        })
       }
     })
+
     return () => {
       unsubscribe && unsubscribe()
     }

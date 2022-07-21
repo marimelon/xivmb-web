@@ -1,8 +1,9 @@
 import { createTheme, ThemeProvider } from '@mui/material'
+import { doc, onSnapshot } from 'firebase/firestore'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Auth from './Auth'
-import firebase from './Common/firebase'
+import { firestore, get_user } from './Common/firebase'
 import { LoadingPage } from './Common/LoadingPage'
 
 const SignIn = lazy(() => import('./Signin'))
@@ -14,24 +15,20 @@ const Redirect2LastItemPage = () => {
 
   useEffect(() => {
     var unsubscribe: (() => void) | undefined = undefined
-
-    firebase.auth().onAuthStateChanged(user => {
+    get_user().then(user => {
       if (user) {
-        unsubscribe = firebase
-          .firestore()
-          .collection('user_histories')
-          .doc(user.uid)
-          .onSnapshot(doc => {
-            if (doc.exists) {
-              const items = doc.get('history') as number[]
-              console.log(items)
-              if (items.length > 0) {
-                setGoto(items[items.length - 1])
-                return
-              }
+        const docRef = doc(firestore, 'user_histories', user.uid)
+        unsubscribe = onSnapshot(docRef, doc => {
+          if (doc.exists()) {
+            const items = doc.get('history') as number[]
+            console.log(items)
+            if (items.length > 0) {
+              setGoto(items[items.length - 1])
+              return
             }
-            setGoto(2)
-          })
+          }
+          setGoto(2)
+        })
       }
     })
     return () => {

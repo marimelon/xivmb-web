@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
 import { Box, Button, Grid } from '@mui/material'
+import { signOut, User } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom'
 import { XIVDataCenter, XIVDataCenters } from './@types/world'
 import { AppLocationState } from './App'
-import firebase from './Common/firebase'
-
+import { auth, get_user } from './Common/firebase'
 const HeaderItem = styled(Button)(({ theme }) => ({
   color: 'white',
   textTransform: 'none',
@@ -17,27 +17,24 @@ type MainHeaderProps = {
 } & RouteComponentProps
 
 const _MainHeader = ({ currentDC, onMenuClick }: MainHeaderProps) => {
-  const [user, setUser] = useState<firebase.User | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const history = useHistory<AppLocationState>()
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(setUser)
+    get_user().then(setUser)
   }, [])
 
   const login = () => {
     history.push('/login')
   }
   const logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(
-        _ => {
-          setUser(null)
-        },
-        err => {
-          console.log(err)
-        }
-      )
+    signOut(auth).then(
+      _ => {
+        setUser(null)
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
   return (
     <Grid container>

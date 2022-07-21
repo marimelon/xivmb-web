@@ -6,7 +6,7 @@ import { MarketDataResponse } from '../@types/marketResponse'
 import { XIVDataCenter, XIVWorld } from '../@types/world'
 import { get_history } from '../Api/get_history'
 import { get_current_market, get_market } from '../Api/get_market'
-import firebase from '../Common/firebase'
+import { get_token } from '../Common/firebase'
 import HistoryChart from './HistoryChart'
 import ItemHeader from './ItemHeader'
 import style from './MainView.module.scss'
@@ -87,42 +87,40 @@ export const MainView = ({ itemid, itemname, dataCenter }: MainViewProps) => {
   ) => {
     event.currentTarget.blur()
     setUpdateButtonState(1)
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        user.getIdToken(false).then(idToken => {
-          if (rateLimit === undefined) {
-            fetch(`${process.env.REACT_APP_API_URL}/rate_limit`, {
-              headers: { Authorization: 'Bearer ' + idToken },
-            })
-              .then(res => res.text())
-              .then(res => setRateLimit(Number(res)))
-          }
-          const _itemid = itemid
-          get_current_market(itemid, dataCenter, idToken)
-            .then<MarketDataResponse>(res => {
-              if (!res.ok) {
-                throw Error(res.statusText)
-              }
-              return res.json()
-            })
-            .then(res => {
-              setUpdateButtonState(2)
-              setTimeout(() => {
-                setUpdateButtonState(0)
-              }, (rateLimit ?? 20) * 1000)
-              if (_itemid === itemid) {
-                setMarketData({ data: res, error: undefined })
-              }
-            })
-            .catch(err => {
+    get_token(false)
+      .then(idToken => {
+        if (rateLimit === undefined) {
+          fetch(`${process.env.REACT_APP_API_URL}/rate_limit`, {
+            headers: { Authorization: 'Bearer ' + idToken },
+          })
+            .then(res => res.text())
+            .then(res => setRateLimit(Number(res)))
+        }
+        const _itemid = itemid
+        get_current_market(itemid, dataCenter, idToken)
+          .then<MarketDataResponse>(res => {
+            if (!res.ok) {
+              throw Error(res.statusText)
+            }
+            return res.json()
+          })
+          .then(res => {
+            setUpdateButtonState(2)
+            setTimeout(() => {
               setUpdateButtonState(0)
-              alert(`更新に失敗しました (${err.message})`)
-            })
-        })
-      } else {
+            }, (rateLimit ?? 20) * 1000)
+            if (_itemid === itemid) {
+              setMarketData({ data: res, error: undefined })
+            }
+          })
+          .catch(err => {
+            setUpdateButtonState(0)
+            alert(`更新に失敗しました (${err.message})`)
+          })
+      })
+      .catch(_ => {
         history.push('/signin')
-      }
-    })
+      })
   }
 
   return (
