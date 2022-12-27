@@ -1,4 +1,5 @@
 import { ItemListResponse } from '../@types/itemListResponse'
+import { get_itemlist, get_itemlist_version } from '../Api/get_itemlist'
 const dbName = 'DB'
 const storeName = 'itemlist'
 
@@ -6,9 +7,7 @@ export type SetupItemListResult = 'SUCSECC' | 'FAILDED_LOAD' | 'FAILDED_DB'
 
 export const SetupItemList: () => Promise<SetupItemListResult> = async () => {
   window.ItemList = new Map()
-  const version_response = await fetch(
-    `${process.env.REACT_APP_API_URL}/itemlistversion`
-  ).then<{ version: number; count: number }>(res => res.json())
+  const version_response = await get_itemlist_version()
   const server_version = version_response.version
   const server_count = version_response.count
 
@@ -25,25 +24,18 @@ export const SetupItemList: () => Promise<SetupItemListResult> = async () => {
 
   console.log(current_version)
   if (current_version === -1) {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/itemlist`)
-    if (!res.ok) {
-      return 'FAILDED_LOAD'
-    }
-    const datas: ItemListResponse = await res.json()
-    for (const v of datas) {
+    const itemlist = await get_itemlist()
+    for (const v of itemlist) {
       window.ItemList.set(v.id, v.name)
     }
     return 'SUCSECC'
   } else if (server_version > current_version) {
     // fetch itemlist and save to indexedDB
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/itemlist`)
-    if (!res.ok) {
-      return 'FAILDED_LOAD'
-    }
-    const datas: ItemListResponse = await res.json()
-    if (datas.length !== server_count) {
+    const itemlist = await get_itemlist()
+    if (itemlist.length !== server_count) {
       return 'FAILDED_DB'
     }
+
     return await new Promise<SetupItemListResult>((resolve, reject) => {
       const openReq = indexedDB.open(dbName, server_version)
       openReq.onupgradeneeded = event => {
@@ -57,7 +49,7 @@ export const SetupItemList: () => Promise<SetupItemListResult> = async () => {
           return
         }
         const store = trans.objectStore(storeName)
-        for (const v of datas) {
+        for (const v of itemlist) {
           store.put(v)
           window.ItemList.set(v.id, v.name)
         }

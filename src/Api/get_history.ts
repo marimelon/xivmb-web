@@ -8,10 +8,10 @@ export const get_history = async (itemid: number, dc?: XIVDataCenter) => {
     url += `&dc=${dc}`
   }
 
-  var idToken = await get_token()
+  const token = await get_token()
 
   const res = await fetch(url, {
-    headers: { Authorization: 'Bearer ' + idToken },
+    headers: { Authorization: 'Bearer ' + token },
   })
   if (!res.ok) {
     throw Error('UNHANDLED_ERROR')

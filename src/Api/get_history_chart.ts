@@ -1,5 +1,6 @@
 import { ChartResponse } from '../@types/chartResponse'
 import { XIVDataCenter, XIVWorld } from '../@types/world'
+import { get_token } from '../Common/firebase'
 import { isXIVWorld } from '../Common/worlds'
 
 export const get_history_chart = async (
@@ -14,7 +15,11 @@ export const get_history_chart = async (
       url += `&dc=${world}`
     }
   }
-  const res = await fetch(url)
+
+  const token = await get_token()
+  const res = await fetch(url, {
+    headers: { Authorization: 'Bearer ' + token },
+  })
   if (!res.ok) {
   }
   return (await res.json()) as ChartResponse

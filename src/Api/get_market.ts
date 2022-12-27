@@ -23,16 +23,6 @@ const NoDataMarketResponse: (
   },
 })
 
-export const get_market2 = async (itemid: number) => {
-  const res = await fetch(
-    `${process.env.REACT_APP_API_URL}/dev/data/market/${itemid}`
-  )
-  if (res.ok) {
-    return (await res.json()) as MarketDataResponse
-  }
-  throw Error('UNHANDLED_ERROR')
-}
-
 export const get_market = async (itemid: number, datacenter: XIVDataCenter) => {
   const user = await get_user()
   if (user === null) {

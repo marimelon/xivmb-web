@@ -1,3 +1,5 @@
+import { get_token } from '../Common/firebase'
+
 type itemInfo = {
   id: number
   name: string
@@ -6,7 +8,11 @@ type itemInfo = {
 }
 
 export const get_iteminfo = async (itemid: number) => {
-  return await fetch(
-    `${process.env.REACT_APP_API_URL}/items/${itemid}`
-  ).then<itemInfo>(res => res.json())
+  const url = `${process.env.REACT_APP_API_URL}/items/${itemid}`
+  const token = await get_token()
+
+  const res = await fetch(url, {
+    headers: { Authorization: 'Bearer ' + token },
+  })
+  return (await res.json()) as itemInfo
 }
