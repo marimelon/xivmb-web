@@ -1,13 +1,6 @@
 import { ItemListResponse } from '../@types/itemListResponse'
 import { get_token } from '../Common/firebase'
 
-type itemInfo = {
-  id: number
-  name: string
-  lodestone: string
-  hq: 0 | 1
-}
-
 export const get_itemlist_version = async () => {
   const url = `${process.env.REACT_APP_API_URL}/itemlistversion`
   const token = await get_token()

@@ -1,4 +1,3 @@
-import { ItemListResponse } from '../@types/itemListResponse'
 import { get_itemlist, get_itemlist_version } from '../Api/get_itemlist'
 const dbName = 'DB'
 const storeName = 'itemlist'
