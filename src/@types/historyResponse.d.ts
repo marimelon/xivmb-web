@@ -1,12 +1,12 @@
 export type HistoryData = {
   Updated: number
-  buyCharacterName: string
-  buyDate: number
-  itemid: number
-  hq: number
-  sellPrice: number
-  stack: number
-  world: string
+  BuyCharacterName: string
+  BuyDate: number
+  Itemid: number
+  Hq: number
+  SellPrice: number
+  Stack: number
+  World: string
 }
 
 export type HistoryResponse = Array<HistoryData>

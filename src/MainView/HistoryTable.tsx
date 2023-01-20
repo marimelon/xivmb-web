@@ -17,8 +17,8 @@ const conversionData = (
     return []
   }
   return [...data]
-    .sort((a, b) => b.buyDate - a.buyDate)
-    .filter(value => isXIVDataCenter(world) || value.world === world)
+    .sort((a, b) => b.BuyDate - a.BuyDate)
+    .filter(value => isXIVDataCenter(world) || value.World === world)
 }
 
 type HistoryTableProps = {
@@ -83,13 +83,13 @@ export const HistoryTable = ({
             >
               <Column
                 label="World"
-                dataKey="world"
+                dataKey="World"
                 width={100}
                 disableSort={true}
               />
               <Column
                 label="HQ"
-                dataKey="hq"
+                dataKey="Hq"
                 width={24}
                 disableSort={true}
                 cellRenderer={({ cellData }) => {
@@ -109,7 +109,7 @@ export const HistoryTable = ({
               />
               <Column
                 label="Price"
-                dataKey="sellPrice"
+                dataKey="SellPrice"
                 headerStyle={{ textAlign: 'right' }}
                 width={115}
                 cellRenderer={({ cellData }) => {
@@ -122,7 +122,7 @@ export const HistoryTable = ({
               />
               <Column
                 label="QTY"
-                dataKey="stack"
+                dataKey="Stack"
                 width={56}
                 headerStyle={{ textAlign: 'center' }}
                 cellRenderer={({ cellData }) => {
@@ -135,7 +135,7 @@ export const HistoryTable = ({
               />
               <Column
                 label="Date"
-                dataKey="buyDate"
+                dataKey="BuyDate"
                 width={100}
                 cellRenderer={({ cellData }) => {
                   return (
