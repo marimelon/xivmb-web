@@ -7,7 +7,7 @@ const NoDataMarketResponse: (
   itemid: number
 ) => MarketDataResponse = itemid => ({
   itemid: itemid,
-  itemname: window.ItemList.get(itemid) ?? '???',
+  itemname: '???',
   timestamp: 0,
   data: {
     Gungnir: { entries: [] },

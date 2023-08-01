@@ -50,7 +50,7 @@ const _MainHeader = ({ currentDC, onMenuClick }: MainHeaderProps) => {
 
             const state = {
               itemid: itemid,
-              itemname: window.ItemList.get(itemid) ?? '??',
+              itemname:'??',
               dc: v,
             }
             history.replace(

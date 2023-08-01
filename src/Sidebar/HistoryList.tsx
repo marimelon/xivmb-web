@@ -21,7 +21,7 @@ export type HistoryListProps = {
   onClickItem: (parent: string, itemid: number, itemname: string) => void
   activeItem?: string
   favoriteList: FavoriteItem[]
-  addFavorite: (itemid: number, name: string) => void
+  addFavorite: (itemid: number, name?: string) => void
 }
 
 export const HistoryList = ({
@@ -30,23 +30,17 @@ export const HistoryList = ({
   favoriteList,
   addFavorite,
 }: HistoryListProps) => {
-  const [items, setItems] = useState<FavoriteItem[]>([])
+  const [items, setItems] = useState<number[]>([])
 
   useEffect(() => {
     var unsubscribe: (() => void) | undefined = undefined
-
     get_user().then(user => {
       if (user) {
         const docRef = doc(firestore, 'user_histories', user.uid)
         unsubscribe = onSnapshot(docRef, doc => {
           if (doc.exists()) {
             const itemIds = doc.get('history') as number[]
-            setItems(
-              itemIds.reverse().map(value => ({
-                id: value,
-                name: window.ItemList.get(value) ?? '???',
-              }))
-            )
+            setItems(itemIds)
           }
         })
       }
@@ -65,25 +59,22 @@ export const HistoryList = ({
       {items.map(value => {
         return (
           <SidebarItem
-            key={value.id}
-            itemid={value.id}
-            name={value.name}
+            key={value}
+            itemid={value}
+            name={undefined}
             onClick={_onClickItem}
-            isActive={activeItem === 'history' + value.id}
-            className={style.SidebarItem}
-          >
+            isActive={activeItem === 'history' + value}
+            className={style.SidebarItem}>
             <FavoriteButton
-              isActive={
-                favoriteList.findIndex(({ id }) => id === value.id) !== -1
-              }
+              isActive={favoriteList.findIndex(({ id }) => id === value) !== -1}
               addFavoriteCB={() => {
-                addFavorite(value.id, value.name)
+                addFavorite(value, undefined)
               }}
               style={{ right: 20, top: 2 }}
             />
             <DeleteFavoriteButton
               deleteFavoriteCB={() => {
-                removeHistory(value.id)
+                removeHistory(value)
               }}
             />
           </SidebarItem>

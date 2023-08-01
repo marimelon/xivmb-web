@@ -1,7 +1,6 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { SetupItemList } from './Common/database'
 import { get_user } from './Common/firebase'
 import { LoadingPage } from './Common/LoadingPage'
 
@@ -32,7 +31,6 @@ const FaildLoadErrorDialog = () => {
 interface State {
   signinCheck: boolean //ログインチェックが完了してるか
   signedIn: boolean //ログインしてるか
-  initDatabase: boolean
   faildedLoad?: string
 }
 
@@ -44,7 +42,6 @@ const Auth = (props: Props) => {
   const [state, setState] = useState<State>({
     signinCheck: false, //ログインチェックが完了してるか
     signedIn: false, //ログインしてるか
-    initDatabase: false,
   })
 
   useEffect(() => {
@@ -64,27 +61,13 @@ const Auth = (props: Props) => {
         }))
       }
     })
-
-    //データベース初期化
-    SetupItemList()
-      .then(result => {
-        if (result === 'SUCSECC') {
-          setState(state => ({ ...state, initDatabase: true }))
-        } else {
-          setState(state => ({ ...state, faildedLoad: 'faild' }))
-        }
-      })
-      .catch(event => {
-        console.log(event)
-        setState(state => ({ ...state, faildedLoad: 'faild' }))
-      })
   }, [])
 
   if (state.faildedLoad) {
     return <FaildLoadErrorDialog />
   }
 
-  if (!state.signinCheck || !state.initDatabase) {
+  if (!state.signinCheck) {
     return <LoadingPage />
   }
 

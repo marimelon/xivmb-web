@@ -6,6 +6,7 @@ import Favorite from './Favorite'
 import { HistoryList } from './HistoryList'
 import { ItemListTab } from './ItemListTab'
 import ItemSearch from './ItemSearch/ItemSearch'
+import { get_iteminfo } from '../Api/iteminfo'
 
 interface Props {
   changeItem?: (itemid: number, itemname: string) => void
@@ -46,10 +47,18 @@ export const Sidebar = ({ changeItem }: Props) => {
     setActiveItem(parent + itemid)
   }
 
-  const addFavorite = (itemid: number, name: string) => {
-    const newlist = favoriteList.concat([{ id: itemid, name: name }])
-    setFavoriteList(newlist)
-    updateFireStore(newlist)
+  const addFavorite = (itemid: number, name?: string) => {
+    if (name === undefined) {
+      get_iteminfo(itemid).then(item => {
+        const newlist = favoriteList.concat([{ id: itemid, name: item.name }])
+        setFavoriteList(newlist)
+        updateFireStore(newlist)
+      })
+    } else {
+      const newlist = favoriteList.concat([{ id: itemid, name: name }])
+      setFavoriteList(newlist)
+      updateFireStore(newlist)
+    }
   }
 
   const changeFavorite = (newfavoriteList: FavoriteItem[]) => {
@@ -67,8 +76,7 @@ export const Sidebar = ({ changeItem }: Props) => {
     <Box sx={{ mt: '8px' }}>
       <Typography
         variant="h5"
-        sx={{ display: 'flex', justifyContent: 'center' }}
-      >
+        sx={{ display: 'flex', justifyContent: 'center' }}>
         FFXIVMarketBord
       </Typography>
       <ItemSearch

@@ -14,11 +14,16 @@ import { isXIVDataCenter } from './Common/worlds'
 import { MainHeader } from './MainHeader'
 import { MainView } from './MainView/MainView'
 import { Sidebar } from './Sidebar/Sidebar'
+import { get_iteminfo } from './Api/iteminfo'
 
 export type AppLocationState = {
   itemid: number
-  itemname: string
   dc: XIVDataCenter
+}
+
+type iteminfo = {
+  id: number
+  name: string
 }
 
 const App = () => {
@@ -29,9 +34,22 @@ const App = () => {
   const itemid = Number(match.params.itemid)
   const [state, setState] = useState<AppLocationState>({
     itemid: itemid,
-    itemname: window.ItemList.get(Number(itemid)) ?? '??',
     dc: isXIVDataCenter(dc_query) ? dc_query : 'Elemental',
   })
+
+  const [loading, setLoading] = useState(true)
+  const [item, setItem] = useState<iteminfo>()
+  useEffect(() => {
+    get_iteminfo(itemid)
+      .then(data => {
+        setItem(data)
+        setLoading(false)
+      })
+      .catch(e => {
+        console.error(e)
+      })
+  }, [itemid])
+
   const [drawerOpen, setDrawerOpen] = useState(false)
   useEffect(() => {
     get_user().then(user => {
@@ -58,12 +76,19 @@ const App = () => {
     })
   }, [itemid])
 
+  if (loading) {
+    return <div>loading...</div>
+  }
+
+  if (item === undefined) {
+    return <div>Page Not Found.</div>
+  }
+
   history.listen(location => {
     if (location.state === undefined) {
-      const itemid = Number(location.pathname.slice(1))
       setState(prev => ({
-        itemid: itemid,
-        itemname: window.ItemList.get(itemid) ?? '??',
+        itemid: item.id,
+        itemname: item.name,
         dc: prev.dc,
       }))
     } else {
@@ -75,15 +100,11 @@ const App = () => {
     setDrawerOpen(false)
     history.push({
       pathname: `/${itemid}`,
-      state: { itemid: itemid, itemname: itemname, dc: state.dc },
+      state: { itemid: itemid, dc: state.dc },
     })
   }
 
-  if (!window.ItemList.get(itemid)) {
-    return <div>Page Not Found.</div>
-  }
-
-  document.title = state.itemname
+  document.title = item.name
 
   const drawerWidth = 297
 
@@ -95,8 +116,7 @@ const App = () => {
           width: { md: drawerWidth },
           flexShrink: { md: 0 },
           justifyContent: 'center',
-        }}
-      >
+        }}>
         <Drawer
           variant="temporary"
           open={drawerOpen}
@@ -113,8 +133,7 @@ const App = () => {
               width: drawerWidth,
               backgroundImage: 'initial',
             },
-          }}
-        >
+          }}>
           <Sidebar changeItem={changeItem} />
         </Drawer>
         <Drawer
@@ -127,8 +146,7 @@ const App = () => {
               left: 'initial',
             },
           }}
-          open
-        >
+          open>
           <Sidebar changeItem={changeItem} />
         </Drawer>
       </Box>
@@ -137,17 +155,12 @@ const App = () => {
         sx={{
           flexGrow: 1,
           width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
+        }}>
         <MainHeader
           currentDC={state.dc}
           onMenuClick={() => setDrawerOpen(true)}
         />
-        <MainView
-          itemid={state.itemid}
-          itemname={state.itemname}
-          dataCenter={state.dc}
-        />
+        <MainView itemid={item.id} itemname={item.name} dataCenter={state.dc} />
       </Box>
     </div>
   )
