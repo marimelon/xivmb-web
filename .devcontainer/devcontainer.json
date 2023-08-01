@@ -7,10 +7,14 @@
     "forwardPorts": [
         3000
     ],
-    "extensions": [
-        "mhutchie.git-graph"
-    ],
-    "settings": {},
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "mhutchie.git-graph"
+            ],
+            "settings": {}
+        }
+    },
     "features": {
         "common": {
             "username": "automatic",
