@@ -19,9 +19,10 @@ import { CSS } from '@dnd-kit/utilities'
 import { Item } from '@/types/item'
 
 import { useFavorite } from '../../../client/firebase/favorite'
-import { SideMenuItem } from '../SideMenuItem'
+import { FavoriteListItem } from './FavoriteListItem'
 
 export const SortableItem = ({ item }: { item: Item }) => {
+  const { delete: deleteFav } = useFavorite()
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id })
 
@@ -30,7 +31,7 @@ export const SortableItem = ({ item }: { item: Item }) => {
     // padding: '0.5rem 1rem',
     // marginBottom: '0.5rem',
     // backgroundColor: '#fafafa',
-    cursor: 'move',
+    // cursor: 'move',
     listStyle: 'none',
     transform: CSS.Transform.toString(transform),
     transition,
@@ -38,7 +39,12 @@ export const SortableItem = ({ item }: { item: Item }) => {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <SideMenuItem item={item} />
+      <FavoriteListItem
+        item={item}
+        onDelete={item => {
+          deleteFav(item.id)
+        }}
+      />
     </div>
   )
 }

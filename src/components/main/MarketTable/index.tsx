@@ -19,7 +19,7 @@ const SortableKeys = ['total', 'sellPrice'] as const
 type SortKeys = (typeof SortableKeys)[number]
 
 function isSortKeys(x: string): x is SortKeys {
-  return SortableKeys.indexOf(x as any) !== -1
+  return (SortableKeys as readonly string[]).includes(x)
 }
 
 const separate = (num: number) =>

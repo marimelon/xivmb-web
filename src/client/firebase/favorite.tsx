@@ -31,7 +31,7 @@ export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<Item[]>([])
 
   useEffect(() => {
-    var unsubscribe: (() => void) | undefined = undefined
+    let unsubscribe: (() => void) | undefined = undefined
     get_user().then(user => {
       if (user) {
         const docRef = doc(firestore, 'user_bookmark', user.uid)

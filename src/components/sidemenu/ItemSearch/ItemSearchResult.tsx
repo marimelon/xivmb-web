@@ -4,22 +4,31 @@ import { FixedSizeList } from 'react-window'
 
 import { Item } from '@/types/item'
 
+import { useFavorite } from '../../../client/firebase/favorite'
 import { SideMenuItem } from '../SideMenuItem'
+import { FavoriteButton } from '../SideMenuItem/FavoriteButton'
 
 type ItemSearchResultProps = {
   items: Item[]
 }
 
 export const ItemSearchResult = ({ items }: ItemSearchResultProps) => {
+  const { add: addFav } = useFavorite()
   const Row = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       return (
         <div style={style}>
-          <SideMenuItem style={{ height: '95%' }} item={items[index]} />
+          <SideMenuItem style={{ height: '95%' }} item={items[index]}>
+            <FavoriteButton
+              onClick={() => {
+                addFav(items[index])
+              }}
+            />
+          </SideMenuItem>
         </div>
       )
     },
-    [items],
+    [addFav, items],
   )
 
   return (

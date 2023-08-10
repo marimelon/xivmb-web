@@ -9,7 +9,6 @@ import { Item } from '@/types/item'
 
 import { get_iteminfo } from '../client/api/get_iteminfo'
 import { UserProvider } from '../client/firebase/firebase'
-import { isXIVDataCenter } from '../client/xiv/world'
 import { SideMenu } from '../components/sidemenu/SideMenu'
 import { itemRoute } from '../router'
 import { PageHeader } from './PageHeader'
@@ -17,13 +16,9 @@ import { PageHeader } from './PageHeader'
 export const MainPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const navigate = useNavigate()
-  const params: { itemId: string } = useParams({ from: itemRoute.id })
+  const params = useParams({ from: itemRoute.id })
   const drawerWidth = 297
-  const { dc: searchParamsDC } = useSearch({ from: itemRoute.id })
-  const dc =
-    searchParamsDC && isXIVDataCenter(searchParamsDC)
-      ? searchParamsDC
-      : 'Elemental'
+  const { dc } = useSearch({ from: itemRoute.id })
   const [item, setItem] = useState<Item>()
   useEffect(() => {
     const itemid = Number(params.itemId)
