@@ -2,9 +2,11 @@ import styled from '@emotion/styled'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import useDimensions from 'react-cool-dimensions'
-import { XIVDataCenter, XIVWorld } from '@/types/world'
+
 import { getWorlds, isXIVDataCenter } from '@/client/xiv/world'
 import { Tab } from '@/components/common/Tab/Tab'
+import { XIVDataCenter, XIVWorld } from '@/types/world'
+
 import style from './WorldTab.module.scss'
 
 type TabProps = {

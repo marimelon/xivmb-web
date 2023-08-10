@@ -1,13 +1,15 @@
-import { XIVDataCenter, XIVWorld } from '@/types/world'
-import style from './MainView.module.scss'
-import { Item } from '@/types/item'
-import { ItemHeader } from '../ItemHeader/ItemHeader'
-import { WorldTab } from '../WorldTab'
 import { useEffect, useState } from 'react'
-import { MarketTable } from '../MarketTable'
+
+import { Item } from '@/types/item'
+import { XIVDataCenter, XIVWorld } from '@/types/world'
+
+import { HistoryResponse, get_history } from '../../../client/api/get_history'
 import { MarketDataResponse, get_market } from '../../../client/api/get_market'
 import { HistoryTable } from '../HistoryTable'
-import { HistoryResponse, get_history } from '../../../client/api/get_history'
+import { ItemHeader } from '../ItemHeader/ItemHeader'
+import { MarketTable } from '../MarketTable'
+import { WorldTab } from '../WorldTab'
+import style from './MainView.module.scss'
 
 type MainViewProps = {
   item: Item

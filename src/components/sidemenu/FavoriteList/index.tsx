@@ -7,8 +7,6 @@ import {
   useSensors,
   DragEndEvent,
 } from '@dnd-kit/core'
-import { Item } from '@/types/item'
-import { CSS } from '@dnd-kit/utilities'
 import {
   SortableContext,
   arrayMove,
@@ -16,8 +14,12 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { SideMenuItem } from '../SideMenuItem'
+import { CSS } from '@dnd-kit/utilities'
+
+import { Item } from '@/types/item'
+
 import { useFavorite } from '../../../client/firebase/favorite'
+import { SideMenuItem } from '../SideMenuItem'
 
 export const SortableItem = ({ item }: { item: Item }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =

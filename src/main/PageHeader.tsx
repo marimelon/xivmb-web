@@ -1,8 +1,10 @@
-import { Box, Button, Grid } from '@mui/material'
 import styled from '@emotion/styled'
-import { XIVDataCenters, XIVDataCenter } from '@/types/world'
-import { useUser } from '../client/firebase/firebase'
+import { Box, Button, Grid } from '@mui/material'
 import { useNavigate } from '@tanstack/react-router'
+
+import { XIVDataCenters, XIVDataCenter } from '@/types/world'
+
+import { useUser } from '../client/firebase/firebase'
 
 const HeaderItem = styled(Button)(() => ({
   color: 'white',

@@ -1,7 +1,9 @@
+import React from 'react'
+
 import { createTheme, ThemeProvider } from '@mui/material'
 import { RouterProvider } from '@tanstack/react-router'
-import React from 'react'
 import ReactDOM from 'react-dom/client'
+
 import { router } from './router'
 
 const mainTheme = createTheme({

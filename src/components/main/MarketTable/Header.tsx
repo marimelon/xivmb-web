@@ -1,4 +1,5 @@
 import moment, { Moment } from 'moment'
+
 type MarketTableHeaderProps = {
   updatedDate?: Moment
   HQFilterState: boolean

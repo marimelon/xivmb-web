@@ -1,5 +1,7 @@
-import moment, { Moment } from 'moment'
 import { ReactNode } from 'react'
+
+import moment, { Moment } from 'moment'
+
 import style from './HistoryTable.module.scss'
 
 type HistoryTableHeaderProps = {

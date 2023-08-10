@@ -1,4 +1,5 @@
 import { XIVDataCenter } from '@/types/world'
+
 import { get_token } from '../firebase/firebase'
 
 export type HistoryData = {

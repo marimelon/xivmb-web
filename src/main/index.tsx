@@ -1,15 +1,18 @@
-import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { PageHeader } from './PageHeader'
-import { MainView } from '@/components/main/MainView/MainView'
+
+import { Box } from '@mui/material'
 import { Drawer } from '@mui/material'
-import { SideMenu } from '../components/sidemenu/SideMenu'
-import { isXIVDataCenter } from '../client/xiv/world'
+import { useNavigate, useSearch, useParams } from '@tanstack/react-router'
+
+import { MainView } from '@/components/main/MainView/MainView'
 import { Item } from '@/types/item'
+
 import { get_iteminfo } from '../client/api/get_iteminfo'
 import { UserProvider } from '../client/firebase/firebase'
-import { useNavigate, useSearch, useParams } from '@tanstack/react-router'
+import { isXIVDataCenter } from '../client/xiv/world'
+import { SideMenu } from '../components/sidemenu/SideMenu'
 import { itemRoute } from '../router'
+import { PageHeader } from './PageHeader'
 
 export const MainPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)

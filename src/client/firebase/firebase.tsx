@@ -1,8 +1,9 @@
+import { createContext, ReactNode, useContext } from 'react'
+
 import { useNavigate } from '@tanstack/react-router'
 import { initializeApp } from 'firebase/app'
 import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
-import { createContext, ReactNode, useContext } from 'react'
 
 const config = {
   apiKey: 'AIzaSyBK3yG6oqn9OB_sAF25VBn3k1-M0xjduE8',

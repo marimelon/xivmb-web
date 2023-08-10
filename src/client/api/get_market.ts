@@ -1,6 +1,7 @@
-import { XIVDataCenter } from '@/types/world'
-import { get_user, firestore } from '@/client/firebase/firebase'
 import { doc, getDoc } from 'firebase/firestore'
+
+import { get_user, firestore } from '@/client/firebase/firebase'
+import { XIVDataCenter } from '@/types/world'
 
 type MarketData = {
   Updated: number

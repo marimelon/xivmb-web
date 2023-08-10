@@ -6,9 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { Item } from '@/types/item'
-import { firestore, get_user } from './firebase'
+
 import { doc, onSnapshot, setDoc } from 'firebase/firestore'
+
+import { Item } from '@/types/item'
+
+import { firestore, get_user } from './firebase'
 
 type FavoriteItem = {
   id: number

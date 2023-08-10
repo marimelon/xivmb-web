@@ -1,10 +1,12 @@
-import { Box, Typography } from '@mui/material'
-import { ItemSearch } from '../ItemSearch'
-import { ItemListKind, SideMenuTab } from '../SideMenuTab'
 import { useState } from 'react'
+
+import { Box, Typography } from '@mui/material'
+
+import { FavoriteProvider } from '../../../client/firebase/favorite'
 import { FavoriteList } from '../FavoriteList'
 import { HistoryList } from '../HistoryList'
-import { FavoriteProvider } from '../../../client/firebase/favorite'
+import { ItemSearch } from '../ItemSearch'
+import { ItemListKind, SideMenuTab } from '../SideMenuTab'
 
 export const SideMenu = () => {
   const [tabType, setTabType] = useState<ItemListKind>('favorite')

@@ -1,6 +1,9 @@
-import { Item } from '@/types/item'
 import { useCallback } from 'react'
+
 import { FixedSizeList } from 'react-window'
+
+import { Item } from '@/types/item'
+
 import { SideMenuItem } from '../SideMenuItem'
 
 type ItemSearchResultProps = {

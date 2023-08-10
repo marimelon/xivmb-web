@@ -1,7 +1,8 @@
+import { useNavigate } from '@tanstack/react-router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useFormik } from 'formik'
+
 import { auth } from '../client/firebase/firebase'
-import { useNavigate } from '@tanstack/react-router'
 
 export const LoginPage = () => {
   const nevigate = useNavigate()

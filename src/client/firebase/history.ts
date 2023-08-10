@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { get_user, firestore } from './firebase'
+
 import { arrayRemove, doc, onSnapshot, updateDoc } from 'firebase/firestore'
+
+import { get_user, firestore } from './firebase'
 
 const removeHistory = (itemid: number) => {
   get_user().then(user => {

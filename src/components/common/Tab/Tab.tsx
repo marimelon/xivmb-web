@@ -1,4 +1,5 @@
 import React from 'react'
+
 import style from './Tab.module.scss'
 
 export type TabItem<T extends string | number> = {

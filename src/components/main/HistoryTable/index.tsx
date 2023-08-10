@@ -1,12 +1,15 @@
-import moment from 'moment'
 import { useEffect, useState } from 'react'
+
+import moment from 'moment'
 import { AutoSizer, Column, Table } from 'react-virtualized'
-import { XIVDataCenter, XIVWorld } from '@/types/world'
+
+import { HistoryResponse } from '@/client/api/get_history'
 import { isXIVDataCenter } from '@/client/xiv/world'
 import '@/components/common/react-virtualized/react-virtualized.css'
-import style from './HistoryTable.module.scss'
-import { HistoryResponse } from '@/client/api/get_history'
+import { XIVDataCenter, XIVWorld } from '@/types/world'
+
 import { HistoryTableHeader } from './Header'
+import style from './HistoryTable.module.scss'
 
 const separate = (num: number) =>
   String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')

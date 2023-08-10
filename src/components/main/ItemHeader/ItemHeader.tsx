@@ -1,7 +1,10 @@
-import { Item } from '@/types/item'
-import FileCopyIcon from '@mui/icons-material/FileCopy'
 import { useState } from 'react'
+
+import FileCopyIcon from '@mui/icons-material/FileCopy'
 import CopyToClipBoard from 'react-copy-to-clipboard'
+
+import { Item } from '@/types/item'
+
 import { ItemIcon } from '../../common/ItemIcon/ItemIcon'
 import style from './ItemHeader.module.scss'
 

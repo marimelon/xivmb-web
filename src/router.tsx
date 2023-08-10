@@ -1,6 +1,7 @@
+import { Router, Route, RootRoute } from '@tanstack/react-router'
+
 import { App } from './App.tsx'
 import './index.css'
-import { Router, Route, RootRoute } from '@tanstack/react-router'
 import { LoginPage } from './login/index.tsx'
 import { MainPage } from './main/index.tsx'
 

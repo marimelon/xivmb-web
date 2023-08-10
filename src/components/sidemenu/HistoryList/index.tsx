@@ -1,5 +1,5 @@
-import { SideMenuItem } from '../SideMenuItem'
 import { useViewHistory } from '../../../client/firebase/history'
+import { SideMenuItem } from '../SideMenuItem'
 
 export const HistoryList = () => {
   const { items } = useViewHistory()

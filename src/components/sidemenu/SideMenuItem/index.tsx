@@ -1,8 +1,11 @@
-import { Item } from '@/types/item'
 import { CSSProperties } from 'react'
-import cssStyle from './SidebarItem.module.scss'
-import { ItemIcon } from '../../common/ItemIcon/ItemIcon'
+
 import { useNavigate } from '@tanstack/react-router'
+
+import { Item } from '@/types/item'
+
+import { ItemIcon } from '../../common/ItemIcon/ItemIcon'
+import cssStyle from './SidebarItem.module.scss'
 
 type SideMenuItemProps = {
   item: Item
