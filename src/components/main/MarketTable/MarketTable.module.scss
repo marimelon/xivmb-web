@@ -1,0 +1,24 @@
+.MarketTable {
+    max-width: 100%;
+    width: calc(100% - 420px);
+    padding-right: 0.625rem;
+    padding-left: 0.313rem;
+    margin-left: auto;
+}
+
+:global(.ReactVirtualized__Table__Grid){
+    .Row {
+        &:hover {
+            background-color: rgba(107,125,140,.1);
+        }
+    }
+}
+
+.MarketTableHeader {
+    height: 40px;
+}
+
+.MarketUpdatedDate {
+    color: #a9a9a9;
+    font-size: 16px;
+}
