@@ -79,8 +79,10 @@ export const useFavorite = () => {
 
   const add = useCallback(
     (item: Item) => {
-      const newItems = items.concat([item])
-      update(newItems)
+      if (items.findIndex(v => v.id === item.id) === -1) {
+        const newItems = items.concat([item])
+        update(newItems)
+      }
     },
     [items, update],
   )

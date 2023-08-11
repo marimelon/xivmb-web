@@ -1,5 +1,4 @@
 .DeleteFavoriteButton{
-    color: white;
     width: 0.938rem;
     height: 0.938rem;
     text-align: center;
@@ -13,6 +12,7 @@
     border-radius: 9.375rem;
     
     &:hover{
+        cursor: pointer;
         color: white;
         background-color: red;
         text-decoration: none;

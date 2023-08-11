@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { arrayRemove, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 
+import { get_itemsinfo, itemInfo } from '../api/get_iteminfo'
 import { get_user, firestore } from './firebase'
 
 const removeHistory = (itemid: number) => {
@@ -16,7 +17,7 @@ const removeHistory = (itemid: number) => {
 }
 
 export const useViewHistory = () => {
-  const [items, setItems] = useState<number[]>([])
+  const [items, setItems] = useState<itemInfo[]>([])
 
   useEffect(() => {
     let unsubscribe: (() => void) | undefined = undefined
@@ -26,7 +27,9 @@ export const useViewHistory = () => {
         unsubscribe = onSnapshot(docRef, doc => {
           if (doc.exists()) {
             const itemIds = doc.get('history') as number[]
-            setItems(itemIds)
+            get_itemsinfo(itemIds).then(data => {
+              setItems(data)
+            })
           }
         })
       }

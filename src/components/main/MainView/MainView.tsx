@@ -31,7 +31,7 @@ export const MainView = ({ item, dc }: MainViewProps) => {
 
   return (
     <div className={style.MainView}>
-      <ItemHeader item={item} />
+      <ItemHeader key={item.id} item={item} />
       <WorldTab dataCenter={dc} currentTabType={world} onClick={setWorld} />
       <div className={style.TablesView}>
         <MarketTable itemid={item.id} world={world} data={data} />

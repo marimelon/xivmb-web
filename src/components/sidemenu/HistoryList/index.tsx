@@ -6,12 +6,7 @@ export const HistoryList = () => {
   return (
     <div>
       {items.map(item => {
-        return (
-          <SideMenuItem
-            key={item}
-            item={{ id: item, name: 'アイテム' + item }}
-          />
-        )
+        return <SideMenuItem key={item.id} item={item} />
       })}
     </div>
   )

@@ -25,3 +25,37 @@ export const get_iteminfo = async (itemid: number) => {
   cache[info.id] = info
   return info
 }
+
+export const get_itemsinfo = async (itemids: number[]) => {
+  let itemsinfo: itemInfo[] = []
+  const fetchIds: number[] = []
+
+  for (const id of itemids) {
+    if (cache[id]) {
+      itemsinfo.push(cache[id])
+    } else {
+      fetchIds.push(id)
+    }
+  }
+
+  if (fetchIds.length === 0) {
+    return itemsinfo
+  }
+
+  const url = `${import.meta.env.VITE_PUBLIC_API_URL}/items/${fetchIds.join(
+    ',',
+  )}`
+  const token = await get_token()
+
+  const res = await fetch(url, {
+    headers: { Authorization: 'Bearer ' + token },
+  })
+
+  const data = (await res.json()) as itemInfo[]
+  for (const item of data) {
+    cache[item.id] = item
+  }
+
+  itemsinfo = itemsinfo.concat(data)
+  return itemsinfo
+}

@@ -13,13 +13,19 @@ type ItemSearchResultProps = {
 }
 
 export const ItemSearchResult = ({ items }: ItemSearchResultProps) => {
-  const { add: addFav } = useFavorite()
+  const { items: favItems, add: addFav } = useFavorite()
   const Row = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       return (
         <div style={style}>
-          <SideMenuItem style={{ height: '95%' }} item={items[index]}>
+          <SideMenuItem
+            style={{ height: '95%', fontSize: '70%' }}
+            item={items[index]}
+          >
             <FavoriteButton
+              active={
+                favItems.findIndex(item => item.id === items[index].id) !== -1
+              }
               onClick={() => {
                 addFav(items[index])
               }}
@@ -28,7 +34,7 @@ export const ItemSearchResult = ({ items }: ItemSearchResultProps) => {
         </div>
       )
     },
-    [addFav, items],
+    [addFav, favItems, items],
   )
 
   return (
@@ -36,7 +42,7 @@ export const ItemSearchResult = ({ items }: ItemSearchResultProps) => {
       <FixedSizeList
         height={Math.min(50 * items.length, 400)}
         itemCount={items.length}
-        itemSize={50}
+        itemSize={38}
         width={'100%'}
       >
         {Row}
