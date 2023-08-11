@@ -2,5 +2,13 @@
     "semi": false,
     "singleQuote": true,
     "jsxBracketSameLine": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "importOrder": [
+        "^(react/(.*)$)|^(react$)",
+        "<THIRD_PARTY_MODULES>",
+        "^@/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation":true,
+    "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

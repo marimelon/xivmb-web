@@ -1,0 +1,20 @@
+.DeleteFavoriteButton{
+    width: 0.938rem;
+    height: 0.938rem;
+    text-align: center;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    overflow: hidden;
+    position: absolute;
+    right: 0.313rem;
+    top: 0.313rem;
+    line-height: 1;
+    border-radius: 9.375rem;
+    
+    &:hover{
+        cursor: pointer;
+        color: white;
+        background-color: red;
+        text-decoration: none;
+    }
+}
