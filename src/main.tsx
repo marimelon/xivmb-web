@@ -6,6 +6,8 @@ import ReactDOM from 'react-dom/client'
 
 import { router } from './router'
 
+import './index.css'
+
 const mainTheme = createTheme({
   palette: {
     mode: 'dark',
