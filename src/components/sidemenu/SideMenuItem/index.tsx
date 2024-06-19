@@ -1,11 +1,12 @@
 import { CSSProperties, ReactNode } from 'react'
 
-import { useNavigate, useParams } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 
 import { Item } from '@/types/item'
 
 import { ItemIcon } from '../../common/ItemIcon/ItemIcon'
 import cssStyle from './SidebarItem.module.scss'
+import { Route } from '../../../routes/$itemId'
 
 type SideMenuItemProps = {
   item: Item
@@ -14,12 +15,13 @@ type SideMenuItemProps = {
 }
 
 export const SideMenuItem = ({ item, style, children }: SideMenuItemProps) => {
-  const params = useParams()
+  const params = Route.useParams()
+  const search = Route.useSearch()
   const active = item.id === Number(params.itemId)
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate({ to: '/$itemId', params: { itemId: item.id } })
+    navigate({ to: '/$itemId', params: { itemId: String(item.id) }, search: { dc: search.dc}})
   }
 
   return (

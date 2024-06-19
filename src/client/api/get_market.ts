@@ -116,10 +116,13 @@ export const get_current_market = async (
   dc: XIVDataCenter,
   idToken: string,
 ) => {
-  return await fetch(
+  const result = await fetch(
     `${import.meta.env.VITE_PUBLIC_API_URL}/newdata/market/${itemid}?dc=${dc}`,
     {
       headers: { Authorization: 'Bearer ' + idToken },
     },
   )
+
+  const data = await result.json() as MarketDataResponse
+  return data
 }

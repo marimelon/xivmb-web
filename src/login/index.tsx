@@ -14,7 +14,11 @@ export const LoginPage = () => {
     onSubmit: values => {
       signInWithEmailAndPassword(auth, values.email, values.password)
         .then(() => {
-          nevigate({ to: '/$itemId', params: { itemId: '2' } })
+          nevigate({
+            to: '/$itemId',
+            params: { itemId: '2' },
+            search: { dc: 'Elemental' },
+          })
         })
         .catch(error => {
           alert(error)

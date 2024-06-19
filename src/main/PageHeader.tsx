@@ -1,5 +1,4 @@
-import styled from '@emotion/styled'
-import { Box, Button, Grid } from '@mui/material'
+import { Box, Button, Grid, styled } from '@mui/material'
 import { useNavigate } from '@tanstack/react-router'
 
 import { XIVDataCenters, XIVDataCenter } from '@/types/world'
@@ -37,8 +36,7 @@ export const PageHeader = ({
           key={v}
           onClick={() => {
             navigate({ search: { dc: v } })
-          }}
-        >
+          }}>
           <i className={'crossworld-icon'}></i>
           {v}
         </HeaderItem>

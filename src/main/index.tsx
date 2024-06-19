@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Box } from '@mui/material'
 import { Drawer } from '@mui/material'
-import { useNavigate, useSearch, useParams } from '@tanstack/react-router'
+import { useNavigate} from '@tanstack/react-router'
 
 import { MainView } from '@/components/main/MainView/MainView'
 import { Item } from '@/types/item'
@@ -10,26 +10,29 @@ import { Item } from '@/types/item'
 import { get_iteminfo } from '../client/api/get_iteminfo'
 import { UserProvider } from '../client/firebase/firebase'
 import { SideMenu } from '../components/sidemenu/SideMenu'
-import { itemRoute } from '../router'
+import { XIVDataCenter } from '../types/world'
 import { PageHeader } from './PageHeader'
 
-export const MainPage = () => {
+export const MainPage = ({
+  itemid,
+  dc,
+}: {
+  itemid: number
+  dc: XIVDataCenter
+}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const navigate = useNavigate()
-  const params = useParams({ from: itemRoute.id })
   const drawerWidth = 297
-  const { dc } = useSearch({ from: itemRoute.id })
   const [item, setItem] = useState<Item>()
   useEffect(() => {
-    const itemid = Number(params.itemId)
     if (isNaN(itemid)) {
-      navigate({ to: '/$itemId', params: { itemId: '2' } })
+      navigate({ to: '/$itemId', params: { itemId: '2' },search: { dc: dc }})
       return
     }
     get_iteminfo(itemid).then(item => {
       setItem(item)
     })
-  }, [params, navigate])
+  }, [itemid, navigate])
 
   return (
     <div style={{ width: '100%', display: 'flex' }}>
@@ -40,8 +43,7 @@ export const MainPage = () => {
             width: { md: drawerWidth },
             flexShrink: { md: 0 },
             justifyContent: 'center',
-          }}
-        >
+          }}>
           <Drawer
             variant="temporary"
             open={isDrawerOpen}
@@ -58,8 +60,7 @@ export const MainPage = () => {
                 width: drawerWidth,
                 backgroundImage: 'initial',
               },
-            }}
-          >
+            }}>
             <SideMenu />
           </Drawer>
           <Drawer
@@ -72,8 +73,7 @@ export const MainPage = () => {
                 left: 'initial',
               },
             }}
-            open
-          >
+            open>
             <SideMenu />
           </Drawer>
         </Box>
@@ -82,8 +82,7 @@ export const MainPage = () => {
           sx={{
             flexGrow: 1,
             width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-          }}
-        >
+          }}>
           <PageHeader dc={dc} onClickMenu={() => setIsDrawerOpen(true)} />
           {item && <MainView item={item} dc={dc} />}
         </Box>

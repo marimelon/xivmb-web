@@ -1,7 +1,15 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import moment from 'moment'
-import { AutoSizer, Column, SortDirectionType, Table } from 'react-virtualized'
+import {
+  AutoSizer as _AutoSizer,
+  Column as _Column,
+  SortDirectionType,
+  Table as _Table,
+  AutoSizerProps,
+  ColumnProps,
+  TableProps,
+} from 'react-virtualized'
 import { defaultRowRenderer } from 'react-virtualized/dist/es/Table'
 
 import { isXIVDataCenter } from '@/client/xiv/world'
@@ -14,6 +22,11 @@ import {
 } from '../../../client/api/get_market'
 import { MarketTableHeader } from './Header'
 import style from './MarketTable.module.scss'
+
+export const AutoSizer = _AutoSizer as unknown as FC<AutoSizerProps> &
+  _AutoSizer
+export const Column = _Column as unknown as FC<ColumnProps> & _Column
+export const Table = _Table as unknown as FC<TableProps> & _Table
 
 const SortableKeys = ['total', 'sellPrice'] as const
 type SortKeys = (typeof SortableKeys)[number]
@@ -149,8 +162,7 @@ export const MarketTable = ({
                   return <div>loading</div>
                 }
                 return <div style={{ textAlign: 'center' }}>No Data</div>
-              }}
-            >
+              }}>
               <Column
                 label="World"
                 dataKey="world"

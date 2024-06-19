@@ -1,12 +1,14 @@
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 
-import { FixedSizeList } from 'react-window'
+import { FixedSizeList as _FixedSizeList,FixedSizeListProps  } from 'react-window'
 
 import { Item } from '@/types/item'
 
 import { useFavorite } from '../../../client/firebase/favorite'
 import { SideMenuItem } from '../SideMenuItem'
 import { FavoriteButton } from '../SideMenuItem/FavoriteButton'
+
+export const FixedSizeList = _FixedSizeList as unknown as FC<FixedSizeListProps> & _FixedSizeList;
 
 type ItemSearchResultProps = {
   items: Item[]

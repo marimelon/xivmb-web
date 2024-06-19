@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 
 import FileCopyIcon from '@mui/icons-material/FileCopy'
 import CopyToClipBoard from 'react-copy-to-clipboard'
+import {Props as CopyToClipBoardProps} from 'react-copy-to-clipboard'
+
 
 import { Item } from '@/types/item'
 
 import { ItemIcon } from '../../common/ItemIcon/ItemIcon'
 import style from './ItemHeader.module.scss'
+
+export const _CopyToClipBoard = CopyToClipBoard as unknown as FC<CopyToClipBoardProps> &
+CopyToClipBoard
 
 const lodestoneURL = (lodestoneId: string) => {
   return `https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/${lodestoneId}/`
@@ -27,7 +32,7 @@ export const ItemHeader = ({ item }: ItemHeaderProps) => {
     <div className={style.ItemHeader}>
       <ItemIcon item={item} />
       <div className={style.itemname}>{item.name}</div>
-      <CopyToClipBoard
+      <_CopyToClipBoard
         onCopy={() => {
           setIsCopied(true)
         }}
@@ -36,7 +41,7 @@ export const ItemHeader = ({ item }: ItemHeaderProps) => {
         <FileCopyIcon
           className={`${style.copyicon} ${isCopied ? style.active : ''}`}
         />
-      </CopyToClipBoard>
+      </_CopyToClipBoard>
       <a
         target="_blank"
         rel="noopener noreferrer"
