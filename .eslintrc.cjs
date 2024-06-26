@@ -14,5 +14,15 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    "no-empty-pattern": "off",
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ]
   },
 }
