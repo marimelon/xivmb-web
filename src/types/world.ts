@@ -57,3 +57,22 @@ export const XIVWorlds = [
   ...MeteorWorlds,
 ]
 export type XIVWorld = (typeof XIVWorlds)[number]
+
+export const isXIVDataCenter = (
+  value: string,
+): value is (typeof XIVDataCenters)[number] => {
+  return (XIVDataCenters as readonly string[]).includes(value)
+}
+
+export const getWorlds = (dataCneter: XIVDataCenter) => {
+  switch (dataCneter) {
+    case 'Elemental':
+      return ElementalWorlds
+    case 'Mana':
+      return ManaWorlds
+    case 'Gaia':
+      return GaiaWorlds
+    case 'Meteor':
+      return MeteorWorlds
+  }
+}

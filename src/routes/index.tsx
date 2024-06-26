@@ -1,18 +1,21 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
-import { get_user } from '../client/firebase/firebase'
+import { get_user } from '../api/firebase'
 
 export const Route = createFileRoute('/')({
   beforeLoad: async () => {
-    const user = await get_user()
-    if (user === null) {
+    if (!(await get_user())) {
       throw redirect({ to: '/login' })
     }
     throw redirect({
-      to: '/$itemId',
-      params: { itemId: '2' },
+      to: '/$itemid',
+      params: { itemid: '2' },
       search: { dc: 'Elemental' },
     })
   },
-  component: () => <div></div>,
+  component: Index,
 })
+
+function Index() {
+  return <div>loading</div>
+}

@@ -13,27 +13,63 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
+import { Route as ItemidImport } from './routes/$itemid'
 import { Route as IndexImport } from './routes/index'
-import { Route as ItemIdIndexImport } from './routes/$itemId/index'
+import { Route as ItemidIndexImport } from './routes/$itemid/index'
+import { Route as ComponentsMarketImport } from './routes/components/market'
+import { Route as ComponentsMainImport } from './routes/components/main'
+import { Route as ComponentsSidebarImport } from './routes/components/_sidebar'
+import { Route as ComponentsIndexImport } from './routes/components/Index'
 
 // Create Virtual Routes
 
-const LoginLazyImport = createFileRoute('/login')()
+const ComponentsImport = createFileRoute('/components')()
 
 // Create/Update Routes
 
-const LoginLazyRoute = LoginLazyImport.update({
+const ComponentsRoute = ComponentsImport.update({
+  path: '/components',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+} as any)
+
+const ItemidRoute = ItemidImport.update({
+  path: '/$itemid',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ItemIdIndexRoute = ItemIdIndexImport.update({
-  path: '/$itemId/',
+const ItemidIndexRoute = ItemidIndexImport.update({
+  path: '/',
+  getParentRoute: () => ItemidRoute,
+} as any)
+
+const ComponentsMarketRoute = ComponentsMarketImport.update({
+  path: '/market',
+  getParentRoute: () => ComponentsRoute,
+} as any)
+
+const ComponentsMainRoute = ComponentsMainImport.update({
+  path: '/main',
+  getParentRoute: () => ComponentsRoute,
+} as any)
+
+const ComponentsSidebarRoute = ComponentsSidebarImport.update({
+  id: '/_sidebar',
+  getParentRoute: () => ComponentsRoute,
+} as any)
+
+const ComponentsIndexRoute = ComponentsIndexImport.update({
+  path: '/components/Index',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -48,19 +84,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/$itemid': {
+      id: '/$itemid'
+      path: '/$itemid'
+      fullPath: '/$itemid'
+      preLoaderRoute: typeof ItemidImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyImport
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/$itemId/': {
-      id: '/$itemId/'
-      path: '/$itemId'
-      fullPath: '/$itemId'
-      preLoaderRoute: typeof ItemIdIndexImport
+    '/components/Index': {
+      id: '/components/Index'
+      path: '/components/Index'
+      fullPath: '/components/Index'
+      preLoaderRoute: typeof ComponentsIndexImport
       parentRoute: typeof rootRoute
+    }
+    '/components': {
+      id: '/components'
+      path: '/components'
+      fullPath: '/components'
+      preLoaderRoute: typeof ComponentsImport
+      parentRoute: typeof rootRoute
+    }
+    '/components/_sidebar': {
+      id: '/components/_sidebar'
+      path: '/components'
+      fullPath: '/components'
+      preLoaderRoute: typeof ComponentsSidebarImport
+      parentRoute: typeof ComponentsRoute
+    }
+    '/components/main': {
+      id: '/components/main'
+      path: '/main'
+      fullPath: '/components/main'
+      preLoaderRoute: typeof ComponentsMainImport
+      parentRoute: typeof ComponentsImport
+    }
+    '/components/market': {
+      id: '/components/market'
+      path: '/market'
+      fullPath: '/components/market'
+      preLoaderRoute: typeof ComponentsMarketImport
+      parentRoute: typeof ComponentsImport
+    }
+    '/$itemid/': {
+      id: '/$itemid/'
+      path: '/'
+      fullPath: '/$itemid/'
+      preLoaderRoute: typeof ItemidIndexImport
+      parentRoute: typeof ItemidImport
     }
   }
 }
@@ -69,8 +147,13 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  LoginLazyRoute,
-  ItemIdIndexRoute,
+  ItemidRoute: ItemidRoute.addChildren({ ItemidIndexRoute }),
+  LoginRoute,
+  ComponentsIndexRoute,
+  ComponentsRoute: ComponentsRoute.addChildren({
+    ComponentsMainRoute,
+    ComponentsMarketRoute,
+  }),
 })
 
 /* prettier-ignore-end */
@@ -82,18 +165,50 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/$itemid",
         "/login",
-        "/$itemId/"
+        "/components/Index",
+        "/components"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/login": {
-      "filePath": "login.lazy.tsx"
+    "/$itemid": {
+      "filePath": "$itemid.tsx",
+      "children": [
+        "/$itemid/"
+      ]
     },
-    "/$itemId/": {
-      "filePath": "$itemId/index.tsx"
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/components/Index": {
+      "filePath": "components/Index.tsx"
+    },
+    "/components": {
+      "filePath": "components",
+      "children": [
+        "/components/_sidebar",
+        "/components/main",
+        "/components/market"
+      ]
+    },
+    "/components/_sidebar": {
+      "filePath": "components/_sidebar.tsx",
+      "parent": "/components"
+    },
+    "/components/main": {
+      "filePath": "components/main.tsx",
+      "parent": "/components"
+    },
+    "/components/market": {
+      "filePath": "components/market.tsx",
+      "parent": "/components"
+    },
+    "/$itemid/": {
+      "filePath": "$itemid/index.tsx",
+      "parent": "/$itemid"
     }
   }
 }
