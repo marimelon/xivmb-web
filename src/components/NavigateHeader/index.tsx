@@ -13,7 +13,7 @@ export const NavigateHeader = ({}: Props) => {
 
   return (
     <HStack justifyContent="flex-end">
-      {XIVDataCenters.filter(w => w !== routeSearch.dc).map(w => (
+      {XIVDataCenters.filter((w) => w !== routeSearch.dc).map((w) => (
         <Link key={w} search={() => ({ dc: w })}>
           <Text _before={{ fontFamily: 'xivfonts', content: '"\\e075"' }}>
             {w}
@@ -27,7 +27,8 @@ export const NavigateHeader = ({}: Props) => {
           signOut(auth).finally(() => {
             navigate({ to: '/login' })
           })
-        }}>
+        }}
+      >
         Logout
       </Text>
     </HStack>

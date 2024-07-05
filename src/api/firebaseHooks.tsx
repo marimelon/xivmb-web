@@ -37,10 +37,10 @@ const useFavorite = () => {
   const [items, setItems] = useState<Item[]>([])
   useEffect(() => {
     let unsubscribe: (() => void) | undefined = undefined
-    get_user().then(user => {
+    get_user().then((user) => {
       if (user) {
         const docRef = doc(firestore, 'user_bookmark', user.uid)
-        unsubscribe = onSnapshot(docRef, doc => {
+        unsubscribe = onSnapshot(docRef, (doc) => {
           if (doc.exists()) {
             if (doc.metadata.hasPendingWrites === false) {
               const items = doc.get('favorite') as FavoriteItem[]
@@ -58,11 +58,11 @@ const useFavorite = () => {
   const update = useCallback(
     (items: Item[]) => {
       setItems(items)
-      get_user().then(user => {
+      get_user().then((user) => {
         if (user) {
           const docRef = doc(firestore, 'user_bookmark', user.uid)
           setDoc(docRef, {
-            favorite: items.map<FavoriteItem>(item => ({
+            favorite: items.map<FavoriteItem>((item) => ({
               id: item.id,
               name: item.name,
             })),
@@ -75,7 +75,7 @@ const useFavorite = () => {
 
   const add = useCallback(
     (item: Item) => {
-      if (items.findIndex(v => v.id === item.id) === -1) {
+      if (items.findIndex((v) => v.id === item.id) === -1) {
         const newItems = items.concat([item])
         update(newItems)
       }
@@ -85,7 +85,7 @@ const useFavorite = () => {
 
   const _delete = useCallback(
     (itemid: number) => {
-      const newItems = items.filter(item => item.id !== itemid)
+      const newItems = items.filter((item) => item.id !== itemid)
       update(newItems)
     },
     [items, update],
@@ -111,13 +111,13 @@ const useViewHistory = () => {
 
   useEffect(() => {
     let unsubscribe: (() => void) | undefined = undefined
-    get_user().then(user => {
+    get_user().then((user) => {
       if (user) {
         const docRef = doc(firestore, 'user_histories', user.uid)
-        unsubscribe = onSnapshot(docRef, doc => {
+        unsubscribe = onSnapshot(docRef, (doc) => {
           if (doc.exists()) {
             const itemIds = doc.get('history') as number[]
-            fetchItemsbyId(itemIds).then(data => {
+            fetchItemsbyId(itemIds).then((data) => {
               setItems(data.reverse())
             })
           }
@@ -146,7 +146,7 @@ const useViewHistory = () => {
   }, [])
 
   const _delete = useCallback((itemid: number) => {
-    get_user().then(user => {
+    get_user().then((user) => {
       if (user) {
         const docRef = doc(firestore, 'user_histories', user.uid)
         updateDoc(docRef, {

@@ -10,7 +10,7 @@ type Props = {
 export const HistoryList = ({ items }: Props) => {
   return (
     <List>
-      {items.map(item => (
+      {items.map((item) => (
         <ListItem key={item.id}>
           <Card height={10} variant="outline">
             <SidebarItem item={item} />

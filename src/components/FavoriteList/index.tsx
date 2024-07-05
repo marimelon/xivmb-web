@@ -37,7 +37,8 @@ const SortableItem = ({ item }: { item: Item }) => {
         transition,
       }}
       {...attributes}
-      {...listeners}>
+      {...listeners}
+    >
       <Card height={10} variant="outline">
         <SidebarItem item={item} />
       </Card>
@@ -68,8 +69,8 @@ export const FavoriteLIst = ({ items }: Props) => {
     }
 
     if (active.id !== over.id) {
-      const oldIndex = items.findIndex(v => v.id === active.id)
-      const newIndex = items.findIndex(v => v.id === over.id)
+      const oldIndex = items.findIndex((v) => v.id === active.id)
+      const newIndex = items.findIndex((v) => v.id === over.id)
       update(arrayMove(items, oldIndex, newIndex))
     }
   }
@@ -79,10 +80,11 @@ export const FavoriteLIst = ({ items }: Props) => {
       <TypedDndContext
         sensors={sensors}
         collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}>
+        onDragEnd={handleDragEnd}
+      >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           <VStack gap={1}>
-            {items.map(item => (
+            {items.map((item) => (
               <SortableItem key={item.id} item={item} />
             ))}
           </VStack>

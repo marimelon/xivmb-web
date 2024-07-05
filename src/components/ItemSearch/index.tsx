@@ -15,7 +15,7 @@ export const ItemSearchResult = ({ query }: { query: string }) => {
 
   return (
     <List>
-      {searchResult.data?.items.map(item => (
+      {searchResult.data?.items.map((item) => (
         <ListItem key={item.id}>
           <Card height={10} variant="outline">
             <SidebarItem key={item.id} item={item} />
@@ -37,8 +37,8 @@ export const ItemSearchInput = ({ query, onChange }: ItemSearchInputProps) => {
       variant="filled"
       placeholder="Search"
       value={query}
-      onChange={ev => onChange(ev.target.value)}
-      onFocus={e => e.target.select()}
+      onChange={(ev) => onChange(ev.target.value)}
+      onFocus={(e) => e.target.select()}
     />
   )
 }

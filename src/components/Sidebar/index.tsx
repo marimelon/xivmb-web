@@ -19,7 +19,7 @@ export const Sidebar = ({}: Props) => {
     <VStack height="100%">
       <ItemSearchInput
         query={query}
-        onChange={value => {
+        onChange={(value) => {
           setQuery(value)
           if (value !== '') {
             setTabIndex(2)
@@ -35,7 +35,8 @@ export const Sidebar = ({}: Props) => {
         paddingBottom={4}
         index={tabIndex}
         onChange={setTabIndex}
-        lazyBehavior="unmount">
+        lazyBehavior="unmount"
+      >
         <Tab>Favorite</Tab>
         <Tab>History</Tab>
         {query !== '' && <Tab>Search</Tab>}

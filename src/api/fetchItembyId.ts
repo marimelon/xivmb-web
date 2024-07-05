@@ -16,8 +16,8 @@ export const fetchItembyId = async (itemid: number): Promise<Item> => {
     throw new Error(peyload.detail)
   }
 
-  const info = (await res.json()) as Item
-  return info
+  const info = (await res.json()) as Item[]
+  return info[0]
 }
 
 export const itemInfoQueryOptions = (itemid: number) =>

@@ -41,7 +41,8 @@ export const UpdateButton = ({ itemid, dc, onUpdate }: Props) => {
       isLoading={isLoading}
       onClick={() => {
         handleUpdate()
-      }}>
+      }}
+    >
       Update
     </Button>
   )

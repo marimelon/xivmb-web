@@ -41,13 +41,15 @@ export const LoginForm = () => {
       direction={{ base: 'row', md: 'column' }}
       overflow="hidden"
       variant="outline"
-      width={500}>
+      width={500}
+    >
       <VStack
         as="form"
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault()
           handleSubmit()
-        }}>
+        }}
+      >
         <CardHeader>
           <Heading size="md">FFXIV MarketBoard</Heading>
         </CardHeader>
@@ -55,13 +57,14 @@ export const LoginForm = () => {
           <FormControl
             isRequired
             label="Email address"
-            errorMessage="Email is required.">
+            errorMessage="Email is required."
+          >
             <Field
               name="email"
               children={({ state, handleChange, handleBlur }) => (
                 <Input
                   defaultValue={state.value}
-                  onChange={e => handleChange(e.target.value)}
+                  onChange={(e) => handleChange(e.target.value)}
                   onBlur={handleBlur}
                   placeholder="email address"
                 />
@@ -71,14 +74,15 @@ export const LoginForm = () => {
           <FormControl
             isRequired
             label="Password"
-            errorMessage="Password is required.">
+            errorMessage="Password is required."
+          >
             <Field
               name="password"
               children={({ state, handleChange, handleBlur }) => (
                 <Input
                   type="password"
                   defaultValue={state.value}
-                  onChange={e => handleChange(e.target.value)}
+                  onChange={(e) => handleChange(e.target.value)}
                   onBlur={handleBlur}
                   placeholder="password"
                 />

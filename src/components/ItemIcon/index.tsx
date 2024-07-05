@@ -20,7 +20,8 @@ export const ItemIcon = ({ item, style }: ItemIconProps) => {
         height: '100%',
         aspectRatio: 1,
         ...style,
-      }}>
+      }}
+    >
       <Image
         style={{
           position: 'absolute',

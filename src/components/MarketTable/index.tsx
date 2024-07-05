@@ -123,7 +123,8 @@ export const MarketTable = ({ data, filter }: Props) => {
         cell: ({ getValue }) => {
           return (
             <div
-              style={{ color: '#ccff33', textAlign: 'right', width: '100%' }}>
+              style={{ color: '#ccff33', textAlign: 'right', width: '100%' }}
+            >
               {separate(getValue() as number)}
             </div>
           )
@@ -139,7 +140,8 @@ export const MarketTable = ({ data, filter }: Props) => {
         cell: ({ getValue }) => {
           return (
             <div
-              style={{ color: '#ffcc00', textAlign: 'right', width: '100%' }}>
+              style={{ color: '#ffcc00', textAlign: 'right', width: '100%' }}
+            >
               {separate(getValue() as number)}
             </div>
           )
@@ -154,7 +156,8 @@ export const MarketTable = ({ data, filter }: Props) => {
         cell: ({ getValue }) => {
           return (
             <div
-              style={{ color: '#ccff33', textAlign: 'right', width: '100%' }}>
+              style={{ color: '#ccff33', textAlign: 'right', width: '100%' }}
+            >
               {separate(getValue() as number)}
             </div>
           )
@@ -213,7 +216,7 @@ export const MarketTable = ({ data, filter }: Props) => {
     measureElement:
       typeof window !== 'undefined' &&
       navigator.userAgent.indexOf('Firefox') === -1
-        ? element => element?.getBoundingClientRect().height
+        ? (element) => element?.getBoundingClientRect().height
         : undefined,
     overscan: 5,
   })
@@ -221,7 +224,8 @@ export const MarketTable = ({ data, filter }: Props) => {
   return (
     <div
       ref={parentRef}
-      style={{ height: '100%', overflow: 'auto', position: 'relative' }}>
+      style={{ height: '100%', overflow: 'auto', position: 'relative' }}
+    >
       <NativeTable style={{ height: 'initial', display: 'grid' }}>
         <Thead
           style={{
@@ -229,20 +233,23 @@ export const MarketTable = ({ data, filter }: Props) => {
             position: 'sticky',
             top: 0,
             zIndex: 1,
-          }}>
-          {table.getHeaderGroups().map(headerGroup => (
+          }}
+        >
+          {table.getHeaderGroups().map((headerGroup) => (
             <Tr
               key={headerGroup.id}
               style={{ display: 'flex', width: '100%' }}
-              backgroundColor={['white', 'black']}>
-              {headerGroup.headers.map(header => {
+              backgroundColor={['white', 'black']}
+            >
+              {headerGroup.headers.map((header) => {
                 return (
                   <Th
                     key={header.id}
                     style={{
                       display: 'flex',
                       width: header.getSize(),
-                    }}>
+                    }}
+                  >
                     <div
                       {...{
                         onClick: header.column.getToggleSortingHandler(),
@@ -252,7 +259,8 @@ export const MarketTable = ({ data, filter }: Props) => {
                           userSelect: 'none',
                           cursor: 'pointer',
                         },
-                      }}>
+                      }}
+                    >
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
@@ -283,28 +291,31 @@ export const MarketTable = ({ data, filter }: Props) => {
             display: 'grid',
             height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
             position: 'relative', //needed for absolute positioning of rows
-          }}>
-          {rowVirtualizer.getVirtualItems().map(virtualRow => {
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = rows[virtualRow.index] as Row<MarketEntriy>
             return (
               <Tr
                 data-index={virtualRow.index} //needed for dynamic row height measurement
-                ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
+                ref={(node) => rowVirtualizer.measureElement(node)} //measure dynamic row height
                 key={row.id}
                 style={{
                   display: 'flex',
                   position: 'absolute',
                   transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
                   width: '100%',
-                }}>
-                {row.getVisibleCells().map(cell => {
+                }}
+              >
+                {row.getVisibleCells().map((cell) => {
                   return (
                     <Td
                       key={cell.id}
                       style={{
                         display: 'flex',
                         width: cell.column.getSize(),
-                      }}>
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

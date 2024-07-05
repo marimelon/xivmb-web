@@ -1,4 +1,4 @@
-import { XIVDataCenter, XIVWorld } from "./world"
+import { XIVDataCenter, XIVWorld } from './world'
 
 type MarketData = {
   Updated: number

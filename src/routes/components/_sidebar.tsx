@@ -8,7 +8,7 @@ export const Route = createFileRoute('/components/_sidebar')({
 })
 
 function Index() {
-  const items: Item[] = [...Array(10).keys()].map(i => ({
+  const items: Item[] = [...Array(10).keys()].map((i) => ({
     id: i,
     name: `アイテム${i}`,
     lodestoneId: 'xxx',

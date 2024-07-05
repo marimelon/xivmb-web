@@ -15,7 +15,7 @@ export const WorldSelector = ({ dc, children }: Props) => {
     <Tab key={dc} _before={{ fontFamily: 'xivfonts', content: '"\\e075"' }}>
       {dc}
     </Tab>,
-    ...getWorlds(dc).map(w => <Tab key={w}>{w}</Tab>),
+    ...getWorlds(dc).map((w) => <Tab key={w}>{w}</Tab>),
   ]
   const filters = [undefined, ...getWorlds(dc)]
   return (

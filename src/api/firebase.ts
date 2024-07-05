@@ -22,10 +22,10 @@ export const get_user = async () => {
   return new Promise<User | null>((resolve, reject) => {
     onAuthStateChanged(
       auth,
-      user => {
+      (user) => {
         resolve(user)
       },
-      error => {
+      (error) => {
         reject(error)
       },
     )

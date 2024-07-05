@@ -44,7 +44,7 @@ function Index() {
         <ItemHeader item={item} />
 
         <WorldSelector dc={dc}>
-          {filter => (
+          {(filter) => (
             <HStack flexGrow={1} overflow={'auto'} width="100%" gap={0}>
               <Box height="100%" minWidth={700}>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>

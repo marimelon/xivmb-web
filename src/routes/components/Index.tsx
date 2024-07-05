@@ -16,7 +16,8 @@ export function Index() {
         <Card
           direction={{ base: 'row', md: 'column' }}
           overflow="hidden"
-          variant="outline">
+          variant="outline"
+        >
           <CardHeader>
             <Heading size="md">『SLAM DUNK』（スラムダンク）</Heading>
           </CardHeader>
@@ -24,13 +25,15 @@ export function Index() {
             <FormControl
               isRequired
               label="Email address"
-              errorMessage="Email is required.">
+              errorMessage="Email is required."
+            >
               <Input type="email" placeholder="your email address" />
             </FormControl>
             <FormControl
               isRequired
               label="Password"
-              errorMessage="Email is required.">
+              errorMessage="Email is required."
+            >
               <Input type="password" placeholder="password" />
             </FormControl>
           </VStack>

@@ -49,12 +49,12 @@ export const ItemHeader = ({ item }: Prosp) => {
         cursor="pointer"
         as={MdOutlineStarBorder}
         color={
-          favoriteItems.map(e => e.id).includes(item.id)
+          favoriteItems.map((e) => e.id).includes(item.id)
             ? 'yellow.400'
             : undefined
         }
         onClick={() => {
-          favoriteItems.map(e => e.id).includes(item.id)
+          favoriteItems.map((e) => e.id).includes(item.id)
             ? deleteFavorite(item.id)
             : addFavorite(item)
         }}
@@ -62,7 +62,8 @@ export const ItemHeader = ({ item }: Prosp) => {
       <Link
         isExternal
         rel="noopener noreferrer"
-        href={`https://eriones.com/search?i=${item.name}`}>
+        href={`https://eriones.com/search?i=${item.name}`}
+      >
         <Image alt={'eriones'} src={`/img/eriones.png`} width={5} height={5} />
       </Link>
       <Link
@@ -72,7 +73,8 @@ export const ItemHeader = ({ item }: Prosp) => {
           item.lodestoneId
             ? lodestoneURL(item.lodestoneId)
             : lodestoneFromName(item.name)
-        }>
+        }
+      >
         <Image alt={'lodestone'} src={`/img/meteor.png`} width={5} height={5} />
       </Link>
     </HStack>

@@ -36,7 +36,8 @@ export const SidebarItem = ({ item, onClick }: Props) => {
         borderWidth: 1,
         boxShadow: '0rem 0rem 1rem 0rem rgba(137, 193, 202, 0.41)',
       }}
-      onClick={handleClick}>
+      onClick={handleClick}
+    >
       <ItemIcon item={item} />
       <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
         {item.name}
