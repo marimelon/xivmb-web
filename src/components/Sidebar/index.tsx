@@ -1,4 +1,4 @@
-import { Suspense, use, useState } from 'react'
+import { Suspense, use, useRef, useState } from 'react'
 
 import { Tab, TabPanel, TabPanels, Tabs, VStack } from '@yamada-ui/react'
 
@@ -14,6 +14,8 @@ export const Sidebar = ({}: Props) => {
   const { items: historyItems } = use(HistoryContext)
   const [query, setQuery] = useState<string>('')
   const [tabIndex, setTabIndex] = useState<number>(0)
+
+  const tabPanelsRef = useRef<HTMLDivElement>(null)
 
   return (
     <VStack height="100%">
@@ -41,16 +43,22 @@ export const Sidebar = ({}: Props) => {
         <Tab>History</Tab>
         {query !== '' && <Tab>Search</Tab>}
 
-        <TabPanels overflow="scroll" flexGrow={1}>
+        <TabPanels ref={tabPanelsRef} overflow="scroll" flexGrow={1}>
           <TabPanel>
             <FavoriteLIst items={favoriteItems} />
           </TabPanel>
           <TabPanel>
-            <HistoryList items={historyItems} />
+            <HistoryList
+              items={historyItems}
+              parentElment={tabPanelsRef.current!}
+            />
           </TabPanel>
           <TabPanel>
             <Suspense fallback={<div>Loading...</div>}>
-              <ItemSearchResult query={query} />
+              <ItemSearchResult
+                query={query}
+                parentElment={tabPanelsRef.current!}
+              />
             </Suspense>
           </TabPanel>
         </TabPanels>
