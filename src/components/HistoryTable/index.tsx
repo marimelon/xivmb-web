@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useSuspenseQueries } from '@tanstack/react-query'
 import {
@@ -27,8 +27,11 @@ import {
 import { format } from 'date-fns'
 
 import { itemHistoryQueryOptions } from '../../api/fetchHistorybyId'
-import { HistoryData } from '../../types/history'
+import { HistoryData, HistoryResponse } from '../../types/history'
 import { XIVDataCenter, XIVWorld } from '../../types/world'
+import { UpdateButton } from './UpdateButton'
+import { Route } from '../../routes/$itemid'
+import { useRouteContext } from '@tanstack/react-router'
 
 const separate = (num: number) =>
   String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
@@ -277,6 +280,17 @@ export const HistoryTableContainer = ({
     queries: [itemHistoryQueryOptions(itemid, dc)],
   })
 
+  const { queryClient } = useRouteContext({ from: Route.fullPath })
+  const handleUpdate = useCallback(
+    (res: HistoryResponse) => {
+      queryClient.setQueryData(
+        itemHistoryQueryOptions(itemid, dc).queryKey,
+        res,
+      )
+    },
+    [dc, itemid, queryClient],
+  )
+
   const updatedDate =
     data.length > 0 ? new Date(data[0].Updated * 1000) : undefined
   return (
@@ -288,6 +302,7 @@ export const HistoryTableContainer = ({
         ) : (
           <Text>( データなし )</Text>
         )}
+        <UpdateButton itemid={itemid} dc={dc} onUpdate={handleUpdate} />
       </HStack>
       <HistoryTable data={data} filter={filter} />
     </VStack>
