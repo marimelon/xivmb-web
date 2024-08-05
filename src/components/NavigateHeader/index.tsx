@@ -14,7 +14,7 @@ export const NavigateHeader = ({}: Props) => {
   return (
     <HStack justifyContent="flex-end">
       {XIVDataCenters.filter((w) => w !== routeSearch.dc).map((w) => (
-        <Link key={w} search={() => ({ dc: w })}>
+        <Link key={w} search={(prev) => ({ ...prev, dc: w })}>
           <Text _before={{ fontFamily: 'xivfonts', content: '"\\e075"' }}>
             {w}
           </Text>
