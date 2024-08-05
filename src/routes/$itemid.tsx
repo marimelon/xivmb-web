@@ -14,6 +14,7 @@ import { XIVDataCenter, isXIVDataCenter } from '../types/world'
 
 type Search = {
   dc: XIVDataCenter
+  hq?: boolean
 }
 
 export const Route = createFileRoute('/$itemid')({

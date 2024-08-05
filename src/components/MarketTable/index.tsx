@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useSuspenseQueries } from '@tanstack/react-query'
-import { useRouteContext } from '@tanstack/react-router'
+import { useNavigate, useRouteContext } from '@tanstack/react-router'
 import {
   ColumnDef,
   Row,
@@ -24,6 +24,7 @@ import {
   Thead,
   Tr,
   VStack,
+  IconButton,
 } from '@yamada-ui/react'
 import { format } from 'date-fns'
 
@@ -35,6 +36,8 @@ import {
 } from '../../types/market'
 import { XIVDataCenter, XIVWorld } from '../../types/world'
 import { UpdateButton } from './UpdateButton'
+import { Image } from '@yamada-ui/react'
+import { Route } from '../../routes/$itemid'
 
 const separate = (num: number) =>
   String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
@@ -42,15 +45,17 @@ const separate = (num: number) =>
 type Props = {
   data: { [key: string]: MarketWorldData }
   filter?: XIVWorld
+  hq?: boolean
 }
 
-export const MarketTable = ({ data, filter }: Props) => {
+export const MarketTable = ({ data, filter, hq }: Props) => {
   const records = useMemo<MarketEntriy[]>(
     () =>
       Object.entries(data)
         .filter(([world]) => filter === undefined || world === filter)
-        .flatMap(([, worldData]) => worldData.entries),
-    [data, filter],
+        .flatMap(([, worldData]) => worldData.entries)
+        .filter((data) => Boolean(hq) === false || data.hq === 1),
+    [data, filter, hq],
   )
 
   const columns = useMemo<ColumnDef<MarketEntriy>[]>(
@@ -332,6 +337,16 @@ export const MarketTable = ({ data, filter }: Props) => {
   )
 }
 
+const HqIcon = ({ active }: { active: boolean }) => {
+  return (
+    <Image
+      src={active ? '/img/hqicon-yellow.png' : '/img/hqicon.png'}
+      width={'100%'}
+      height={'100%'}
+    />
+  )
+}
+
 export const MarketContianer = ({
   itemid,
   dc,
@@ -341,31 +356,45 @@ export const MarketContianer = ({
   dc: XIVDataCenter
   filter?: XIVWorld
 }) => {
+  const navigate = useNavigate({ from: Route.fullPath })
   const [{ data: data }] = useSuspenseQueries({
     queries: [marketDataQueryOptions(Number(itemid), dc)],
   })
 
-  const { queryClient } = useRouteContext({ from: '__root__' })
+  const { queryClient } = useRouteContext({ from: Route.fullPath })
   const handleUpdate = useCallback(
     (res: MarketDataResponse) => {
       queryClient.setQueryData(marketDataQueryOptions(itemid, dc).queryKey, res)
     },
     [dc, itemid, queryClient],
   )
+  const { hq } = Route.useSearch()
 
   const updatedDate = new Date(data.timestamp * 1000)
+
   return (
     <VStack style={{ height: '100%', width: '100%' }} gap={0}>
-      <HStack height={10}>
+      <HStack height={10} gap={2}>
         <Heading size="md">Market</Heading>
         <Text>
           {data.timestamp === 0
             ? '(データなし)'
             : `(取得日時 ${format(updatedDate, 'MM/dd\xa0HH:mm')})`}
         </Text>
+        <IconButton
+          colorScheme="primary"
+          variant="primary"
+          size="xs"
+          icon={<HqIcon active={Boolean(hq)} />}
+          onClick={() => {
+            navigate({
+              search: (prev) => ({ ...prev, hq: prev.hq ? undefined : true }),
+            })
+          }}
+        />
         <UpdateButton itemid={itemid} dc={dc} onUpdate={handleUpdate} />
       </HStack>
-      <MarketTable data={data.data} filter={filter} />
+      <MarketTable data={data.data} filter={filter} hq={hq} />
     </VStack>
   )
 }
