@@ -58,7 +58,7 @@ function Index() {
                   </Suspense>
                 </ErrorBoundary>
               </Box>
-              <Box height="100%" minWidth={460}>
+              <Box height="100%" minWidth={410}>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
                   <Suspense fallback={<Box>Loading...</Box>}>
                     <HistoryTableContainer

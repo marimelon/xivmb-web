@@ -108,7 +108,7 @@ export const HistoryTable = ({ data, filter }: Props) => {
         id: 'date',
         header: 'Date',
         accessorKey: 'buyDate',
-        size: 150,
+        size: 100,
         cell: ({ getValue }) => {
           const date = new Date(getValue() as number)
           return (
@@ -295,7 +295,7 @@ export const HistoryTableContainer = ({
     data.length > 0 ? new Date(data[0].Updated * 1000) : undefined
   return (
     <VStack style={{ height: '100%', width: '100%' }} gap={0}>
-      <HStack height={10}>
+      <HStack height={10} gap={2}>
         <Heading size="md">History</Heading>
         {updatedDate ? (
           <Text>{`(取得日時 ${format(updatedDate, 'MM/dd\xa0HH:mm')})`}</Text>
