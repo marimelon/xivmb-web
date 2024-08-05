@@ -43,7 +43,7 @@ export const Sidebar = ({}: Props) => {
         <Tab>History</Tab>
         {query !== '' && <Tab>Search</Tab>}
 
-        <TabPanels ref={tabPanelsRef} overflow="scroll" flexGrow={1}>
+        <TabPanels ref={tabPanelsRef} overflowY="scroll" flexGrow={1}>
           <TabPanel>
             <FavoriteLIst items={favoriteItems} />
           </TabPanel>
